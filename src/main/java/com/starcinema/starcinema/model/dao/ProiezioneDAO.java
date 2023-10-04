@@ -20,5 +20,4 @@ public interface ProiezioneDAO {
     public void update(Proiezione proiezione);
     public void delete(Proiezione proiezione);
 
-    //public List<Film> findFilmByData_pro(Date data_pro);
 }

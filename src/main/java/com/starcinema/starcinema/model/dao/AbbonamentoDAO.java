@@ -2,7 +2,7 @@ package com.starcinema.starcinema.model.dao;
 
 import com.starcinema.starcinema.model.mo.Abbonamento;
 
-public interface AbbonamentoDAO extends BigliettoDAO {
+public interface AbbonamentoDAO {
 
     public Abbonamento create(
             Double prezzo,

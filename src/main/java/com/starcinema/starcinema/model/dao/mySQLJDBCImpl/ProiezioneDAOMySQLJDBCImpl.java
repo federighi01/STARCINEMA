@@ -103,42 +103,6 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         }
     }
 
-  /*  @Override
-    public List<Film> findFilmByData_pro(Proiezione proiezione, Date data_pro) {
-        PreparedStatement ps;
-        Film film;
-        ArrayList<Film> films = new ArrayList<Film>();
-
-        try {
-
-            String sql
-                    = " SELECT DISTINCT film.cod_film, film.titolo, film.regista, film.genere, film.durata, film.nazione, film.anno, film.descrizione "
-                    + " FROM film JOIN proiezione ON film.cod_film = proiezione.codice_film "
-                    + " WHERE "
-                    + "   proiezione.data_pro = ? "
-                    + "   AND film.deleted = 'N' "
-                    + " ORDER BY film.titolo ";
-
-            ps = conn.prepareStatement(sql);
-            ps.setTime(1, (Time) proiezione.getData_pro());
-
-            ResultSet resultSet = ps.executeQuery();
-
-            while (resultSet.next()) {
-                film = read(resultSet);
-                films.add(film);
-            }
-
-            resultSet.close();
-            ps.close();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return films;
-    }*/
-
     Proiezione read(ResultSet rs) {
         Proiezione proiezione = new Proiezione();
         Film film = new Film();

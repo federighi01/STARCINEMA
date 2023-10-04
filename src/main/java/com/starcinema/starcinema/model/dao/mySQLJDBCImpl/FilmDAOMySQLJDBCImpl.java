@@ -2,11 +2,12 @@ package com.starcinema.starcinema.model.dao.mySQLJDBCImpl;
 
 import com.starcinema.starcinema.model.dao.FilmDAO;
 import com.starcinema.starcinema.model.mo.Film;
+import com.starcinema.starcinema.model.mo.Proiezione;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class FilmDAOMySQLJDBCImpl implements FilmDAO {
 
@@ -16,7 +17,7 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
         this.conn = conn;
     }
     @Override
-    public Film create(Long cod_film, String titolo, String regista, String genere, Integer durata, String nazione, Integer anno, String descrizione) {
+    public Film create(Long cod_film, String titolo, String regista, String genere, Integer durata, String nazione, Integer anno, String descrizione, String trailer) {
         PreparedStatement ps;
         Film film = new Film();
         film.setCod_film(cod_film);
@@ -27,6 +28,7 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
         film.setNazione(nazione);
         film.setAnno(anno);
         film.setDescrizione(descrizione);
+        film.setTrailer(trailer);
 
         try{
             String sql
@@ -39,9 +41,10 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
                     + "     nazione,"
                     + "     anno,"
                     + "     descrizione,"
+                    + "     trailer,"
                     + "     deleted "
                     + "   ) "
-                    + " VALUES (?,?,?,?,?,?,?,?,'N')";
+                    + " VALUES (?,?,?,?,?,?,?,?,?,'N')";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
@@ -53,6 +56,7 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
             ps.setString(i++, film.getNazione());
             ps.setInt(i++, film.getAnno());
             ps.setString(i++, film.getDescrizione());
+            ps.setString(i++, film.getTrailer());
 
             ps.executeUpdate();
 
@@ -121,6 +125,42 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
         return film;
     }
 
+    @Override
+    public List<Film> findFilmByData_pro(Proiezione proiezione) {
+        PreparedStatement ps;
+        Film film;
+        ArrayList<Film> films = new ArrayList<Film>();
+
+        try {
+
+            String sql
+                    = " SELECT DISTINCT film.cod_film, film.titolo, film.regista, film.genere, film.durata, film.nazione, film.anno, film.descrizione, film.trailer "
+                    + " FROM film JOIN proiezione ON film.cod_film = proiezione.codice_film "
+                    + " WHERE "
+                    + "   proiezione.data_pro = ? "
+                    + "   AND film.deleted = 'N' "
+                    + " ORDER BY film.titolo ";
+
+            ps = conn.prepareStatement(sql);
+            ps.setTime(1,(Time) proiezione.getData_pro());
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                film = read(resultSet);
+                films.add(film);
+            }
+
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return films;
+    }
+
     Film read(ResultSet rs) {
 
         Film film = new Film();
@@ -154,6 +194,10 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
         }
         try {
             film.setDescrizione(rs.getString("descrizione"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            film.setTrailer(rs.getString("trailer"));
         } catch (SQLException sqle) {
         }
         try {

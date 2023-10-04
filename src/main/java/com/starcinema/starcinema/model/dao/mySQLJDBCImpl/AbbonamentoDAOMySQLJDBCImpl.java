@@ -27,19 +27,4 @@ public class AbbonamentoDAOMySQLJDBCImpl implements AbbonamentoDAO {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-
-    @Override
-    public Biglietto create(String cod_b) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void update(Biglietto biglietto) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void delete(Biglietto biglietto) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }

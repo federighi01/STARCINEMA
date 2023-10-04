@@ -12,6 +12,7 @@ public class Film {
     private String nazione;
     private Integer anno;
     private String descrizione;
+    private String trailer;
     private boolean deleted;
 
     // 1:N (recensione)
@@ -46,6 +47,9 @@ public class Film {
 
     public String getDescrizione() { return descrizione; }
     public void setDescrizione(String descrizione) { this.descrizione = descrizione; }
+
+    public String getTrailer() { return trailer; }
+    public void setTrailer(String trailer) { this.trailer = trailer; }
 
     public boolean isDeleted() { return deleted; }
     public void setDeleted(boolean deleted) { this.deleted = deleted; }

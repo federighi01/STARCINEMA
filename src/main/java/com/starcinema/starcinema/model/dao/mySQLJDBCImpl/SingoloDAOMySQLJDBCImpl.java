@@ -12,33 +12,19 @@ public class SingoloDAOMySQLJDBCImpl implements SingoloDAO {
     public SingoloDAOMySQLJDBCImpl(Connection conn) {
         this.conn = conn;
     }
-    @Override
-    public Biglietto create(String cod_b) {
-        return null;
-    }
-
-    @Override
-    public void update(Biglietto biglietto) {
-
-    }
-
-    @Override
-    public void delete(Biglietto biglietto) {
-
-    }
 
     @Override
     public Singolo create(Double prezzo, String tipo) {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void update(Singolo singolo) {
-
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void delete(Singolo singolo) {
-
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

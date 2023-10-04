@@ -3,7 +3,7 @@ package com.starcinema.starcinema.model.dao;
 import com.starcinema.starcinema.model.dao.BigliettoDAO;
 import com.starcinema.starcinema.model.mo.Singolo;
 
-public interface SingoloDAO extends BigliettoDAO {
+public interface SingoloDAO {
 
     public Singolo create(
             Double prezzo,
