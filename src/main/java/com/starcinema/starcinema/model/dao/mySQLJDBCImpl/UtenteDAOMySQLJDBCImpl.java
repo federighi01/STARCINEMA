@@ -115,7 +115,7 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
                     = " UPDATE utente "
                     + " SET deleted='Y' "
                     + " WHERE "
-                    + " username=?";
+                    + " username=? ";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, utente.getUsername());
@@ -143,7 +143,7 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
                     = " SELECT * "
                     + "   FROM utente "
                     + " WHERE "
-                    + "   username = ?";
+                    + "   username = ? ";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, username);

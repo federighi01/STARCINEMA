@@ -28,4 +28,6 @@ public interface FilmDAO {
 
     public List<Film> findFilmByData_pro(Proiezione proiezione);
 
+    public List<Film> findFilm();
+
 }

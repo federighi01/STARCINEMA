@@ -3,6 +3,7 @@ package com.starcinema.starcinema.model.dao.mySQLJDBCImpl;
 import com.starcinema.starcinema.model.dao.FilmDAO;
 import com.starcinema.starcinema.model.mo.Film;
 import com.starcinema.starcinema.model.mo.Proiezione;
+import com.starcinema.starcinema.model.mo.Utente;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -151,6 +152,39 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
                 films.add(film);
             }
 
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return films;
+    }
+
+    @Override
+    public List<Film> findFilm() {
+        PreparedStatement ps;
+        Film film;
+        ArrayList<Film> films = new ArrayList<Film>();
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM film "
+                    + " WHERE "
+                    + "   deleted = 'N' ";
+
+            ps = conn.prepareStatement(sql);
+
+
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                film = read(resultSet);
+                films.add(film);
+            }
             resultSet.close();
             ps.close();
 

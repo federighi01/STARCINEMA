@@ -1,7 +1,9 @@
 package com.starcinema.starcinema.controller;
 
 import com.starcinema.starcinema.model.dao.DAOFactory;
+import com.starcinema.starcinema.model.dao.FilmDAO;
 import com.starcinema.starcinema.model.dao.UtenteDAO;
+import com.starcinema.starcinema.model.mo.Film;
 import com.starcinema.starcinema.model.mo.Utente;
 import com.starcinema.starcinema.services.config.Configuration;
 import com.starcinema.starcinema.services.logservice.LogService;
@@ -9,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +23,9 @@ public class HomeManagement {
     public static void view(HttpServletRequest request, HttpServletResponse response) {
 
         DAOFactory sessionDAOFactory= null;
+        DAOFactory daoFactory = null;
         Utente loggedUtente;
+
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -35,6 +40,12 @@ public class HomeManagement {
             UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
             loggedUtente = sessionUtenteDAO.findLoggedUtente();
 
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+            commonView(daoFactory, sessionDAOFactory, request);
+
+            daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",loggedUtente!=null);
@@ -44,6 +55,7 @@ public class HomeManagement {
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
             try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
                 if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
             } catch (Throwable t) {
             }
@@ -51,6 +63,7 @@ public class HomeManagement {
 
         } finally {
             try {
+                if (daoFactory != null) daoFactory.closeTransaction();
                 if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
             } catch (Throwable t) {
             }
@@ -89,7 +102,7 @@ public class HomeManagement {
 
             if (utente == null || !utente.getPw().equals(pw)) {
                 sessionUtenteDAO.delete(null);
-                applicationMessage = pw;
+                applicationMessage = "Username e password errati!";
                 loggedUtente=null;
             } else {
                 loggedUtente = sessionUtenteDAO.create(utente.getUsername(), null,null, utente.getTipo(), utente.getCognome(), utente.getNome(), null, null, null, null);
@@ -159,5 +172,16 @@ public class HomeManagement {
             } catch (Throwable t) {
             }
         }
+    }
+
+    private static void commonView(DAOFactory daoFactory, DAOFactory sessionDAOFactory, HttpServletRequest request) {
+
+        List<Film> films;
+
+        FilmDAO filmDAO = daoFactory.getFilmDAO();
+        films = filmDAO.findFilm();
+
+        request.setAttribute("films", films);
+
     }
 }
