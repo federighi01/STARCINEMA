@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class HomeCinema {
-    private HomeCinema() {
+public class HomeManagement {
+    private HomeManagement() {
     }
 
     public static void view(HttpServletRequest request, HttpServletResponse response) {
@@ -39,7 +39,7 @@ public class HomeCinema {
 
             request.setAttribute("loggedOn",loggedUtente!=null);
             request.setAttribute("loggedUtente", loggedUtente);
-            request.setAttribute("viewUrl", "homeCinema/view");
+            request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -89,10 +89,10 @@ public class HomeCinema {
 
             if (utente == null || !utente.getPw().equals(pw)) {
                 sessionUtenteDAO.delete(null);
-                applicationMessage = "Username e password errati!";
+                applicationMessage = pw;
                 loggedUtente=null;
             } else {
-                loggedUtente = sessionUtenteDAO.create(utente.getUsername(), null,null, utente.getTipo(), utente.getCognome(), utente.getNome(), null,null,null,null);
+                loggedUtente = sessionUtenteDAO.create(utente.getUsername(), null,null, utente.getTipo(), utente.getCognome(), utente.getNome(), null, null, null, null);
             }
 
             daoFactory.commitTransaction();
@@ -101,7 +101,7 @@ public class HomeCinema {
             request.setAttribute("loggedOn",loggedUtente!=null);
             request.setAttribute("loggedUtente", loggedUtente);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "homeCinema/view");
+            request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -143,7 +143,7 @@ public class HomeCinema {
 
             request.setAttribute("loggedOn",false);
             request.setAttribute("loggedUtente", null);
-            request.setAttribute("viewUrl", "homeCinema/view");
+            request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);

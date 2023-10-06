@@ -7,7 +7,7 @@ import java.util.logging.Level;
 
 public class Configuration {
 
-    /* Database Configruation */
+    /* Database Configuration */
     public static final String DAO_IMPL= DAOFactory.MYSQLJDBCIMPL;
     public static final String DATABASE_DRIVER="com.mysql.cj.jdbc.Driver";
     public static final String SERVER_TIMEZONE= Calendar.getInstance().getTimeZone().getID();

@@ -2,17 +2,17 @@
   function headerOnLoadHandler() {
     var usernameTextField = document.querySelector("#username");
     var usernameTextFieldMsg = "Lo username \xE8 obbligatorio.";
-    var passwordTextField = document.querySelector("#password");
-    var passwordTextFieldMsg = "La password \xE8 obbligatoria.";
+    var pwTextField = document.querySelector("#pw");
+    var pwTextFieldMsg = "La password \xE8 obbligatoria.";
 
-    if (usernameTextField != undefined && passwordTextField != undefined ) {
+    if (usernameTextField != undefined && pwTextField != undefined ) {
       usernameTextField.setCustomValidity(usernameTextFieldMsg);
       usernameTextField.addEventListener("change", function () {
         this.setCustomValidity(this.validity.valueMissing ? usernameTextFieldMsg : "");
       });
-      passwordTextField.setCustomValidity(passwordTextFieldMsg);
-      passwordTextField.addEventListener("change", function () {
-       this.setCustomValidity(this.validity.valueMissing ? passwordTextFieldMsg : "");
+      pwTextField.setCustomValidity(pwTextFieldMsg);
+      pwTextField.addEventListener("change", function () {
+       this.setCustomValidity(this.validity.valueMissing ? pwTextFieldMsg : "");
       });
     }
   }
@@ -21,7 +21,7 @@
 <header class="clearfix"><!-- Defining the header section of the page -->
 
   <h1 class="logo"><!-- Defining the logo element -->
-    Rubrica
+    Starcinema
   </h1>
 
   <form name="logoutForm" action="Dispatcher" method="post">
@@ -34,8 +34,8 @@
         <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
       </li>
       <%if (loggedOn) {%>
-        <li <%=menuActiveLink.equals("Rubrica")?"class=\"active\"":""%>>
-          <a href="Dispatcher?controllerAction=AddressBookManagement.view">Rubrica</a>
+        <li <%=menuActiveLink.equals("Starcinema")?"class=\"active\"":""%>>
+          <a href="Dispatcher?controllerAction=AddressBookManagement.view">Starcinema</a>
         </li>
         <li><a href="javascript:logoutForm.submit()">Logout</a></li>
       <%}%>
@@ -47,8 +47,8 @@
       <form name="logonForm" action="Dispatcher" method="post">
         <label for="username">Utente</label>
         <input type="text" id="username"  name="username" maxlength="40" required>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" maxlength="40" required>
+        <label for="pw">Password</label>
+        <input type="password" id="pw" name="pw" maxlength="40" required>
         <input type="hidden" name="controllerAction" value="HomeManagement.logon"/>
         <input type="submit" value="Ok">
       </form>
