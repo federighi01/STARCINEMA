@@ -12,6 +12,7 @@ public interface FilmDAO {
             Long cod_film,
             String titolo,
             String regista,
+            String cast,
             String genere,
             Integer durata,
             String nazione,

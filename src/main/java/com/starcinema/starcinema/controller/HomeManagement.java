@@ -26,7 +26,6 @@ public class HomeManagement {
         DAOFactory daoFactory = null;
         Utente loggedUtente;
 
-
         Logger logger = LogService.getApplicationLogger();
 
         try {

@@ -17,9 +17,10 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         this.conn = conn;
     }
     @Override
-    public Proiezione create(Film film, Sala sala, Date data_pro, Time ora_pro) {
+    public Proiezione create(Long cod_pro, Film film, Sala sala, Date data_pro, Time ora_pro) {
         PreparedStatement ps;
         Proiezione proiezione = new Proiezione();
+        proiezione.setCod_pro(cod_pro);
         proiezione.setFilm(film);
         proiezione.setSala(sala);
         proiezione.setData_pro(data_pro);
@@ -28,16 +29,18 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         try{
             String sql
                     = " INSERT INTO proiezione "
-                    + "   ( cod_film,"
+                    + "   ( cod_pro,"
+                    + "     cod_film,"
                     + "     num_sala,"
                     + "     data_pro,"
                     + "     ora_pro,"
                     + "     deleted "
                     + "   ) "
-                    + " VALUES (?,?,?,?,'N')";
+                    + " VALUES (?,?,?,?,?,'N')";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
+            ps.setLong(i++, proiezione.getCod_pro());
             ps.setLong(i++, proiezione.getFilm().getCod_film());
             ps.setInt(i++, proiezione.getSala().getNum_sala());
             ps.setTime(i++, (Time) proiezione.getData_pro());
@@ -63,6 +66,7 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
                     + "   data_pro = ?, "
                     + "   ora_pro = ?, "
                     + " WHERE "
+                    + " cod_pro = ?,"
                     + " cod_film = ?,"
                     + " num_sala = ? ";
 
@@ -70,6 +74,7 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
             int i = 1;
             ps.setTime(1, (Time) proiezione.getData_pro());
             ps.setTime(1, proiezione.getOra_pro());
+            ps.setLong(1, proiezione.getCod_pro());
             ps.setLong(1, proiezione.getFilm().getCod_film());
             ps.setInt(1, proiezione.getSala().getNum_sala());
             ps.executeUpdate();
@@ -89,10 +94,12 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
                     = " UPDATE proiezione "
                     + " SET deleted='Y' "
                     + " WHERE "
+                    + " cod_pro = ?,"
                     + " cod_film = ?,"
                     + " num_sala = ? ";
 
             ps = conn.prepareStatement(sql);
+            ps.setLong(1, proiezione.getCod_pro());
             ps.setLong(1, proiezione.getFilm().getCod_film());
             ps.setInt(1, proiezione.getSala().getNum_sala());
             ps.executeUpdate();
@@ -109,6 +116,10 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         Sala sala = new Sala();
         proiezione.setFilm(film);
         proiezione.setSala(sala);
+        try {
+            proiezione.setCod_pro(rs.getLong("Cod_pro"));
+        } catch (SQLException sqle) {
+        }
         try {
             proiezione.getFilm().setCod_film(rs.getLong("Cod_film"));
         } catch (SQLException sqle) {

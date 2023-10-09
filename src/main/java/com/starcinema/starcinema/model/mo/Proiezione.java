@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class Proiezione {
 
+    private Long cod_pro;
     // N:1 (film)
     private Film film;
     // N:1 (sala)
@@ -13,6 +14,9 @@ public class Proiezione {
     private Time ora_pro;
     private boolean deleted;
 
+
+    public Long getCod_pro() { return cod_pro; }
+    public void setCod_pro(Long cod_pro) { this.cod_pro = cod_pro; }
 
     public Film getFilm() { return film; }
     public void setFilm(Film film) { this.film = film; }

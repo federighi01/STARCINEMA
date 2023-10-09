@@ -11,6 +11,7 @@ import java.util.List;
 public interface ProiezioneDAO {
 
     public Proiezione create(
+            Long cod_pro,
             Film film,
             Sala sala,
             Date data_pro,

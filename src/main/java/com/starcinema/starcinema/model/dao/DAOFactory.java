@@ -22,10 +22,6 @@ public abstract class DAOFactory {
 
     public abstract FilmDAO getFilmDAO();
 
-    public abstract AttoreDAO getAttoreDAO();
-
-    public abstract PartecipazioneDAO getPartecipazioneDAO();
-
     public abstract ProiezioneDAO getProiezioneDAO();
 
     public abstract SalaDAO getSalaDAO();

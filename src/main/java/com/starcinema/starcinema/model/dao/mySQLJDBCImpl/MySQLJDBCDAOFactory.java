@@ -74,16 +74,6 @@ public class MySQLJDBCDAOFactory extends DAOFactory{
     }
 
     @Override
-    public AttoreDAO getAttoreDAO() {
-        return new AttoreDAOMySQLJDBCImpl(connection);
-    }
-
-    @Override
-    public PartecipazioneDAO getPartecipazioneDAO() {
-        return new PartecipazioneDAOMySQLJDBCImpl(connection);
-    }
-
-    @Override
     public ProiezioneDAO getProiezioneDAO() {
         return new ProiezioneDAOMySQLJDBCImpl(connection);
     }

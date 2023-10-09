@@ -17,11 +17,11 @@
 <head>
     <%@include file="/include/htmlHead.inc"%>
     <style>
-        #contacts {
+        #films {
             margin: 12px 0;
         }
 
-        #contacts article {
+        #films article {
             float: left;
             width: 250px;
             border-width: 1px;
@@ -34,7 +34,7 @@
             box-shadow: 0 3px 2px #777;
         }
 
-        #contacts article h1 a {
+        #films article h1 a {
             color: #a3271f;
         }
     </style>
@@ -49,6 +49,24 @@
     Benvenuto.
     Fai il logon per accedere all'area riservata.
     <%}%>
+    <br><br>
+    <section id="findfilm" class="clearfix">
+        <form name="findfilmForm" action="Dispatcher" method="post">
+            <label for="titolo">Cerca per titolo</label>
+            <input type="text" id="titolo"  name="titolo" maxlength="40" required>
+
+            <input type="submit" value="Cerca">
+        </form>
+    </section>
+    <br>
+    <section id="finddata" class="clearfix">
+        <form name="finddataForm" action="Dispatcher" method="post">
+            <label for="data_pro">Cerca per data di calendario</label>
+            <input type="date" id="data_pro" name="data_pro">
+
+            <input type="submit" value="Cerca">
+        </form>
+    </section>
     <br><br><br>
     STARCINEMA CONSIGLIA
     <br><br>
@@ -57,18 +75,20 @@
         <article>
             <h1><a><%=films.get(i).getTitolo()%></a></h1> <br>
             <a><b>Regista: </b><%=films.get(i).getRegista()%></a> <br>
+            <a><b>Cast: </b><%=films.get(i).getCast()%></a> <br>
             <a><b>Genere: </b><%=films.get(i).getGenere()%></a> <br>
             <a><b>Durata: </b><%=films.get(i).getDurata()%>'</a> <br>
             <a><b>Nazione: </b><%=films.get(i).getNazione()%></a> <br>
             <a><b>Anno: </b><%=films.get(i).getAnno()%></a> <br>
             <a><b>Descrizione: </b><%=films.get(i).getDescrizione()%></a> <br>
             <a href=<%=films.get(i).getTrailer()%>>Clicca qui per il trailer</a>
-            <% c++; %>
+            <%--<%=films.size()%>--%>
         </article>
         <br><br><br>
-        <%}%><%=c%>
+        <%}%>
     </section>
 
 </main>
+</body>
 <%--<%@include file="/include/footer.inc"%>--%>
 </html>

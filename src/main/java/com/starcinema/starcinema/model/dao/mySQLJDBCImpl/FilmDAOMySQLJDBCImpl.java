@@ -18,12 +18,13 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
         this.conn = conn;
     }
     @Override
-    public Film create(Long cod_film, String titolo, String regista, String genere, Integer durata, String nazione, Integer anno, String descrizione, String trailer) {
+    public Film create(Long cod_film, String titolo, String regista, String cast, String genere, Integer durata, String nazione, Integer anno, String descrizione, String trailer) {
         PreparedStatement ps;
         Film film = new Film();
         film.setCod_film(cod_film);
         film.setTitolo(titolo);
         film.setRegista(regista);
+        film.setCast(cast);
         film.setGenere(genere);
         film.setDurata(durata);
         film.setNazione(nazione);
@@ -37,6 +38,7 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
                     + "   ( cod_film,"
                     + "     titolo,"
                     + "     regista,"
+                    + "     cast,"
                     + "     genere,"
                     + "     durata,"
                     + "     nazione,"
@@ -45,13 +47,14 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
                     + "     trailer,"
                     + "     deleted "
                     + "   ) "
-                    + " VALUES (?,?,?,?,?,?,?,?,?,'N')";
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?,'N')";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
             ps.setLong(i++, film.getCod_film());
             ps.setString(i++, film.getTitolo());
             ps.setString(i++, film.getRegista());
+            ps.setString(i++, film.getCast());
             ps.setString(i++, film.getGenere());
             ps.setInt(i++, film.getDurata());
             ps.setString(i++, film.getNazione());
@@ -135,7 +138,7 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
         try {
 
             String sql
-                    = " SELECT DISTINCT film.cod_film, film.titolo, film.regista, film.genere, film.durata, film.nazione, film.anno, film.descrizione, film.trailer "
+                    = " SELECT DISTINCT film.cod_film, film.titolo, film.regista, film.cast, film.genere, film.durata, film.nazione, film.anno, film.descrizione, film.trailer "
                     + " FROM film JOIN proiezione ON film.cod_film = proiezione.codice_film "
                     + " WHERE "
                     + "   proiezione.data_pro = ? "
@@ -208,6 +211,10 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
         }
         try {
             film.setRegista(rs.getString("regista"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            film.setCast(rs.getString("cast"));
         } catch (SQLException sqle) {
         }
         try {

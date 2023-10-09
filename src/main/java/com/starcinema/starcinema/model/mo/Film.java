@@ -7,6 +7,7 @@ public class Film {
     private Long cod_film;
     private String titolo;
     private String regista;
+    private String cast;
     private String genere;
     private Integer durata;
     private String nazione;
@@ -20,8 +21,7 @@ public class Film {
     // 1:N (acquista)
     private Acquista[] acquisti;
     // 1:N (partecipazione)
-    private Partecipazione[] partecipazioni;
-    // 1:N (proiezione)
+
     private Proiezione[] proiezioni;
 
     public Long getCod_film() { return cod_film; }
@@ -32,6 +32,9 @@ public class Film {
 
     public String getRegista() { return regista; }
     public void setRegista(String regista) { this.regista = regista; }
+
+    public String getCast() { return cast; }
+    public void setCast(String cast) { this.cast = cast; }
 
     public String getGenere() { return genere; }
     public void setGenere(String genere) { this.genere = genere; }
@@ -60,9 +63,6 @@ public class Film {
 
     public Acquista getAcquisti(int index) { return this.acquisti[index]; }
     public void setAcquisti(int index, Acquista acquisti) { this.acquisti[index] = acquisti; }
-
-    public Partecipazione getPartecipazioni(int index) { return this.partecipazioni[index]; }
-    public void setPartecipazioni(int index, Partecipazione partecipazioni) { this.partecipazioni[index] = partecipazioni; }
 
     public Proiezione getProiezioni(int index) { return this.proiezioni[index]; }
     public void setProiezioni(int index, Proiezione proiezioni) { this.proiezioni[index] = proiezioni; }

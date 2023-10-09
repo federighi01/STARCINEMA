@@ -34,8 +34,8 @@
         <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
       </li>
       <%if (loggedOn) {%>
-        <li <%=menuActiveLink.equals("Starcinema")?"class=\"active\"":""%>>
-          <a href="Dispatcher?controllerAction=AddressBookManagement.view">Starcinema</a>
+        <li <%=menuActiveLink.equals("AreaRiservata")?"class=\"active\"":""%>>
+          <a href="Dispatcher?controllerAction=AreaRiservata.view">Area riservata</a>
         </li>
         <li><a href="javascript:logoutForm.submit()">Logout</a></li>
       <%}%>
@@ -43,6 +43,9 @@
   </nav>
 
   <%if (!loggedOn) {%>
+  <nav><ul><li <%=menuActiveLink.equals("Home")?"class=\"active\"":""%>>
+                      <a href="Dispatcher?controllerAction=HomeManagement.view">Registrati</a>
+              </li></ul></nav>
     <section id="login" class="clearfix">
       <form name="logonForm" action="Dispatcher" method="post">
         <label for="username">Utente</label>

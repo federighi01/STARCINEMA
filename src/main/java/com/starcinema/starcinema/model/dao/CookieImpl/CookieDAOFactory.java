@@ -53,16 +53,6 @@ public class CookieDAOFactory extends DAOFactory {
     }
 
     @Override
-    public AttoreDAO getAttoreDAO() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public PartecipazioneDAO getPartecipazioneDAO() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public ProiezioneDAO getProiezioneDAO() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
