@@ -43,8 +43,8 @@
   </nav>
 
   <%if (!loggedOn) {%>
-  <nav><ul><li <%=menuActiveLink.equals("Home")?"class=\"active\"":""%>>
-                      <a href="Dispatcher?controllerAction=HomeManagement.view">Registrati</a>
+  <nav><ul><li <%=menuActiveLink.equals("Registrazione")?"class=\"active\"":""%>>
+                      <a href="Dispatcher?controllerAction=HomeManagement.regView">Registrati</a>
               </li></ul></nav>
     <section id="login" class="clearfix">
       <form name="logonForm" action="Dispatcher" method="post">

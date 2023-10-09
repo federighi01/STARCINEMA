@@ -16,7 +16,7 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
     }
 
     @Override
-    public Utente create(String username, String pw, String email, String tipo, String cognome, String nome, Date data_n, String luogo_n, String indirizzo, Long tel) {
+    public Utente create(String username, String pw, String email, String tipo, String cognome, String nome, /*Date data_n,*/ String luogo_n, String indirizzo, Long tel) {
         PreparedStatement ps;
         Utente utente = new Utente();
         utente.setUsername(username);
@@ -24,7 +24,7 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
         utente.setEmail(email);
         utente.setCognome(cognome);
         utente.setNome(nome);
-        utente.setData_n(data_n);
+        //utente.setData_n(data_n);
         utente.setLuogo_n(luogo_n);
         utente.setIndirizzo(indirizzo);
         utente.setTel(tel);
@@ -35,9 +35,10 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
                     + "   ( username,"
                     + "     pw,"
                     + "     email,"
+                    + "     tipo,"
                     + "     cognome,"
                     + "     nome,"
-                    + "     data_n,"
+                    //+ "     data_n,"
                     + "     luogo_n,"
                     + "     indirizzo,"
                     + "     tel,"
@@ -50,9 +51,10 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
             ps.setString(i++, utente.getUsername());
             ps.setString(i++, utente.getPw());
             ps.setString(i++, utente.getEmail());
+            ps.setString(i++, utente.getTipo());
             ps.setString(i++, utente.getCognome());
             ps.setString(i++, utente.getNome());
-            ps.setTime(i++, (Time) utente.getData_n());
+            //ps.setTime(i++, (Time) utente.getData_n());
             ps.setString(i++, utente.getLuogo_n());
             ps.setString(i++, utente.getIndirizzo());
             ps.setLong(i++, utente.getTel());

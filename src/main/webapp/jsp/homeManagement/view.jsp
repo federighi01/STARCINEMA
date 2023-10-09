@@ -3,7 +3,7 @@
 <%@ page import="com.starcinema.starcinema.model.mo.Film" %>
 <%@ page import="java.util.List" %>
 
-<%  int i = 0, c = 0;
+<%  int i = 0;
 
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
     Utente loggedUtente = (Utente) request.getAttribute("loggedUtente");
@@ -82,7 +82,12 @@
             <a><b>Anno: </b><%=films.get(i).getAnno()%></a> <br>
             <a><b>Descrizione: </b><%=films.get(i).getDescrizione()%></a> <br>
             <a href=<%=films.get(i).getTrailer()%>>Clicca qui per il trailer</a>
-            <%--<%=films.size()%>--%>
+            <%--<%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>--%>
+
+              <a> <input type="button" id="RecButton" name="RecButton"
+                         class="button" value="Visualizza scheda film"/></a>
+
+            <%--<%}%>--%>
         </article>
         <br><br><br>
         <%}%>

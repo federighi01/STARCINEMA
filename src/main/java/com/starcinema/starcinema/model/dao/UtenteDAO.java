@@ -15,7 +15,7 @@ public interface UtenteDAO {
             String tipo,
             String cognome,
             String nome,
-            Date data_n,
+            //Date data_n,
             String luogo_n,
             String indirizzo,
             Long tel

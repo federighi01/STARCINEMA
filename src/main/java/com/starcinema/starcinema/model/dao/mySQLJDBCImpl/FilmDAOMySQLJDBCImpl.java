@@ -184,7 +184,7 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
 
             ResultSet resultSet = ps.executeQuery();
 
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 film = read(resultSet);
                 films.add(film);
             }

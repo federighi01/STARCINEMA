@@ -47,7 +47,7 @@ public class AreaRiservata {
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",loggedUtente!=null);
-            request.setAttribute("loggedUser", loggedUtente);
+            request.setAttribute("loggedUtente", loggedUtente);
             request.setAttribute("applicationMessage", applicationMessage);
             request.setAttribute("viewUrl", "areaRiservata/view");
 
