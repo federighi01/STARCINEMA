@@ -16,7 +16,7 @@ public class Utente {
     private Date data_n;
     private String luogo_n;
     private String indirizzo;
-    private Long tel;
+    private String tel;
     private boolean deleted;
 
     // 1:N (recensione)
@@ -51,8 +51,8 @@ public class Utente {
     public String getIndirizzo() { return indirizzo; }
     public void setIndirizzo(String indirizzo) { this.indirizzo = indirizzo; }
 
-    public Long getTel() { return tel; }
-    public void setTel(Long tel) { this.tel = tel; }
+    public String getTel() { return tel; }
+    public void setTel(String tel) { this.tel = tel; }
 
     public boolean isDeleted() { return deleted; }
     public void setDeleted(boolean deleted) { this.deleted = deleted; }

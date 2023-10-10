@@ -16,15 +16,16 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
     }
 
     @Override
-    public Utente create(String username, String pw, String email, String tipo, String cognome, String nome, /*Date data_n,*/ String luogo_n, String indirizzo, Long tel) {
+    public Utente create(String username, String pw, String email, String tipo, String cognome, String nome, Date data_n, String luogo_n, String indirizzo, String tel) {
         PreparedStatement ps;
         Utente utente = new Utente();
         utente.setUsername(username);
         utente.setPw(pw);
         utente.setEmail(email);
+        utente.setTipo(tipo);
         utente.setCognome(cognome);
         utente.setNome(nome);
-        //utente.setData_n(data_n);
+        utente.setData_n(data_n);
         utente.setLuogo_n(luogo_n);
         utente.setIndirizzo(indirizzo);
         utente.setTel(tel);
@@ -38,26 +39,29 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
                     + "     tipo,"
                     + "     cognome,"
                     + "     nome,"
-                    //+ "     data_n,"
+                    + "     data_n,"
                     + "     luogo_n,"
                     + "     indirizzo,"
                     + "     tel,"
                     + "     deleted "
                     + "   ) "
-                    + " VALUES (?,?,?,?,?,?,?,?,?,'N')";
+                    + " VALUES (?,?,?,'utente',?,?,?,?,?,?,'N')";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
             ps.setString(i++, utente.getUsername());
             ps.setString(i++, utente.getPw());
             ps.setString(i++, utente.getEmail());
-            ps.setString(i++, utente.getTipo());
+            //ps.setString(i++, utente.getTipo());
             ps.setString(i++, utente.getCognome());
             ps.setString(i++, utente.getNome());
+            // Utilizza java.sql.Date per la data
+            java.sql.Date dataNascitaSQL = new java.sql.Date(utente.getData_n().getTime());
+            ps.setDate(i++, dataNascitaSQL);
             //ps.setTime(i++, (Time) utente.getData_n());
             ps.setString(i++, utente.getLuogo_n());
             ps.setString(i++, utente.getIndirizzo());
-            ps.setLong(i++, utente.getTel());
+            ps.setString(i++, utente.getTel());
 
             ps.executeUpdate();
 
@@ -97,7 +101,7 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
             ps.setTime(i++, (Time) utente.getData_n());
             ps.setString(i++, utente.getLuogo_n());
             ps.setString(i++, utente.getIndirizzo());
-            ps.setLong(i++, utente.getTel());
+            ps.setString(i++, utente.getTel());
             ps.setString(i++, utente.getUsername());
             ps.executeUpdate();
 
@@ -193,7 +197,7 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
         } catch (SQLException sqle) {
         }
         try {
-            utente.setData_n(rs.getTime("data_n"));
+            utente.setData_n(rs.getTimestamp("data_n"));
         } catch (SQLException sqle) {
         }
         try {
@@ -205,7 +209,7 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
         } catch (SQLException sqle) {
         }
         try {
-            utente.setTel(rs.getLong("tel"));
+            utente.setTel(rs.getString("tel"));
         } catch (SQLException sqle) {
         }
         try {

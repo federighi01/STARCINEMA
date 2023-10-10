@@ -39,61 +39,68 @@
             <div class="field clearfix">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username"
-                       <%--manca il parametro value--%>
+                       value=""
                        required size="20" maxlength="50"/>
             </div><br>
             <div class="field clearfix">
                 <label for="pw">Password</label>
                 <input type="text" id="pw" name="pw"
-                <%--manca il parametro value--%>
+                       value=""
                        required size="20" maxlength="50"/>
             </div><br>
             <div class="field clearfix">
                 <label for="email">Email</label>
                 <input type="text" id="email" name="email"
-                <%--manca il parametro value--%>
+                       value=""
                        required size="20" maxlength="50"/>
             </div><br>
-            <div class="field clearfix">
+            <%--<div class="field clearfix">
+                <label for="email_c">Email di conferma</label>
+                <input type="text" id="email_c" name="email_c"
+                       value=""
+                       required size="20" maxlength="50"/>
+            </div><br>--%>
+
+            <%--<div class="field clearfix">
                 <label for="tipo">Tipo</label>
                 <input type="text" id="tipo" name="tipo"
-                <%--manca il parametro value--%>
+                       value=""
                        required size="20" maxlength="50"/>
-            </div><br>
+            </div><br>--%>
             <div class="field clearfix">
                 <label for="cognome">Cognome</label>
                 <input type="text" id="cognome" name="cognome"
-                <%--manca il parametro value--%>
+                       value=""
                        required size="20" maxlength="50"/>
             </div><br>
             <div class="field clearfix">
                 <label for="nome">Nome</label>
                 <input type="text" id="nome" name="nome"
-                <%--manca il parametro value--%>
+                       value=""
                        required size="20" maxlength="50"/>
             </div><br>
             <div class="field clearfix">
                 <label for="data_n">Data di nascita</label>
                 <input type="date" id="data_n" name="data_n"
-                <%--manca il parametro value--%>
+                       value=""
                        required size="20" maxlength="50"/>
             </div><br>
             <div class="field clearfix">
                 <label for="luogo_n">Luogo di nascita</label>
                 <input type="text" id="luogo_n" name="luogo_n"
-                <%--manca il parametro value--%>
+                       value=""
                        required size="20" maxlength="50"/>
             </div><br>
             <div class="field clearfix">
                 <label for="indirizzo">Indirizzo</label>
                 <input type="text" id="indirizzo" name="indirizzo"
-                <%--manca il parametro value--%>
+                       value=""
                        required size="20" maxlength="50"/>
             </div><br>
             <div class="field clearfix">
                 <label for="tel">Telefono</label>
                 <input type="text" id="tel" name="tel"
-                <%--manca il parametro value--%>
+                       value=""
                        required size="20" maxlength="50"/>
             </div><br>
             <div class="field clearfix">
@@ -101,12 +108,13 @@
                 <input type="submit" class="button" value="Invia"/>
                 <input type="button" name="backButton" class="button" value="Annulla"/>
             </div>
-
+            <input type="hidden" name="controllerAction"/>
         </form>
+
     </section>
 
     <form name="backForm" method="post" action="Dispatcher">
-        <%--input type="hidden" name="selectedInitial" value="<%=selectedInitial%>"/--%>
+
         <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
     </form>
 </main>

@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class HomeManagement {
         DAOFactory sessionDAOFactory= null;
         DAOFactory daoFactory = null;
         Utente loggedUtente;
-        List<Film> films;
+
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -46,15 +47,14 @@ public class HomeManagement {
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
             daoFactory.beginTransaction();
 
-            FilmDAO filmDAO = daoFactory.getFilmDAO();
-            films = filmDAO.findFilm();
+            commonView(daoFactory, sessionDAOFactory, request);
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",loggedUtente!=null);
             request.setAttribute("loggedUtente", loggedUtente);
-            request.setAttribute("films", films);
+
             request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
@@ -82,7 +82,7 @@ public class HomeManagement {
         DAOFactory daoFactory = null;
         Utente loggedUtente;
         String applicationMessage = null;
-        List<Film> films;
+
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -100,8 +100,7 @@ public class HomeManagement {
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
             daoFactory.beginTransaction();
 
-            FilmDAO filmDAO = daoFactory.getFilmDAO();
-            films = filmDAO.findFilm();
+            commonView(daoFactory, sessionDAOFactory, request);
 
             String username = request.getParameter("username");
             String pw = request.getParameter("pw");
@@ -114,7 +113,7 @@ public class HomeManagement {
                 applicationMessage = "Username e password errati!";
                 loggedUtente=null;
             } else {
-                loggedUtente = sessionUtenteDAO.create(utente.getUsername(), null,null, utente.getTipo(), utente.getCognome(), utente.getNome(), null, null, null);
+                loggedUtente = sessionUtenteDAO.create(utente.getUsername(), null,null, utente.getTipo(), utente.getCognome(), utente.getNome(), null, null, null, null);
             }
 
             daoFactory.commitTransaction();
@@ -123,7 +122,7 @@ public class HomeManagement {
             request.setAttribute("loggedOn",loggedUtente!=null);
             request.setAttribute("loggedUtente", loggedUtente);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("films", films);
+
             request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
@@ -149,7 +148,7 @@ public class HomeManagement {
 
         DAOFactory sessionDAOFactory= null;
         DAOFactory daoFactory = null;
-        List<Film> films;
+
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -167,14 +166,13 @@ public class HomeManagement {
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
             daoFactory.beginTransaction();
 
-            FilmDAO filmDAO = daoFactory.getFilmDAO();
-            films = filmDAO.findFilm();
+            commonView(daoFactory, sessionDAOFactory, request);
 
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",false);
             request.setAttribute("loggedUtente", null);
-            request.setAttribute("films", films);
+
             request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
@@ -214,7 +212,7 @@ public class HomeManagement {
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn",false);
-            request.setAttribute("loggedUtente", null);
+            request.setAttribute("loggedUtente", loggedUtente);
             request.setAttribute("viewUrl", "homeManagement/Registrazione");
 
         } catch (Exception e) {
@@ -242,6 +240,7 @@ public class HomeManagement {
         Utente loggedUtente;
         String applicationMessage = null;
 
+
         Logger logger = LogService.getApplicationLogger();
 
         try {
@@ -260,9 +259,11 @@ public class HomeManagement {
 
             UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
 
-            /*String data_n = request.getParameter("data_n");
-            SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
-            sdf.parse(data_n);*/
+            String data_n = request.getParameter("data_n");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+            Date data_nascita = null;
+            data_nascita = sdf.parse(data_n);
+
 
                     utenteDAO.create(
                         request.getParameter("username"),
@@ -271,18 +272,21 @@ public class HomeManagement {
                         request.getParameter("tipo"),
                         request.getParameter("cognome"),
                         request.getParameter("nome"),
-                            //sdf.parse(data_n),
+                            data_nascita,
                         request.getParameter("luogo_n"),
                         request.getParameter("indirizzo"),
-                        parseLong(request.getParameter("tel")));
+                            request.getParameter("tel"));
+
+            commonView(daoFactory, sessionDAOFactory, request);
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
             //System.out.println(sdf.parse(data_n));
             request.setAttribute("loggedOn",false);
-            request.setAttribute("loggedUtente", loggedUtente);
+            request.setAttribute("loggedUtente", null);
             request.setAttribute("applicationMessage", applicationMessage);
+
             request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
@@ -302,6 +306,16 @@ public class HomeManagement {
             }
         }
 
+    }
+
+    private static void commonView(DAOFactory daoFactory, DAOFactory sessionDAOFactory, HttpServletRequest request) {
+
+        List<Film> films;
+
+        FilmDAO filmDAO = daoFactory.getFilmDAO();
+        films = filmDAO.findFilm();
+
+        request.setAttribute("films", films);
     }
 
 }
