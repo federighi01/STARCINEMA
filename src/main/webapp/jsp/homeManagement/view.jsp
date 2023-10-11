@@ -2,6 +2,7 @@
 <%@page import="com.starcinema.starcinema.model.mo.Utente"%>
 <%@ page import="com.starcinema.starcinema.model.mo.Film" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Date" %>
 
 <%  int i = 0;
 
@@ -10,7 +11,11 @@
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Home";
 
+
+    String titolo = (String) request.getAttribute("titolo");
     List<Film> films = (List<Film>) request.getAttribute("films");
+    Film film = (Film) request.getAttribute("film");
+    List<Film> filmsdp = (List<Film>) request.getAttribute("filmsdp");
 %>
 <!DOCTYPE html>
 <html>
@@ -38,6 +43,18 @@
             color: #a3271f;
         }
     </style>
+        <script language="javascript">
+
+            function viewfilm(cod_film) {
+                document.schedafilmForm.selectedcodfilm.value = cod_film;
+                document.schedafilmForm.submit();
+            }
+
+            function mainOnLoadHandler() {
+                document.querySelector("#schedaButton").addEventListener("click", viewfilm);
+                //anche scheda3button?
+            }
+        </script>
 </head>
 <body>
 <%@include file="/include/header.inc"%>
@@ -53,9 +70,10 @@
     <section id="findfilm" class="clearfix">
         <form name="findfilmForm" action="Dispatcher" method="post">
             <label for="titolo">Cerca per titolo</label>
-            <input type="text" id="titolo"  name="titolo" maxlength="40" required>
+            <input type="text" id="titolo"  name="titolo" maxlength="80" required>
 
             <input type="submit" value="Cerca">
+            <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
         </form>
     </section>
     <br>
@@ -65,11 +83,17 @@
             <input type="date" id="data_pro" name="data_pro">
 
             <input type="submit" value="Cerca">
+            <input type="hidden" name="controllerAction" value="HomeManagement.view">
         </form>
     </section>
     <br><br><br>
     STARCINEMA CONSIGLIA
     <br><br>
+
+
+
+
+    <%if (titolo==null && filmsdp==null) {%>
     <section id="films" class="clearfix">
         <%for (i = 0; i < films.size(); i++) {%>
         <article>
@@ -84,14 +108,85 @@
             <a href=<%=films.get(i).getTrailer()%>>Clicca qui per il trailer</a>
             <%--<%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>--%>
 
-              <a> <input type="button" id="RecButton" name="RecButton"
-                         class="button" value="Visualizza scheda film"/></a>
+            <input type="hidden" name="filmId" value="<%=i%>">
+            <input type="hidden" name="filmTitolo" value="<%=films.get(i).getTitolo()%>">
 
+            <section id="schedaButtonSection">
+                <a> <input type="button" id="schedaButton" name="schedaButton"
+                           class="button" value="Visualizza scheda film" onclick="viewfilm(<%=films.get(i).getCod_film()%>)"/></a>
+            </section>
             <%--<%}%>--%>
         </article>
         <br><br><br>
         <%}%>
     </section>
+
+
+
+
+    <%}%><% if(titolo != null && film != null){%>
+    <section id="films" class="clearfix">
+    <article>
+        <h1><a><%=film.getTitolo()%></a></h1> <br>
+        <a><b>Regista: </b><%=film.getRegista()%></a> <br>
+        <a><b>Cast: </b><%=film.getCast()%></a> <br>
+        <a><b>Genere: </b><%=film.getGenere()%></a> <br>
+        <a><b>Durata: </b><%=film.getDurata()%>'</a> <br>
+        <a><b>Nazione: </b><%=film.getNazione()%></a> <br>
+        <a><b>Anno: </b><%=film.getAnno()%></a> <br>
+        <a><b>Descrizione: </b><%=film.getDescrizione()%></a> <br>
+        <a href=<%=film.getTrailer()%>>Clicca qui per il trailer</a>
+        <%--<%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>--%>
+
+        <input type="hidden" name="filmId" value="<%=film.getCod_film()%>">
+        <input type="hidden" name="filmTitolo" value="<%=film.getTitolo()%>">
+
+        <section id="scheda2ButtonSection">
+            <a> <input type="button" id="scheda2Button" name="scheda2Button"
+                       class="button" value="Visualizza scheda film" onclick="viewfilm(<%=film.getCod_film()%>)"/></a>
+        </section>
+        <%--<%}%>--%>
+    </article>
+    </section>
+
+
+
+
+    <%}%><% if(filmsdp != null && titolo==null){%>
+    <section id="films" class="clearfix">
+        <%for (i = 0; i < filmsdp.size(); i++) {%>
+        <article>
+            <h1><a><%=filmsdp.get(i).getTitolo()%></a></h1> <br>
+            <a><b>Regista: </b><%=filmsdp.get(i).getRegista()%></a> <br>
+            <a><b>Cast: </b><%=filmsdp.get(i).getCast()%></a> <br>
+            <a><b>Genere: </b><%=filmsdp.get(i).getGenere()%></a> <br>
+            <a><b>Durata: </b><%=filmsdp.get(i).getDurata()%>'</a> <br>
+            <a><b>Nazione: </b><%=filmsdp.get(i).getNazione()%></a> <br>
+            <a><b>Anno: </b><%=filmsdp.get(i).getAnno()%></a> <br>
+            <a><b>Descrizione: </b><%=filmsdp.get(i).getDescrizione()%></a> <br>
+            <a href=<%=filmsdp.get(i).getTrailer()%>>Clicca qui per il trailer</a>
+            <%--<%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>--%>
+
+            <input type="hidden" name="filmId" value="<%=i%>">
+            <input type="hidden" name="filmTitolo" value="<%=filmsdp.get(i).getTitolo()%>">
+
+            <section id="scheda3ButtonSection">
+                <a> <input type="button" id="scheda3Button" name="scheda3Button"
+                           class="button" value="Visualizza scheda film" onclick="viewfilm(<%=filmsdp.get(i).getCod_film()%>)"/></a>
+            </section>
+            <%--<%}%>--%>
+        </article>
+        <br><br><br>
+        <%}%>
+    </section>
+
+    <%}%>
+    <form name="schedafilmForm" method="post" action="Dispatcher">
+        <input type="hidden" name="selectedcodfilm"/>
+        <input type="hidden" name="controllerAction" value="HomeManagement.schedafilm"/>
+    </form>
+
+
 
 </main>
 </body>

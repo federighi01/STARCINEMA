@@ -43,7 +43,10 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
             ps.setLong(i++, proiezione.getCod_pro());
             ps.setLong(i++, proiezione.getFilm().getCod_film());
             ps.setInt(i++, proiezione.getSala().getNum_sala());
-            ps.setTime(i++, (Time) proiezione.getData_pro());
+            // Utilizza java.sql.Date per la data
+            java.sql.Date dataProiezioneSQL = new java.sql.Date(proiezione.getData_pro().getTime());
+            ps.setDate(i++, dataProiezioneSQL);
+            //ps.setTime(i++, (Time) proiezione.getData_pro());
             ps.setTime(i++, proiezione.getOra_pro());
 
             ps.executeUpdate();
@@ -72,11 +75,14 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
 
             ps = conn.prepareStatement(sql);
             int i = 1;
-            ps.setTime(1, (Time) proiezione.getData_pro());
-            ps.setTime(1, proiezione.getOra_pro());
-            ps.setLong(1, proiezione.getCod_pro());
-            ps.setLong(1, proiezione.getFilm().getCod_film());
-            ps.setInt(1, proiezione.getSala().getNum_sala());
+            // Utilizza java.sql.Date per la data
+            java.sql.Date dataProiezioneSQL = new java.sql.Date(proiezione.getData_pro().getTime());
+            ps.setDate(i++, dataProiezioneSQL);
+            //ps.setTime(i++, (Time) proiezione.getData_pro());
+            ps.setTime(i++, proiezione.getOra_pro());
+            ps.setLong(i++, proiezione.getCod_pro());
+            ps.setLong(i++, proiezione.getFilm().getCod_film());
+            ps.setInt(i++, proiezione.getSala().getNum_sala());
             ps.executeUpdate();
 
         }catch (SQLException e) {
@@ -110,6 +116,36 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         }
     }
 
+    public Proiezione findByCod_pro(Long cod_pro) {
+        PreparedStatement ps;
+        Proiezione proiezione = null;
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM proiezione "
+                    + " WHERE "
+                    + "   cod_pro = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, cod_pro);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                proiezione = read(resultSet);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return proiezione;
+    }
+
     Proiezione read(ResultSet rs) {
         Proiezione proiezione = new Proiezione();
         Film film = new Film();
@@ -129,7 +165,7 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         } catch (SQLException sqle) {
         }
         try {
-            proiezione.setData_pro(rs.getDate("data_pro"));
+            proiezione.setData_pro(rs.getTimestamp("data_pro"));
         } catch (SQLException sqle) {
         }
         try {

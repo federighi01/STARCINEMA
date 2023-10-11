@@ -23,8 +23,27 @@
             document.backForm.submit();
         }
 
+        function validateForm() {
+            var email = document.getElementById("email").value;
+            var email_c = document.getElementById("email_c").value;
+
+            if (email !== email_c) {
+                alert("L'indirizzo email di conferma non corrisponde all'indirizzo email principale.");
+                return false; // Blocca l'invio del modulo se l'email di conferma non corrisponde
+            }
+
+            // Altrimenti, il modulo verrà inviato normalmente
+            return true;
+        }
+
         function mainOnLoadHandler() {
-            document.regForm.addEventListener("submit", submitReg);
+            document.regForm.addEventListener("submit", function (event) {
+                if (!validateForm()) {
+                    event.preventDefault(); // Blocca l'invio del modulo se la validazione fallisce
+                }
+                submitReg()
+            });
+
             document.regForm.backButton.addEventListener("click", goback);
         }
 
@@ -34,7 +53,7 @@
 <%@include file="/include/header.inc"%>
 <main>
     <section id="regFormSection">
-        <form name="regForm" action="Dispatcher" method="post">
+        <form name="regForm" action="Dispatcher" method="post" onsubmit="return validateForm()">
 
             <div class="field clearfix">
                 <label for="username">Username</label>
@@ -54,12 +73,12 @@
                        value=""
                        required size="20" maxlength="50"/>
             </div><br>
-            <%--<div class="field clearfix">
+            <div class="field clearfix">
                 <label for="email_c">Email di conferma</label>
                 <input type="text" id="email_c" name="email_c"
                        value=""
                        required size="20" maxlength="50"/>
-            </div><br>--%>
+            </div><br>
 
             <%--<div class="field clearfix">
                 <label for="tipo">Tipo</label>

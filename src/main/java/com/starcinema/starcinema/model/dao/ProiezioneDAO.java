@@ -21,4 +21,6 @@ public interface ProiezioneDAO {
     public void update(Proiezione proiezione);
     public void delete(Proiezione proiezione);
 
+    public Proiezione findByCod_pro(Long cod_pro);
+
 }

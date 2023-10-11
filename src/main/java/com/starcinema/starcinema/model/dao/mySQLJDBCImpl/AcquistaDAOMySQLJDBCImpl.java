@@ -41,7 +41,10 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
             ps.setString(i++, acquista.getUtente().getUsername());
             ps.setString(i++, acquista.getBiglietto().getCod_b());
             ps.setLong(i++, acquista.getFilm().getCod_film());
-            ps.setDate(i++, (java.sql.Date) acquista.getData_acq());
+            // Utilizza java.sql.Date per la data
+            java.sql.Date dataAcquistoSQL = new java.sql.Date(acquista.getData_acq().getTime());
+            ps.setDate(i++, dataAcquistoSQL);
+            //ps.setDate(i++, (java.sql.Date) acquista.getData_acq());
             ps.setString(i++, acquista.getMetodo_p());
 
             ps.executeUpdate();
@@ -106,7 +109,7 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
         } catch (SQLException sqle) {
         }
         try {
-            acquista.setData_acq(rs.getDate("data_acq"));
+            acquista.setData_acq(rs.getTimestamp("data_acq"));
         } catch (SQLException sqle) {
         }
         try {

@@ -27,7 +27,9 @@ public interface FilmDAO {
 
     public Film findByTitolo(String titolo);
 
-    public List<Film> findFilmByData_pro(Proiezione proiezione);
+    public Film findByCodfilm(Long cod_film);
+
+    public List<Film> findFilmByData_pro(Date data_pro);
 
     public List<Film> findFilm();
 

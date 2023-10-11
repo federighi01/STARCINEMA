@@ -98,7 +98,10 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
             ps.setString(i++, utente.getEmail());
             ps.setString(i++, utente.getCognome());
             ps.setString(i++, utente.getNome());
-            ps.setTime(i++, (Time) utente.getData_n());
+            // Utilizza java.sql.Date per la data
+            java.sql.Date dataNascitaSQL = new java.sql.Date(utente.getData_n().getTime());
+            ps.setDate(i++, dataNascitaSQL);
+            //ps.setTime(i++, (Time) utente.getData_n());
             ps.setString(i++, utente.getLuogo_n());
             ps.setString(i++, utente.getIndirizzo());
             ps.setString(i++, utente.getTel());

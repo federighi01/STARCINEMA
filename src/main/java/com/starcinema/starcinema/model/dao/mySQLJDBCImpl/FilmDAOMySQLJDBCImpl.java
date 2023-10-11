@@ -129,11 +129,41 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
         return film;
     }
 
+    public Film findByCodfilm(Long cod_film) {
+        PreparedStatement ps;
+        Film film = null;
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM film "
+                    + " WHERE "
+                    + "   cod_film = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, cod_film);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                film = read(resultSet);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return film;
+    }
+
     @Override
-    public List<Film> findFilmByData_pro(Proiezione proiezione) {
+    public List<Film> findFilmByData_pro(Date data_pro) {
         PreparedStatement ps;
         Film film;
-        ArrayList<Film> films = new ArrayList<Film>();
+        ArrayList<Film> filmsdp = new ArrayList<Film>();
 
         try {
 
@@ -141,18 +171,20 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
                     = " SELECT DISTINCT film.cod_film, film.titolo, film.regista, film.cast, film.genere, film.durata, film.nazione, film.anno, film.descrizione, film.trailer "
                     + " FROM film JOIN proiezione ON film.cod_film = proiezione.codice_film "
                     + " WHERE "
-                    + "   proiezione.data_pro = ? "
+                    + "   data_pro = ? "
                     + "   AND film.deleted = 'N' "
                     + " ORDER BY film.titolo ";
 
             ps = conn.prepareStatement(sql);
-            ps.setTime(1,(Time) proiezione.getData_pro());
+            java.sql.Date dataProiezioneSQL = new java.sql.Date(data_pro.getTime());
+            ps.setDate(1, dataProiezioneSQL);
+            //ps.setTime(1,(Time) proiezione.getData_pro());
 
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
                 film = read(resultSet);
-                films.add(film);
+                filmsdp.add(film);
             }
 
             resultSet.close();
@@ -162,7 +194,7 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
             throw new RuntimeException(e);
         }
 
-        return films;
+        return filmsdp;
     }
 
     @Override
