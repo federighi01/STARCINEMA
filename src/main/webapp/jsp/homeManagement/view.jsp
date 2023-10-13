@@ -104,19 +104,15 @@
             <a><b>Cast: </b><%=films.get(i).getCast()%></a> <br>
             <a><b>Genere: </b><%=films.get(i).getGenere()%></a> <br>
             <a><b>Durata: </b><%=films.get(i).getDurata()%>'</a> <br>
-            <%--<a><b>Nazione: </b><%=films.get(i).getNazione()%></a> <br>
-            <a><b>Anno: </b><%=films.get(i).getAnno()%></a> <br>
-            <a><b>Descrizione: </b><%=films.get(i).getDescrizione()%></a> <br>
-            <a href=<%=films.get(i).getTrailer()%>>Clicca qui per il trailer</a>--%
+
 
             <!-- Ciclo per stampare le date e le ore di proiezione del film corrente -->
-       <%--     <h2>Orari di Proiezione:</h2>
-            <% for (c = 0; c < proiezioni.size(); c++) {
-                if (proiezioni.get(c).getFilm().getCod_film() == films.get(i).getCod_film()) { %>
-            <a>Data di Proiezione: <%= proiezioni.get(c).getData_pro() %></a><br>
-            <a>Ora di Proiezione: <%= proiezioni.get(c).getOra_pro() %></a><br>
-            <% }
-            } %>--%>
+            <h2>Orari di Proiezione:</h2>
+            <% for (c = 0; c < films.get(i).getProiezioni().length; c++) {%>
+            <a>Data di Proiezione: <%= films.get(i).getProiezioni(c).getData_pro() %></a><br>
+            <a>Ora di Proiezione: <%= films.get(i).getProiezioni(c).getOra_pro() %></a><br>
+            <%}%>
+
             <%--<%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>--%>
 
 

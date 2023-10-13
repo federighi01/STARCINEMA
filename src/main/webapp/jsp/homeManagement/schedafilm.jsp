@@ -53,8 +53,9 @@
             //document.regForm.backButton.addEventListener("click", goback);
         }
 
-        function deleteRec(cod_rec) {
-            document.deleteForm.selectedcodrec.value = cod_rec;
+        function deleteRec(cod_rec,selectedcodfilm) {
+            document.deleteForm.cod_rec.value = cod_rec;
+            document.deleteForm.selectedcodfilm.value = selectedcodfilm;
             document.deleteForm.submit();
         }
 
@@ -83,15 +84,16 @@
             <ul>
                 <% for (i = 0; i < recensioni.size(); i++) { %>
                 <li>
-                    <%if (loggedUtente.getTipo().equals("amministratore")) {%>
-                    <!-- Possibilità di cancellare le recensioni -->
+
+                    <b>Codrec: </b><%= recensioni.get(i).getCod_rec() %><br>
                     <b>Utente: </b><%= recensioni.get(i).getUtente().getUsername() %><br>
                     <b>Voto: </b><%= recensioni.get(i).getVoto() %><br>
                     <b>Commento: </b><%= recensioni.get(i).getCommento() %><br>
-                    <b>Commento: </b><%= recensioni.get(i).getCod_rec() %><br>
+                    <%if (loggedUtente.getTipo().equals("amministratore")) {%>
+                    <!-- Possibilità di cancellare le recensioni -->
 
                         <img id="trashcan" src="images/trashcan.png"
-                             onclick="deleteRec(<%=recensioni.get(i).getCod_rec()%>)" width="22" height="22"/>
+                             onclick="deleteRec(<%=recensioni.get(i).getCod_rec()%>,<%=film.getCod_film()%>)" width="22" height="22"/>
                     <%}%>
                 </li>
                 <% } %>
@@ -123,7 +125,8 @@
         <%}%>
 
         <form name="deleteForm" method="post" action="Dispatcher">
-            <input type="hidden" name="selectedcodrec"/>
+            <input type="hidden" name="cod_rec"/>
+            <input type="hidden" name="selectedcodfilm"/>
             <input type="hidden" name="controllerAction" value="HomeManagement.deleterec"/>
         </form>
 

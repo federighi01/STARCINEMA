@@ -47,9 +47,9 @@ public class HomeManagement {
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
             daoFactory.beginTransaction();
 
-            Film film=null;
+
             List<Film> filmsdp=null;
-            //List<Proiezione> proiezioni;
+            Film film=null;
 
             String titolo = request.getParameter("titolo");
             //System.out.println(titolo);
@@ -81,10 +81,10 @@ public class HomeManagement {
             commonView(daoFactory, sessionDAOFactory, request);
 
             /*FilmDAO filmDAO = daoFactory.getFilmDAO();
-            User user = filmDAO.findByCodfilm();
+            Film film = filmDAO.findByCodfilm(Long.parseLong(request.getParameter("selectedcodfilm")));
 
             ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
-            proiezioni = proiezioneDAO.findData_proByCod_film();*/
+            proiezioni = proiezioneDAO.findData_proByCod_film(film);*/
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
@@ -94,7 +94,7 @@ public class HomeManagement {
             request.setAttribute("film", film);
             request.setAttribute("titolo", titolo);
             request.setAttribute("filmsdp", filmsdp);
-            //request.setAttribute("proiezioni", proiezioni);
+
             request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
@@ -200,17 +200,20 @@ public class HomeManagement {
             daoFactory.beginTransaction();
 
             RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
-            Recensione recensione = recensioneDAO.findByCod_rec(Long.parseLong(request.getParameter("selectedcodrec")));
+            Recensione recensione = recensioneDAO.findByCod_rec(Long.parseLong(request.getParameter("cod_rec")));
             recensioneDAO.delete(recensione);
+
+            FilmDAO filmDAO = daoFactory.getFilmDAO();
+            Film film = filmDAO.findByCodfilm(Long.parseLong(request.getParameter("selectedcodfilm")));
 
             commonView(daoFactory, sessionDAOFactory, request);
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
-            //System.out.println(recensione.getCod_rec());
             request.setAttribute("loggedOn",loggedUtente!=null);
             request.setAttribute("loggedUtente", loggedUtente);
+            request.setAttribute("film", film);
             request.setAttribute("viewUrl", "homeManagement/schedafilm");
 
         } catch (Exception e) {
@@ -542,22 +545,25 @@ public class HomeManagement {
     private static void commonView(DAOFactory daoFactory, DAOFactory sessionDAOFactory, HttpServletRequest request) {
 
         List<Film> films;
-
+        List<Proiezione> proiezioni;
 
         FilmDAO filmDAO = daoFactory.getFilmDAO();
         films = filmDAO.findFilm();
 
+        ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
 
-
+        for(int i=0;i< films.size();i++){
+            //Estrarre dati di classifica per ogni torneo
+            proiezioni=proiezioneDAO.findData_proByCod_film(films.get(i));
+            //Conversione lista in array
+            Proiezione [] proiezioniArray = new Proiezione[proiezioni.size()];
+            for(int j=0;j<proiezioni.size();j++){
+                proiezioniArray[j] = proiezioni.get(j);
+            }
+            films.get(i).setProiezioni(proiezioniArray);
+        }
         request.setAttribute("films", films);
 
     }
-
-    private static void recView(DAOFactory daoFactory, DAOFactory sessionDAOFactory, HttpServletRequest request) {
-
-
-
-    }
-
 
 }

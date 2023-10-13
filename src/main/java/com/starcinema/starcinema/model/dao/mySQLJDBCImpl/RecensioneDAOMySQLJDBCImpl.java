@@ -175,6 +175,7 @@ public class RecensioneDAOMySQLJDBCImpl implements RecensioneDAO {
         try {
             recensione.setCod_rec(rs.getLong("cod_rec"));
         } catch (SQLException sqle) {
+            System.out.println("Errore durante la lettura di cod_recensione: " + sqle.getMessage());
         }
         try {
             recensione.getUtente().setUsername(rs.getString("cod_utente"));

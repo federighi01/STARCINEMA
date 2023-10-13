@@ -213,7 +213,6 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
 
             ps = conn.prepareStatement(sql);
 
-
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {

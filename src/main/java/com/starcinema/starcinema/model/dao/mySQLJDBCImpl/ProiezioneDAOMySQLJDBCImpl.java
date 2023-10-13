@@ -127,7 +127,7 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
                     = " SELECT * "
                     + "   FROM proiezione "
                     + " WHERE "
-                    + "    cod_film = ? ";
+                    + "    codice_film = ? ";
 
 
             ps = conn.prepareStatement(sql);
@@ -160,7 +160,7 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         } catch (SQLException sqle) {
         }
         try {
-            proiezione.getFilm().setCod_film(rs.getLong("Cod_film"));
+            proiezione.getFilm().setCod_film(rs.getLong("Codice_film"));
         } catch (SQLException sqle) {
         }
         try {

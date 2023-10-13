@@ -20,7 +20,6 @@ public class Film {
     private Recensione[] recensioni;
     // 1:N (acquista)
     private Acquista[] acquisti;
-    // 1:N (partecipazione)
 
     private Proiezione[] proiezioni;
 
@@ -63,6 +62,14 @@ public class Film {
 
     public Acquista getAcquisti(int index) { return this.acquisti[index]; }
     public void setAcquisti(int index, Acquista acquisti) { this.acquisti[index] = acquisti; }
+
+    public Proiezione[] getProiezioni() {
+        return proiezioni;
+    }
+
+    public void setProiezioni(Proiezione[] proiezioni) {
+        this.proiezioni = proiezioni;
+    }
 
     public Proiezione getProiezioni(int index) { return this.proiezioni[index]; }
     public void setProiezioni(int index, Proiezione proiezioni) { this.proiezioni[index] = proiezioni; }
