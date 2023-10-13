@@ -28,7 +28,7 @@ public class Recensione {
     public void setCommento(String commento) { this.commento = commento; }
 
     public boolean isDeleted() { return deleted; }
-    public void setDeleted(boolean deletedeleted) { this.deleted = deleted; }
+    public void setDeleted(boolean deleted) { this.deleted = deleted; }
 
 
 }

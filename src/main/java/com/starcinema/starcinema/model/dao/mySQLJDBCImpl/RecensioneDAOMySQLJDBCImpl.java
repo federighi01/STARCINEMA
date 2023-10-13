@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecensioneDAOMySQLJDBCImpl implements RecensioneDAO {
 
@@ -18,10 +20,9 @@ public class RecensioneDAOMySQLJDBCImpl implements RecensioneDAO {
         this.conn = conn;
     }
     @Override
-    public Recensione create(Long cod_rec, Utente utente, Film film, Integer voto, String commento) {
+    public Recensione create(Utente utente, Film film, Integer voto, String commento) {
         PreparedStatement ps;
         Recensione recensione = new Recensione();
-        recensione.setCod_rec(cod_rec);
         recensione.setUtente(utente);
         recensione.setFilm(film);
         recensione.setVoto(voto);
@@ -30,18 +31,16 @@ public class RecensioneDAOMySQLJDBCImpl implements RecensioneDAO {
         try{
             String sql
                     = " INSERT INTO recensione "
-                    + "   ( cod_rec,"
-                    + "     username,"
-                    + "     ISAN,"
+                    + "    ( cod_utente,"
+                    + "     idfilm,"
                     + "     voto,"
                     + "     commento,"
                     + "     deleted "
                     + "   ) "
-                    + " VALUES (?,?,?,?,?,'N')";
+                    + " VALUES (?,?,?,?,'N')";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
-            ps.setLong(i++, recensione.getCod_rec());
             ps.setString(i++, recensione.getUtente().getUsername());
             ps.setLong(i++, recensione.getFilm().getCod_film());
             ps.setInt(i++, recensione.getVoto());
@@ -89,9 +88,9 @@ public class RecensioneDAOMySQLJDBCImpl implements RecensioneDAO {
 
             String sql
                     = " UPDATE recensione "
-                    + " SET deleted='Y' "
+                    + " SET deleted = 'Y' "
                     + " WHERE "
-                    + " cod_rec=?";
+                    + " cod_rec = ? ";
 
             ps = conn.prepareStatement(sql);
             ps.setLong(1, recensione.getCod_rec());
@@ -101,6 +100,70 @@ public class RecensioneDAOMySQLJDBCImpl implements RecensioneDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Recensione findByCod_rec(Long cod_rec) {
+        PreparedStatement ps;
+        Recensione recensione = null;
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM recensione "
+                    + " WHERE "
+                    + "   cod_rec = ? ";
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, cod_rec);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                recensione = read(resultSet);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return recensione;
+    }
+    @Override
+    public List<Recensione> findRecensioni(Long cod_film) {
+        PreparedStatement ps;
+        Recensione recensione;
+        ArrayList<Recensione> recensioni = new ArrayList<Recensione>();
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM recensione "
+                    + " WHERE "
+                    + "   idfilm = ? "
+                    + "   AND deleted = 'N' ";
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, cod_film);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                recensione = read(resultSet);
+                recensioni.add(recensione);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return recensioni;
     }
 
     Recensione read(ResultSet rs) {
@@ -114,11 +177,11 @@ public class RecensioneDAOMySQLJDBCImpl implements RecensioneDAO {
         } catch (SQLException sqle) {
         }
         try {
-            recensione.getUtente().setUsername(rs.getString("username"));
+            recensione.getUtente().setUsername(rs.getString("cod_utente"));
         } catch (SQLException sqle) {
         }
         try {
-            recensione.getFilm().setCod_film(rs.getLong("cod_film"));
+            recensione.getFilm().setCod_film(rs.getLong("idfilm"));
         } catch (SQLException sqle) {
         }
         try {

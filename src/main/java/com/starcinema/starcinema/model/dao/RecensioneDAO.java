@@ -10,7 +10,6 @@ import java.util.List;
 public interface RecensioneDAO {
 
     public Recensione create(
-            Long cod_rec,
             Utente utente,
             Film film,
             Integer voto,
@@ -20,5 +19,9 @@ public interface RecensioneDAO {
     public void update(Recensione recensione);
 
     public void delete(Recensione recensione);
+
+    public Recensione findByCod_rec(Long cod_rec);
+
+    public List<Recensione> findRecensioni(Long cod_film);
 
 }

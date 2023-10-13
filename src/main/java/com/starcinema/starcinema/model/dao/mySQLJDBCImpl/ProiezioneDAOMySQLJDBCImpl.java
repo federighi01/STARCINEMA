@@ -116,9 +116,10 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         }
     }
 
-    public Proiezione findByCod_pro(Long cod_pro) {
+    public List<Proiezione> findData_proByCod_film(Film film) {
         PreparedStatement ps;
-        Proiezione proiezione = null;
+        Proiezione proiezione;
+        ArrayList<Proiezione> proiezioni = new ArrayList<Proiezione>();
 
         try {
 
@@ -126,15 +127,17 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
                     = " SELECT * "
                     + "   FROM proiezione "
                     + " WHERE "
-                    + "   cod_pro = ?";
+                    + "    cod_film = ? ";
+
 
             ps = conn.prepareStatement(sql);
-            ps.setLong(1, cod_pro);
+            ps.setLong(1, film.getCod_film());
 
             ResultSet resultSet = ps.executeQuery();
 
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 proiezione = read(resultSet);
+                proiezioni.add(proiezione);
             }
             resultSet.close();
             ps.close();
@@ -143,7 +146,7 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
             throw new RuntimeException(e);
         }
 
-        return proiezione;
+        return proiezioni;
     }
 
     Proiezione read(ResultSet rs) {

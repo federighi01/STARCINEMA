@@ -3,8 +3,9 @@
 <%@ page import="com.starcinema.starcinema.model.mo.Film" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="com.starcinema.starcinema.model.mo.Proiezione" %>
 
-<%  int i = 0;
+<%  int i = 0, c = 0;
 
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
     Utente loggedUtente = (Utente) request.getAttribute("loggedUtente");
@@ -16,6 +17,7 @@
     List<Film> films = (List<Film>) request.getAttribute("films");
     Film film = (Film) request.getAttribute("film");
     List<Film> filmsdp = (List<Film>) request.getAttribute("filmsdp");
+
 %>
 <!DOCTYPE html>
 <html>
@@ -92,7 +94,7 @@
 
 
 
-
+    <%--view senza condizioni di ricerca--%>
     <%if (titolo==null && filmsdp==null) {%>
     <section id="films" class="clearfix">
         <%for (i = 0; i < films.size(); i++) {%>
@@ -102,14 +104,31 @@
             <a><b>Cast: </b><%=films.get(i).getCast()%></a> <br>
             <a><b>Genere: </b><%=films.get(i).getGenere()%></a> <br>
             <a><b>Durata: </b><%=films.get(i).getDurata()%>'</a> <br>
-            <a><b>Nazione: </b><%=films.get(i).getNazione()%></a> <br>
+            <%--<a><b>Nazione: </b><%=films.get(i).getNazione()%></a> <br>
             <a><b>Anno: </b><%=films.get(i).getAnno()%></a> <br>
             <a><b>Descrizione: </b><%=films.get(i).getDescrizione()%></a> <br>
-            <a href=<%=films.get(i).getTrailer()%>>Clicca qui per il trailer</a>
+            <a href=<%=films.get(i).getTrailer()%>>Clicca qui per il trailer</a>--%
+
+            <!-- Ciclo per stampare le date e le ore di proiezione del film corrente -->
+       <%--     <h2>Orari di Proiezione:</h2>
+            <% for (c = 0; c < proiezioni.size(); c++) {
+                if (proiezioni.get(c).getFilm().getCod_film() == films.get(i).getCod_film()) { %>
+            <a>Data di Proiezione: <%= proiezioni.get(c).getData_pro() %></a><br>
+            <a>Ora di Proiezione: <%= proiezioni.get(c).getOra_pro() %></a><br>
+            <% }
+            } %>--%>
             <%--<%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>--%>
 
-            <input type="hidden" name="filmId" value="<%=i%>">
+
             <input type="hidden" name="filmTitolo" value="<%=films.get(i).getTitolo()%>">
+            <input type="hidden" name="filmRegista" value="<%=films.get(i).getRegista()%>">
+            <input type="hidden" name="filmCast" value="<%=films.get(i).getCast()%>">
+            <input type="hidden" name="filmGenere" value="<%=films.get(i).getGenere()%>">
+            <input type="hidden" name="filmDurata" value="<%=films.get(i).getDurata()%>">
+            <input type="hidden" name="filmNazione" value="<%=films.get(i).getNazione()%>">
+            <input type="hidden" name="filmAnno" value="<%=films.get(i).getAnno()%>">
+            <input type="hidden" name="filmDescrizione" value="<%=films.get(i).getDescrizione()%>">
+            <input type="hidden" name="filmTrailer" value="<%=films.get(i).getTrailer()%>">
 
             <section id="schedaButtonSection">
                 <a> <input type="button" id="schedaButton" name="schedaButton"
@@ -123,7 +142,7 @@
 
 
 
-
+    <%--ricerca film per titolo--%>
     <%}%><% if(titolo != null && film != null){%>
     <section id="films" class="clearfix">
     <article>
@@ -132,10 +151,10 @@
         <a><b>Cast: </b><%=film.getCast()%></a> <br>
         <a><b>Genere: </b><%=film.getGenere()%></a> <br>
         <a><b>Durata: </b><%=film.getDurata()%>'</a> <br>
-        <a><b>Nazione: </b><%=film.getNazione()%></a> <br>
+        <%--<a><b>Nazione: </b><%=film.getNazione()%></a> <br>
         <a><b>Anno: </b><%=film.getAnno()%></a> <br>
         <a><b>Descrizione: </b><%=film.getDescrizione()%></a> <br>
-        <a href=<%=film.getTrailer()%>>Clicca qui per il trailer</a>
+        <a href=<%=film.getTrailer()%>>Clicca qui per il trailer</a>--%>
         <%--<%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>--%>
 
         <input type="hidden" name="filmId" value="<%=film.getCod_film()%>">
@@ -151,7 +170,7 @@
 
 
 
-
+    <%--ricerca film per data proiezione--%>
     <%}%><% if(filmsdp != null && titolo==null){%>
     <section id="films" class="clearfix">
         <%for (i = 0; i < filmsdp.size(); i++) {%>
@@ -161,10 +180,10 @@
             <a><b>Cast: </b><%=filmsdp.get(i).getCast()%></a> <br>
             <a><b>Genere: </b><%=filmsdp.get(i).getGenere()%></a> <br>
             <a><b>Durata: </b><%=filmsdp.get(i).getDurata()%>'</a> <br>
-            <a><b>Nazione: </b><%=filmsdp.get(i).getNazione()%></a> <br>
+            <%--<a><b>Nazione: </b><%=filmsdp.get(i).getNazione()%></a> <br>
             <a><b>Anno: </b><%=filmsdp.get(i).getAnno()%></a> <br>
             <a><b>Descrizione: </b><%=filmsdp.get(i).getDescrizione()%></a> <br>
-            <a href=<%=filmsdp.get(i).getTrailer()%>>Clicca qui per il trailer</a>
+            <a href=<%=filmsdp.get(i).getTrailer()%>>Clicca qui per il trailer</a>--%>
             <%--<%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>--%>
 
             <input type="hidden" name="filmId" value="<%=i%>">

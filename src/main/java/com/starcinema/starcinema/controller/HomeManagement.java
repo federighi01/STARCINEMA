@@ -1,11 +1,9 @@
 package com.starcinema.starcinema.controller;
 
-import com.starcinema.starcinema.model.dao.DAOFactory;
-import com.starcinema.starcinema.model.dao.FilmDAO;
-import com.starcinema.starcinema.model.dao.ProiezioneDAO;
-import com.starcinema.starcinema.model.dao.UtenteDAO;
+import com.starcinema.starcinema.model.dao.*;
 import com.starcinema.starcinema.model.mo.Film;
 import com.starcinema.starcinema.model.mo.Proiezione;
+import com.starcinema.starcinema.model.mo.Recensione;
 import com.starcinema.starcinema.model.mo.Utente;
 import com.starcinema.starcinema.services.config.Configuration;
 import com.starcinema.starcinema.services.logservice.LogService;
@@ -51,6 +49,7 @@ public class HomeManagement {
 
             Film film=null;
             List<Film> filmsdp=null;
+            //List<Proiezione> proiezioni;
 
             String titolo = request.getParameter("titolo");
             //System.out.println(titolo);
@@ -81,6 +80,12 @@ public class HomeManagement {
 
             commonView(daoFactory, sessionDAOFactory, request);
 
+            /*FilmDAO filmDAO = daoFactory.getFilmDAO();
+            User user = filmDAO.findByCodfilm();
+
+            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
+            proiezioni = proiezioneDAO.findData_proByCod_film();*/
+
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
@@ -89,7 +94,7 @@ public class HomeManagement {
             request.setAttribute("film", film);
             request.setAttribute("titolo", titolo);
             request.setAttribute("filmsdp", filmsdp);
-
+            //request.setAttribute("proiezioni", proiezioni);
             request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {
@@ -137,12 +142,75 @@ public class HomeManagement {
             FilmDAO filmDAO = daoFactory.getFilmDAO();
             Film film = filmDAO.findByCodfilm(Long.parseLong(request.getParameter("selectedcodfilm")));
 
+
+            List<Recensione> recensioni;
+
+            RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
+            recensioni = recensioneDAO.findRecensioni(film.getCod_film());
+
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
+
 
             request.setAttribute("loggedOn", loggedUtente != null);
             request.setAttribute("loggedUtente", loggedUtente);
             request.setAttribute("film", film);
+            request.setAttribute("recensioni", recensioni);
+            request.setAttribute("viewUrl", "homeManagement/schedafilm");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) daoFactory.closeTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
+    public static void deleterec(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory= null;
+        DAOFactory daoFactory = null;
+        Utente loggedUtente;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters=new HashMap<String,Object>();
+            sessionFactoryParameters.put("request",request);
+            sessionFactoryParameters.put("response",response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL,sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUtente = sessionUtenteDAO.findLoggedUtente();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
+            daoFactory.beginTransaction();
+
+            RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
+            Recensione recensione = recensioneDAO.findByCod_rec(Long.parseLong(request.getParameter("selectedcodrec")));
+            recensioneDAO.delete(recensione);
+
+            commonView(daoFactory, sessionDAOFactory, request);
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            //System.out.println(recensione.getCod_rec());
+            request.setAttribute("loggedOn",loggedUtente!=null);
+            request.setAttribute("loggedUtente", loggedUtente);
             request.setAttribute("viewUrl", "homeManagement/schedafilm");
 
         } catch (Exception e) {
@@ -396,14 +464,98 @@ public class HomeManagement {
 
     }
 
+    public static void insrec(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory = null;
+        DAOFactory daoFactory = null;
+        Utente loggedUtente;
+        String applicationMessage = null;
+
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters = new HashMap<String, Object>();
+            sessionFactoryParameters.put("request", request);
+            sessionFactoryParameters.put("response", response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUtente = sessionUtenteDAO.findLoggedUtente();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
+
+            UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
+            Utente utente = utenteDAO.findByUsername(loggedUtente.getUsername());
+
+            FilmDAO filmDAO = daoFactory.getFilmDAO();
+            Film film = filmDAO.findByCodfilm(Long.parseLong(request.getParameter("selectedcodfilm")));
+
+
+            recensioneDAO.create(
+                    utente,
+                    film,
+                    Integer.parseInt(request.getParameter("voto")),
+                    request.getParameter("commento"));
+
+            List<Recensione> recensioni;
+
+            recensioni = recensioneDAO.findRecensioni(film.getCod_film());
+
+            commonView(daoFactory, sessionDAOFactory, request);
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+
+            request.setAttribute("loggedOn", loggedUtente!=null);
+            request.setAttribute("loggedUtente", loggedUtente);
+            request.setAttribute("applicationMessage", applicationMessage);
+            request.setAttribute("film", film);
+            request.setAttribute("recensioni", recensioni);
+            request.setAttribute("viewUrl", "homeManagement/schedafilm");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) daoFactory.closeTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
     private static void commonView(DAOFactory daoFactory, DAOFactory sessionDAOFactory, HttpServletRequest request) {
 
         List<Film> films;
 
+
         FilmDAO filmDAO = daoFactory.getFilmDAO();
         films = filmDAO.findFilm();
 
+
+
         request.setAttribute("films", films);
+
+    }
+
+    private static void recView(DAOFactory daoFactory, DAOFactory sessionDAOFactory, HttpServletRequest request) {
+
+
 
     }
 
