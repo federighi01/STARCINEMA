@@ -127,7 +127,8 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
                     = " SELECT * "
                     + "   FROM proiezione "
                     + " WHERE "
-                    + "    codice_film = ? ";
+                    + "    codice_film = ? "
+                    + " ORDER BY data_pro, ora_pro ASC ";
 
 
             ps = conn.prepareStatement(sql);

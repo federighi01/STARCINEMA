@@ -52,7 +52,6 @@ public class HomeManagement {
             Film film=null;
 
             String titolo = request.getParameter("titolo");
-            //System.out.println(titolo);
 
             String data_pro = request.getParameter("data_pro");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -62,15 +61,27 @@ public class HomeManagement {
                 try {
                     data_proiezione = sdf.parse(data_pro);
                 } catch (Exception e) {
-                    // Gestisci il caso in cui la data non può essere analizzata correttamente.
                 }
             }
-            //data_proiezione = sdf.parse(data_pro);
-            //System.out.println(data_proiezione);
+
 
             if(titolo!=null ){
                 FilmDAO filmDAO = daoFactory.getFilmDAO();
                 film = filmDAO.findByTitolo(titolo);
+
+                //Sezione per passare data_pro e ora_pro alla view.jsp per ricerca titolo film
+                List<Proiezione> proiezioni;
+
+                ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
+
+                //Estrarre dati di proiezione per il film
+                proiezioni=proiezioneDAO.findData_proByCod_film(film);
+                //Conversione lista in array
+                Proiezione [] proiezioniArray = new Proiezione[proiezioni.size()];
+                for(int j=0;j<proiezioni.size();j++){
+                    proiezioniArray[j] = proiezioni.get(j);
+                }
+                film.setProiezioni(proiezioniArray);
             }
 
             if(titolo==null && data_proiezione!=null){
@@ -79,12 +90,6 @@ public class HomeManagement {
             }
 
             commonView(daoFactory, sessionDAOFactory, request);
-
-            /*FilmDAO filmDAO = daoFactory.getFilmDAO();
-            Film film = filmDAO.findByCodfilm(Long.parseLong(request.getParameter("selectedcodfilm")));
-
-            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
-            proiezioni = proiezioneDAO.findData_proByCod_film(film);*/
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
@@ -142,15 +147,29 @@ public class HomeManagement {
             FilmDAO filmDAO = daoFactory.getFilmDAO();
             Film film = filmDAO.findByCodfilm(Long.parseLong(request.getParameter("selectedcodfilm")));
 
-
+            //Sezione dedicata alle recensioni
             List<Recensione> recensioni;
 
             RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
             recensioni = recensioneDAO.findRecensioni(film.getCod_film());
 
+            //Parte per passare data_pro e ora_pro a schedafilm.jsp
+            List<Proiezione> proiezioni;
+
+            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
+
+                //Estrarre dati di proiezione per il film
+                proiezioni=proiezioneDAO.findData_proByCod_film(film);
+                //Conversione lista in array
+                Proiezione [] proiezioniArray = new Proiezione[proiezioni.size()];
+                for(int j=0;j<proiezioni.size();j++){
+                    proiezioniArray[j] = proiezioni.get(j);
+                }
+                film.setProiezioni(proiezioniArray);
+
+
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
-
 
             request.setAttribute("loggedOn", loggedUtente != null);
             request.setAttribute("loggedUtente", loggedUtente);
@@ -553,7 +572,7 @@ public class HomeManagement {
         ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
 
         for(int i=0;i< films.size();i++){
-            //Estrarre dati di classifica per ogni torneo
+            //Estrarre dati di proiezione per ogni film
             proiezioni=proiezioneDAO.findData_proByCod_film(films.get(i));
             //Conversione lista in array
             Proiezione [] proiezioniArray = new Proiezione[proiezioni.size()];

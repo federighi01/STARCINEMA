@@ -4,6 +4,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="com.starcinema.starcinema.model.mo.Proiezione" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 
 <%  int i = 0, c = 0;
 
@@ -108,9 +109,29 @@
 
             <!-- Ciclo per stampare le date e le ore di proiezione del film corrente -->
             <h2>Orari di Proiezione:</h2>
-            <% for (c = 0; c < films.get(i).getProiezioni().length; c++) {%>
-            <a>Data di Proiezione: <%= films.get(i).getProiezioni(c).getData_pro() %></a><br>
-            <a>Ora di Proiezione: <%= films.get(i).getProiezioni(c).getOra_pro() %></a><br>
+            <%
+                Date lastDataPro = null; // Memorizza l'ultima data_pro stampata
+            %>
+            <% for (c = 0; c < films.get(i).getProiezioni().length; c++) {
+                Proiezione proiezione = films.get(i).getProiezioni(c);
+                Date dataPro = proiezione.getData_pro();
+
+                // Controlla se la data_pro è diversa dall'ultima data_pro stampata
+                if (lastDataPro == null || !lastDataPro.equals(dataPro)) {
+                    // Memorizza la nuova data_pro
+                    lastDataPro = dataPro;
+            %>
+            <%
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                String formattedDate = dateFormat.format(dataPro);
+            %>
+            <h3>Data di Proiezione: <%= formattedDate %></h3>
+            <%}%>
+            <%
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                String formattedTime = timeFormat.format(proiezione.getOra_pro());
+            %>
+            <a>Ora di Proiezione: <%= formattedTime %></a><br>
             <%}%>
 
             <%--<%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>--%>
@@ -147,11 +168,33 @@
         <a><b>Cast: </b><%=film.getCast()%></a> <br>
         <a><b>Genere: </b><%=film.getGenere()%></a> <br>
         <a><b>Durata: </b><%=film.getDurata()%>'</a> <br>
-        <%--<a><b>Nazione: </b><%=film.getNazione()%></a> <br>
-        <a><b>Anno: </b><%=film.getAnno()%></a> <br>
-        <a><b>Descrizione: </b><%=film.getDescrizione()%></a> <br>
-        <a href=<%=film.getTrailer()%>>Clicca qui per il trailer</a>--%>
-        <%--<%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>--%>
+
+        <h2>Orari di Proiezione:</h2>
+        <%
+            Date lastDataPro = null; // Memorizza l'ultima data_pro stampata
+        %>
+        <% for (c = 0; c < film.getProiezioni().length; c++) {
+            Proiezione proiezione = film.getProiezioni(c);
+            Date dataPro = proiezione.getData_pro();
+
+            // Controlla se la data_pro è diversa dall'ultima data_pro stampata
+            if (lastDataPro == null || !lastDataPro.equals(dataPro)) {
+                // Memorizza la nuova data_pro
+                lastDataPro = dataPro;
+        %>
+        <%
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            String formattedDate = dateFormat.format(dataPro);
+        %>
+        <h3>Data di Proiezione: <%= formattedDate %></h3>
+        <%}%>
+        <%
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+            String formattedTime = timeFormat.format(proiezione.getOra_pro());
+        %>
+        <a>Ora di Proiezione: <%= formattedTime %></a><br>
+        <%}%>
+
 
         <input type="hidden" name="filmId" value="<%=film.getCod_film()%>">
         <input type="hidden" name="filmTitolo" value="<%=film.getTitolo()%>">
