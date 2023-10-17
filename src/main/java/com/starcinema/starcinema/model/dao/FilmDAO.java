@@ -9,7 +9,6 @@ import java.util.List;
 public interface FilmDAO {
 
     public Film create(
-            Long cod_film,
             String titolo,
             String regista,
             String cast,

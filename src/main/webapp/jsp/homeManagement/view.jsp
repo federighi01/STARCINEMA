@@ -53,8 +53,14 @@
                 document.schedafilmForm.submit();
             }
 
+            function addpro(cod_film) {
+                document.addproForm.selectedcodfilm.value = cod_film;
+                document.addproForm.submit();
+            }
+
             function mainOnLoadHandler() {
                 document.querySelector("#schedaButton").addEventListener("click", viewfilm);
+                document.querySelector("#newproButton").addEventListener("click", addpro);
                 //anche scheda3button?
             }
         </script>
@@ -150,7 +156,13 @@
             <section id="schedaButtonSection">
                 <a> <input type="button" id="schedaButton" name="schedaButton"
                            class="button" value="Visualizza scheda film" onclick="viewfilm(<%=films.get(i).getCod_film()%>)"/></a>
+            </section><br>
+            <%if (loggedOn && loggedUtente.getTipo().equals("amministratore")) {%>
+            <section id="newproButtonSection">
+                <a> <input type="button" id="newproButton" name="newproButton"
+                           class="button" value="Aggiungi proiezioni" onclick="addpro(<%=films.get(i).getCod_film()%>)"/></a>
             </section>
+            <%}%>
             <%--<%}%>--%>
         </article>
         <br><br><br>
@@ -219,11 +231,7 @@
             <a><b>Cast: </b><%=filmsdp.get(i).getCast()%></a> <br>
             <a><b>Genere: </b><%=filmsdp.get(i).getGenere()%></a> <br>
             <a><b>Durata: </b><%=filmsdp.get(i).getDurata()%>'</a> <br>
-            <%--<a><b>Nazione: </b><%=filmsdp.get(i).getNazione()%></a> <br>
-            <a><b>Anno: </b><%=filmsdp.get(i).getAnno()%></a> <br>
-            <a><b>Descrizione: </b><%=filmsdp.get(i).getDescrizione()%></a> <br>
-            <a href=<%=filmsdp.get(i).getTrailer()%>>Clicca qui per il trailer</a>--%>
-            <%--<%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>--%>
+
 
             <input type="hidden" name="filmId" value="<%=i%>">
             <input type="hidden" name="filmTitolo" value="<%=filmsdp.get(i).getTitolo()%>">
@@ -242,6 +250,11 @@
     <form name="schedafilmForm" method="post" action="Dispatcher">
         <input type="hidden" name="selectedcodfilm"/>
         <input type="hidden" name="controllerAction" value="HomeManagement.schedafilm"/>
+    </form>
+
+    <form name="addproForm" method="post" action="Dispatcher">
+        <input type="hidden" name="selectedcodfilm"/>
+        <input type="hidden" name="controllerAction" value="HomeManagement.newproView"/>
     </form>
 
 

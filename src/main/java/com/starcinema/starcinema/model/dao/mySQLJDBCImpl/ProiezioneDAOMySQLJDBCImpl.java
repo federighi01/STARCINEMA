@@ -17,10 +17,9 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         this.conn = conn;
     }
     @Override
-    public Proiezione create(Long cod_pro, Film film, Sala sala, Date data_pro, Time ora_pro) {
+    public Proiezione create(Film film, Sala sala, Date data_pro, Time ora_pro) {
         PreparedStatement ps;
         Proiezione proiezione = new Proiezione();
-        proiezione.setCod_pro(cod_pro);
         proiezione.setFilm(film);
         proiezione.setSala(sala);
         proiezione.setData_pro(data_pro);
@@ -29,18 +28,16 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         try{
             String sql
                     = " INSERT INTO proiezione "
-                    + "   ( cod_pro,"
-                    + "     cod_film,"
+                    + "   ( codice_film,"
                     + "     num_sala,"
                     + "     data_pro,"
                     + "     ora_pro,"
                     + "     deleted "
                     + "   ) "
-                    + " VALUES (?,?,?,?,?,'N')";
+                    + " VALUES (?,?,?,?,'N')";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
-            ps.setLong(i++, proiezione.getCod_pro());
             ps.setLong(i++, proiezione.getFilm().getCod_film());
             ps.setInt(i++, proiezione.getSala().getNum_sala());
             // Utilizza java.sql.Date per la data
@@ -70,7 +67,7 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
                     + "   ora_pro = ?, "
                     + " WHERE "
                     + " cod_pro = ?,"
-                    + " cod_film = ?,"
+                    + " codice_film = ?,"
                     + " num_sala = ? ";
 
             ps = conn.prepareStatement(sql);
@@ -157,11 +154,11 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         proiezione.setFilm(film);
         proiezione.setSala(sala);
         try {
-            proiezione.setCod_pro(rs.getLong("Cod_pro"));
+            proiezione.setCod_pro(rs.getLong("cod_pro"));
         } catch (SQLException sqle) {
         }
         try {
-            proiezione.getFilm().setCod_film(rs.getLong("Codice_film"));
+            proiezione.getFilm().setCod_film(rs.getLong("codice_film"));
         } catch (SQLException sqle) {
         }
         try {

@@ -79,13 +79,6 @@
                        value=""
                        required size="20" maxlength="50"/>
             </div><br>
-
-            <%--<div class="field clearfix">
-                <label for="tipo">Tipo</label>
-                <input type="text" id="tipo" name="tipo"
-                       value=""
-                       required size="20" maxlength="50"/>
-            </div><br>--%>
             <div class="field clearfix">
                 <label for="cognome">Cognome</label>
                 <input type="text" id="cognome" name="cognome"

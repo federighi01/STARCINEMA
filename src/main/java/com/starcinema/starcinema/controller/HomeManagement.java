@@ -1,15 +1,13 @@
 package com.starcinema.starcinema.controller;
 
 import com.starcinema.starcinema.model.dao.*;
-import com.starcinema.starcinema.model.mo.Film;
-import com.starcinema.starcinema.model.mo.Proiezione;
-import com.starcinema.starcinema.model.mo.Recensione;
-import com.starcinema.starcinema.model.mo.Utente;
+import com.starcinema.starcinema.model.mo.*;
 import com.starcinema.starcinema.services.config.Configuration;
 import com.starcinema.starcinema.services.logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -69,7 +67,7 @@ public class HomeManagement {
                 FilmDAO filmDAO = daoFactory.getFilmDAO();
                 film = filmDAO.findByTitolo(titolo);
 
-                //Sezione per passare data_pro e ora_pro alla view.jsp per ricerca titolo film
+                //Sezione per passare data_pro e ora_pro alla nuovospettacolo.jsp per ricerca titolo film
                 List<Proiezione> proiezioni;
 
                 ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
@@ -463,6 +461,249 @@ public class HomeManagement {
             //System.out.println(sdf.parse(data_n));
             request.setAttribute("loggedOn", false);
             request.setAttribute("loggedUtente", null);
+            request.setAttribute("applicationMessage", applicationMessage);
+
+            request.setAttribute("viewUrl", "homeManagement/view");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) daoFactory.closeTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
+    public static void newspectView(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory = null;
+        Utente loggedUtente;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters = new HashMap<String, Object>();
+            sessionFactoryParameters.put("request", request);
+            sessionFactoryParameters.put("response", response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUtente = sessionUtenteDAO.findLoggedUtente();
+
+            sessionDAOFactory.commitTransaction();
+
+            request.setAttribute("loggedOn", loggedUtente!=null);
+            request.setAttribute("loggedUtente", loggedUtente);
+            request.setAttribute("viewUrl", "homeManagement/nuovospettacolo");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+
+        }
+
+    }
+
+    public static void newproView(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory = null;
+        Utente loggedUtente;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters = new HashMap<String, Object>();
+            sessionFactoryParameters.put("request", request);
+            sessionFactoryParameters.put("response", response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUtente = sessionUtenteDAO.findLoggedUtente();
+
+            Long selectedcodfilm = Long.parseLong(request.getParameter("selectedcodfilm"));
+
+            sessionDAOFactory.commitTransaction();
+
+            request.setAttribute("loggedOn", loggedUtente!=null);
+            request.setAttribute("loggedUtente", loggedUtente);
+            request.setAttribute("selectedcodfilm", selectedcodfilm);
+            request.setAttribute("viewUrl", "homeManagement/nuovospettacolo");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+
+        }
+
+    }
+
+    public static void newspect(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory = null;
+        DAOFactory daoFactory = null;
+        Utente loggedUtente;
+        String applicationMessage = null;
+
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters = new HashMap<String, Object>();
+            sessionFactoryParameters.put("request", request);
+            sessionFactoryParameters.put("response", response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUtente = sessionUtenteDAO.findLoggedUtente();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            FilmDAO filmDAO = daoFactory.getFilmDAO();
+
+            filmDAO.create(
+                    request.getParameter("titolo"),
+                    request.getParameter("regista"),
+                    request.getParameter("cast"),
+                    request.getParameter("genere"),
+                    Integer.parseInt(request.getParameter("durata")),
+                    request.getParameter("nazione"),
+                    Integer.parseInt(request.getParameter("anno")),
+                    request.getParameter("descrizione"),
+                    request.getParameter("trailer"));
+
+            commonView(daoFactory, sessionDAOFactory, request);
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+
+            request.setAttribute("loggedOn", loggedUtente!=null);
+            request.setAttribute("loggedUtente", loggedUtente);
+            request.setAttribute("applicationMessage", applicationMessage);
+
+            request.setAttribute("viewUrl", "homeManagement/view");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) daoFactory.closeTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
+    public static void newpro(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory = null;
+        DAOFactory daoFactory = null;
+        Utente loggedUtente;
+        String applicationMessage = null;
+
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters = new HashMap<String, Object>();
+            sessionFactoryParameters.put("request", request);
+            sessionFactoryParameters.put("response", response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUtente = sessionUtenteDAO.findLoggedUtente();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
+
+            Long selectedcodfilm = Long.parseLong(request.getParameter("selectedcodfilm"));
+            FilmDAO filmDAO = daoFactory.getFilmDAO();
+            Film film = filmDAO.findByCodfilm(selectedcodfilm);
+            //System.out.println(selectedcodfilm);
+
+            Integer num_sala = Integer.parseInt(request.getParameter("num_sala"));
+            SalaDAO salaDAO = daoFactory.getSalaDAO();
+            Sala sala = salaDAO.findSalaByNum_sala(num_sala);
+            //System.out.println(num_sala);
+
+
+            String data_pro = request.getParameter("data_pro");
+            System.out.println(data_pro);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date data_proiezione = null;
+            data_proiezione = sdf.parse(data_pro);
+
+
+
+            String ora_proString = request.getParameter("ora_pro");
+            SimpleDateFormat sdft = new SimpleDateFormat("HH:mm");
+            java.util.Date parsedDate = sdft.parse(ora_proString);
+            Time ora_pro = new Time(parsedDate.getTime());
+            //String ora_proFormatted = sdft.format(ora_pro);
+
+            proiezioneDAO.create(
+                    film,
+                    sala,
+                    data_proiezione,
+                    ora_pro);
+
+            commonView(daoFactory, sessionDAOFactory, request);
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+
+            request.setAttribute("loggedOn", loggedUtente!=null);
+            request.setAttribute("loggedUtente", loggedUtente);
             request.setAttribute("applicationMessage", applicationMessage);
 
             request.setAttribute("viewUrl", "homeManagement/view");

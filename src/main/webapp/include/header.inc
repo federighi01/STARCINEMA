@@ -33,12 +33,21 @@
       <li <%=menuActiveLink.equals("Home")?"class=\"active\"":""%>>
         <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
       </li>
-      <%if (loggedOn) {%>
-        <li <%=menuActiveLink.equals("AreaRiservata")?"class=\"active\"":""%>>
-          <a href="Dispatcher?controllerAction=AreaRiservata.view">Area riservata</a>
+      <%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>
+        <li <%=menuActiveLink.equals("Modificaacquisti")?"class=\"active\"":""%>>
+          <a href="Dispatcher?controllerAction=ModificaAcquisti.view">Modifica acquisti</a>
         </li>
         <li><a href="javascript:logoutForm.submit()">Logout</a></li>
       <%}%>
+      <%if (loggedOn && loggedUtente.getTipo().equals("amministratore")) {%>
+              <li <%=menuActiveLink.equals("Situazionesale")?"class=\"active\"":""%>>
+                <a href="Dispatcher?controllerAction=SituazioneSale.view">Situazione sale</a>
+              </li>
+              <li <%=menuActiveLink.equals("Nuovospettacolo")?"class=\"active\"":""%>>
+                              <a href="Dispatcher?controllerAction=HomeManagement.newspectView">Nuovo spettacolo</a>
+              </li>
+              <li><a href="javascript:logoutForm.submit()">Logout</a></li>
+            <%}%>
     </ul>
   </nav>
 

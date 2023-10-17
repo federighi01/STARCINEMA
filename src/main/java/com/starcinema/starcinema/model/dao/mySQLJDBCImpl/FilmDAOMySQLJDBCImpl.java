@@ -18,10 +18,9 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
         this.conn = conn;
     }
     @Override
-    public Film create(Long cod_film, String titolo, String regista, String cast, String genere, Integer durata, String nazione, Integer anno, String descrizione, String trailer) {
+    public Film create(String titolo, String regista, String cast, String genere, Integer durata, String nazione, Integer anno, String descrizione, String trailer) {
         PreparedStatement ps;
         Film film = new Film();
-        film.setCod_film(cod_film);
         film.setTitolo(titolo);
         film.setRegista(regista);
         film.setCast(cast);
@@ -35,8 +34,7 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
         try{
             String sql
                     = " INSERT INTO film "
-                    + "   ( cod_film,"
-                    + "     titolo,"
+                    + "   ( titolo,"
                     + "     regista,"
                     + "     cast,"
                     + "     genere,"
@@ -47,11 +45,10 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
                     + "     trailer,"
                     + "     deleted "
                     + "   ) "
-                    + " VALUES (?,?,?,?,?,?,?,?,?,?,'N')";
+                    + " VALUES (?,?,?,?,?,?,?,?,?,'N')";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
-            ps.setLong(i++, film.getCod_film());
             ps.setString(i++, film.getTitolo());
             ps.setString(i++, film.getRegista());
             ps.setString(i++, film.getCast());

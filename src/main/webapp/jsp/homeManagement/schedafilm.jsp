@@ -47,12 +47,12 @@
 
         function mainOnLoadHandler() {
             document.querySelector("#insrecButton").addEventListener("click", submitRec);
-            /*document.recForm.addEventListener("submit", function (event) {
+            document.recForm.addEventListener("submit", function (event) {
                 if (!validateForm()) {
                     event.preventDefault(); // Blocca l'invio del modulo se la validazione fallisce
                 }
                 submitRec()
-            });*/
+            });
 
             //document.regForm.backButton.addEventListener("click", goback);
         }
@@ -81,30 +81,54 @@
         <br><br>
         <!-- Sezione dedicata agli utenti registrati e amministratore!-->
 
-        <%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>
+        <%--<%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>
         <section id="datiacqFormSection">
             <form name="datiacqForm" action="Dispatcher" method="post">
-        <!-- Menu a tendina per data_pro -->
-        <label for="dataProMenu">Seleziona Data di Proiezione:</label>
-        <select id="dataProMenu">
-            <option value="data1">Data 1</option>
-            <option value="data2">Data 2</option>
-            <option value="data3">Data 3</option>
-        </select>
+                <!-- Menu a tendina per data_pro -->
+                <label for="dataProMenu">Seleziona Data di Proiezione:</label>
+                <select id="dataProMenu">
+                    <%
+                        Date lastDataPro = null; // Memorizza l'ultima data_pro stampata
+                    %>
+                    <% if (film.getProiezioni() != null) { %>
+                    <% for (int c = 0; c < film.getProiezioni().length; c++) {
+                        Proiezione proiezione = film.getProiezioni(c);
+                        Date dataPro = proiezione.getData_pro();
 
-        <!-- Menu a tendina per ora_pro -->
-        <label for="oraProMenu">Seleziona Ora di Proiezione:</label>
-        <select id="oraProMenu">
-            <option value="ora1">Ora 1</option>
-            <option value="ora2">Ora 2</option>
-            <option value="ora3">Ora 3</option>
-        </select>
+                        // Controlla se la data_pro è diversa dall'ultima data_pro stampata
+                        if (lastDataPro == null || !lastDataPro.equals(dataPro)) {
+                            // Memorizza la nuova data_pro
+                            lastDataPro = dataPro;
+                    %>
+                    <%
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                        String formattedDate = dateFormat.format(dataPro);
+                    %>
+
+                    <option value="data1"><%= formattedDate %></option>
+                    <%}%><%}%><%}%>
+                </select>
+
+                <!-- Menu a tendina per ora_pro -->
+                <label for="oraProMenu">Seleziona Ora di Proiezione:</label>
+                <select id="oraProMenu">
+                    <% if (film.getProiezioni() != null) { %>
+                    <% for (int c = 0; c < film.getProiezioni().length; c++) {
+                        Proiezione proiezione = film.getProiezioni(c);
+
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                        String formattedTime = timeFormat.format(proiezione.getOra_pro());
+                    %>
+                    <option value="ora1"><%= formattedTime %></option>
+                    <%}%><%}%>
+                </select>
+
         <input type="button" id="acqButton" name="acqButton"
-               class="button" value="Acquista" onclick="submitAcq()">
+               class="button" value="Acquista" onclick="submitAcq(<%=film.getCod_film()%>)">
             </form>
         </section>
-        <%}%>
-
+        <%}%>--%>
+        <% if (film.getProiezioni() != null) { %>
         <h2>Orari di Proiezione:</h2>
         <%
             Date lastDataPro = null; // Memorizza l'ultima data_pro stampata
@@ -129,7 +153,7 @@
             String formattedTime = timeFormat.format(proiezione.getOra_pro());
         %>
         <a>Ora di Proiezione: <%= formattedTime %></a><br>
-        <%}%>
+        <%}%><%}%>
 
 
 
@@ -185,6 +209,11 @@
             <input type="hidden" name="selectedcodfilm"/>
             <input type="hidden" name="controllerAction" value="HomeManagement.deleterec"/>
         </form>
+
+        <%--<form name="acqForm" method="post" action="Dispatcher">
+            <input type="hidden" name="selectedcodfilm"/>
+            <input type="hidden" name="controllerAction" value="HomeManagement.acqfilm"/>
+        </form>--%>
 
     </main>
 </body>

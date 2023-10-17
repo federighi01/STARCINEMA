@@ -13,9 +13,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AreaRiservata {
+public class SituazioneSale {
 
-    private AreaRiservata() {
+    private SituazioneSale() {
     }
 
     public static void view(HttpServletRequest request, HttpServletResponse response) {
@@ -49,7 +49,7 @@ public class AreaRiservata {
             request.setAttribute("loggedOn",loggedUtente!=null);
             request.setAttribute("loggedUtente", loggedUtente);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "areaRiservata/view");
+            request.setAttribute("viewUrl", "situazioneSale/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
