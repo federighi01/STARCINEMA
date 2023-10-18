@@ -6,13 +6,17 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="java.sql.Time" %>
 
 <%  int i = 0;
+    String formattedTime;
+
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
     Utente loggedUtente = (Utente) request.getAttribute("loggedUtente");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "SchedaFilm";
 
+    String formattedDate = (String) request.getAttribute("formattedDate");
     List<Film> films = (List<Film>) request.getAttribute("films");
     List<Recensione> recensioni = (List<Recensione>) request.getAttribute("recensioni");
     Film film = (Film) request.getAttribute("film");
@@ -25,42 +29,39 @@
     <script language="javascript">
 
         function submitRec() {
-            document.insrecForm.submit();
+            var f;
+            f = document.insrecForm;
+            f.controllerAction.value = "HomeManagement.insrec";
         }
 
-        /*function goback() {
-            document.backForm.submit();
-        }*/
-
-        function validateForm() {
-            var voto = document.getElementById("voto").value;
-            var commento = document.getElementById("commento").value;
-
-            if (commento != null && voto == null) {
-                alert("Per commentare devi inserire il voto.");
-                return false; // Blocca l'invio del modulo se è stato scritto un commento senza voto
-            }
-
-            // Altrimenti, il modulo verrà inviato normalmente
-            return true;
-        }
 
         function mainOnLoadHandler() {
-            document.querySelector("#insrecButton").addEventListener("click", submitRec);
-            document.recForm.addEventListener("submit", function (event) {
-                if (!validateForm()) {
-                    event.preventDefault(); // Blocca l'invio del modulo se la validazione fallisce
-                }
-                submitRec()
-            });
-
-            //document.regForm.backButton.addEventListener("click", goback);
+            document.insrecForm.addEventListener("submit", submitRec());
         }
 
         function deleteRec(cod_rec,selectedcodfilm) {
             document.deleteForm.cod_rec.value = cod_rec;
             document.deleteForm.selectedcodfilm.value = selectedcodfilm;
             document.deleteForm.submit();
+        }
+
+        function menuData(selectedcodfilm){
+            var selectedDateElement = document.getElementById("dataProMenu");
+            var formattedDate = selectedDateElement.value;
+            document.menuDataForm.selectedcodfilm.value = selectedcodfilm;
+            document.menuDataForm.formattedDate.value = formattedDate;
+            document.menuDataForm.submit();
+        }
+
+        function submitAcq(selectedcodfilm){
+            var selectedDateElement = document.getElementById("dataProMenu");
+            var formattedDate = selectedDateElement.value;
+            var selectedTimeElement = document.getElementById("oraProMenu");
+            var formattedTime = selectedTimeElement.value;
+            document.submitAcqForm.selectedcodfilm.value = selectedcodfilm;
+            document.submitAcqForm.formattedDate.value = formattedDate;
+            document.submitAcqForm.formattedTime.value = formattedTime;
+            document.submitAcqForm.submit();
         }
 
     </script>
@@ -81,12 +82,13 @@
         <br><br>
         <!-- Sezione dedicata agli utenti registrati e amministratore!-->
 
-        <%--<%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>
+        <%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>
         <section id="datiacqFormSection">
             <form name="datiacqForm" action="Dispatcher" method="post">
                 <!-- Menu a tendina per data_pro -->
                 <label for="dataProMenu">Seleziona Data di Proiezione:</label>
-                <select id="dataProMenu">
+                <select id="dataProMenu" name="formattedDate" onchange="menuData(<%=film.getCod_film()%>)">
+                    <%--<option value=""></option>--%>
                     <%
                         Date lastDataPro = null; // Memorizza l'ultima data_pro stampata
                     %>
@@ -102,10 +104,12 @@
                     %>
                     <%
                         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                        String formattedDate = dateFormat.format(dataPro);
+                        if (dataPro != null) {
+                            formattedDate = dateFormat.format(dataPro);
+                        }
                     %>
 
-                    <option value="data1"><%= formattedDate %></option>
+                    <option value="<%= formattedDate %>"><%= formattedDate %></option>
                     <%}%><%}%><%}%>
                 </select>
 
@@ -117,18 +121,21 @@
                         Proiezione proiezione = film.getProiezioni(c);
 
                         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-                        String formattedTime = timeFormat.format(proiezione.getOra_pro());
+                        formattedTime = timeFormat.format(proiezione.getOra_pro());
                     %>
-                    <option value="ora1"><%= formattedTime %></option>
+                    <option value="<%= formattedTime %>"><%= formattedTime %></option>
                     <%}%><%}%>
                 </select>
 
         <input type="button" id="acqButton" name="acqButton"
-               class="button" value="Acquista" onclick="submitAcq(<%=film.getCod_film()%>)">
+               class="button" value="Acquista"
+               onclick="submitAcq(<%=film.getCod_film()%>)">
             </form>
         </section>
-        <%}%>--%>
-        <% if (film.getProiezioni() != null) { %>
+        <%}%>
+
+
+        <%--<% if (film.getProiezioni() != null) { %>
         <h2>Orari di Proiezione:</h2>
         <%
             Date lastDataPro = null; // Memorizza l'ultima data_pro stampata
@@ -153,7 +160,7 @@
             String formattedTime = timeFormat.format(proiezione.getOra_pro());
         %>
         <a>Ora di Proiezione: <%= formattedTime %></a><br>
-        <%}%><%}%>
+        <%}%><%}%>--%>
 
 
 
@@ -161,7 +168,7 @@
         <%if (loggedOn) {%>
         <!-- Possibilità di inserire recensioni -->
         <section id="insrecFormSection">
-            <form name="insrecForm" action="Dispatcher" method="post" onsubmit="return validateForm()">
+            <form name="insrecForm" action="Dispatcher" method="post">
                 <h3>Lascia una recensione</h3>
                 <input type="hidden" name="selectedcodfilm" value="<%= film.getCod_film() %>">
                 <input type="hidden" name="controllerAction" value="HomeManagement.insrec"/>
@@ -171,9 +178,8 @@
                 <label for="commento">Recensione: </label>
                 <textarea id="commento" name="commento" rows="4" required></textarea>
                 <br>
-                <input type="button" id="insrecButton" name="insrecButton"
-                       class="button" value="Invia recensione" onclick="submitRec()">
-
+                <input type="submit" class="button" value="Invia recensione">
+                <input type="hidden" name="controllerAction"/>
             </form>
         </section>
         <%}%>
@@ -210,10 +216,18 @@
             <input type="hidden" name="controllerAction" value="HomeManagement.deleterec"/>
         </form>
 
-        <%--<form name="acqForm" method="post" action="Dispatcher">
+        <form name="menuDataForm" method="post" action="Dispatcher">
             <input type="hidden" name="selectedcodfilm"/>
-            <input type="hidden" name="controllerAction" value="HomeManagement.acqfilm"/>
-        </form>--%>
+            <input type="hidden" name="formattedDate"/>
+            <input type="hidden" name="controllerAction" value="HomeManagement.menuData"/>
+        </form>
+
+        <form name="submitAcqForm" method="post" action="Dispatcher">
+            <input type="hidden" name="selectedcodfilm"/>
+            <input type="hidden" name="formattedDate"/>
+            <input type="hidden" name="formattedTime"/>
+            <input type="hidden" name="controllerAction" value="HomeManagement.acquista"/>
+        </form>
 
     </main>
 </body>

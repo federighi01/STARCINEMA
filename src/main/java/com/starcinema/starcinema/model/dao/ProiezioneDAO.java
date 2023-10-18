@@ -22,4 +22,8 @@ public interface ProiezioneDAO {
 
     public List<Proiezione> findData_proByCod_film(Film film);
 
+    public List<Proiezione> findOraByData(Long cod_film, Date data_pro);
+
+    public Proiezione findByDataOra(Date data_pro, Time ora_pro);
+
 }

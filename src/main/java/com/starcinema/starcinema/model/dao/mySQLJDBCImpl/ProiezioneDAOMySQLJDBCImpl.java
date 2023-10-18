@@ -147,6 +147,78 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         return proiezioni;
     }
 
+    public List<Proiezione> findOraByData(Long cod_film, Date data_pro){
+        PreparedStatement ps;
+        Proiezione proiezione=null;
+        //proiezione.setData_pro(data_pro);
+        ArrayList<Proiezione> proiezioni = new ArrayList<Proiezione>();
+
+        try {
+
+            String sql
+                    = " SELECT ora_pro "
+                    + "   FROM proiezione "
+                    + " WHERE "
+                    + "    codice_film = ? AND"
+                    + "    data_pro = ? "
+                    + " ORDER BY ora_pro ASC ";
+
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, cod_film);
+            java.sql.Date dataProiezioneSQL = new java.sql.Date(data_pro.getTime());
+            ps.setDate(2, dataProiezioneSQL);
+
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                proiezione = read(resultSet);
+                proiezioni.add(proiezione);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return proiezioni;
+    }
+
+    public Proiezione findByDataOra(Date data_pro, Time ora_pro){
+        PreparedStatement ps;
+        Proiezione proiezione = null;
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM proiezione "
+                    + " WHERE "
+                    + "   data_pro = ? AND"
+                    + "   ora_pro = ? ";
+
+            ps = conn.prepareStatement(sql);
+            java.sql.Date dataProiezioneSQL = new java.sql.Date(data_pro.getTime());
+            ps.setDate(1, dataProiezioneSQL);
+            ps.setTime(2,ora_pro);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                proiezione = read(resultSet);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return proiezione;
+    }
+
     Proiezione read(ResultSet rs) {
         Proiezione proiezione = new Proiezione();
         Film film = new Film();
@@ -166,7 +238,7 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         } catch (SQLException sqle) {
         }
         try {
-            proiezione.setData_pro(rs.getTimestamp("data_pro"));
+            proiezione.setData_pro(rs.getDate("data_pro"));
         } catch (SQLException sqle) {
         }
         try {

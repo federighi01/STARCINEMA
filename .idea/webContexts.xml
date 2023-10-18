@@ -5,6 +5,7 @@
       <map>
         <entry key="file://$PROJECT_DIR$/src/main/webapp/jsp/areaRiservata/view.jsp" value="file://$PROJECT_DIR$/src/main/webapp/jsp/areaRiservata" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/jsp/homeCinema/view.jsp" value="file://$PROJECT_DIR$/src/main/webapp/jsp/homeCinema" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/jsp/homeManagement/nuovospettacolo.jsp" value="file://$PROJECT_DIR$/src/main/webapp/jsp/homeManagement" />
       </map>
     </option>
   </component>

@@ -2,6 +2,7 @@
 <%@page import="com.starcinema.starcinema.model.mo.Utente"%>
 <%
     boolean loggedOn = false;
+    Utente loggedUtente = (Utente) request.getAttribute("loggedUtente");
     String menuActiveLink = "Registrazione";
     String applicationMessage = (String) request.getAttribute("applicationMessage");
 

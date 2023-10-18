@@ -44,7 +44,6 @@
       document.insForm.addEventListener("submit", submitIns());
 
       document.insForm.backButton.addEventListener("click", goback);
-      document.insproForm.backButton.addEventListener("click", goback);
     }
 
   </script>
@@ -151,7 +150,7 @@
         <label>&#160;</label>
         <input type="button" id="newproButton" name="newproButton"
                class="button" value="Invia" onclick="submitInspro(<%=selectedcodfilm%>)">
-        <input type="button" name="backButton" class="button" value="Annulla"/>
+        <input type="button" name="backButton" class="button" value="Annulla" onclick="goback()"/>
       </div>
       <input type="hidden" name="controllerAction"/>
     </form>
