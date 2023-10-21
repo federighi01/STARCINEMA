@@ -48,9 +48,11 @@
         function menuData(selectedcodfilm){
             var selectedDateElement = document.getElementById("dataProMenu");
             var formattedDate = selectedDateElement.value;
-            document.menuDataForm.selectedcodfilm.value = selectedcodfilm;
-            document.menuDataForm.formattedDate.value = formattedDate;
-            document.menuDataForm.submit();
+            //if (formattedDate !== '') {
+                document.menuDataForm.selectedcodfilm.value = selectedcodfilm;
+                document.menuDataForm.formattedDate.value = formattedDate;
+                document.menuDataForm.submit();
+            //}
         }
 
         function submitAcq(selectedcodfilm){
@@ -88,7 +90,7 @@
                 <!-- Menu a tendina per data_pro -->
                 <label for="dataProMenu">Seleziona Data di Proiezione:</label>
                 <select id="dataProMenu" name="formattedDate" onchange="menuData(<%=film.getCod_film()%>)">
-                    <%--<option value=""></option>--%>
+                    <%--<option value="">Seleziona una data</option>--%>
                     <%
                         Date lastDataPro = null; // Memorizza l'ultima data_pro stampata
                     %>

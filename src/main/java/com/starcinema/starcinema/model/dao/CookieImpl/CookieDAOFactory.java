@@ -74,7 +74,7 @@ public class CookieDAOFactory extends DAOFactory {
 
     @Override
     public AcquistaDAO getAcquistaDAO() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new AcquistaDAOCookieImpl(request,response);
     }
 
     @Override
@@ -88,7 +88,12 @@ public class CookieDAOFactory extends DAOFactory {
     }
 
     @Override
-    public SingoloDAO getSingoloDAO() {
+    public Acquista_abbDAO getAcquista_abbDAO() {
+        return new Acquista_abbDAOCookieImpl(request,response);
+    }
+
+    @Override
+    public Utilizzo_abbDAO getUtilizzo_abbDAO() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

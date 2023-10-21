@@ -2,6 +2,7 @@ package com.starcinema.starcinema.model.dao;
 
 import com.starcinema.starcinema.model.dao.CookieImpl.CookieDAOFactory;
 import com.starcinema.starcinema.model.dao.mySQLJDBCImpl.*;
+import com.starcinema.starcinema.model.mo.Utilizzo_abb;
 
 import java.util.Map;
 
@@ -36,7 +37,9 @@ public abstract class DAOFactory {
 
     public abstract AbbonamentoDAO getAbbonamentoDAO();
 
-    public abstract SingoloDAO getSingoloDAO();
+    public abstract Acquista_abbDAO getAcquista_abbDAO();
+
+    public abstract Utilizzo_abbDAO getUtilizzo_abbDAO();
 
     public static DAOFactory getDAOFactory(String whichFactory, Map factoryParameters) {
 

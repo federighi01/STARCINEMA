@@ -1,9 +1,6 @@
 package com.starcinema.starcinema.model.dao;
 
-import com.starcinema.starcinema.model.mo.Acquista;
-import com.starcinema.starcinema.model.mo.Biglietto;
-import com.starcinema.starcinema.model.mo.Film;
-import com.starcinema.starcinema.model.mo.Utente;
+import com.starcinema.starcinema.model.mo.*;
 
 import java.util.Date;
 import java.util.List;
@@ -14,6 +11,7 @@ public interface AcquistaDAO {
             Utente utente,
             Biglietto biglietto,
             Film film,
+            Posto posto,
             Date data_acq,
             String metodo_p
     );

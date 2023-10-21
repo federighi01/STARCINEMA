@@ -50,6 +50,7 @@ public class HomeManagement {
 
             List<Film> filmsdp=null;
             Film film=null;
+            List<Proiezione> pro=null;
 
             //Titolo passato dalla funzione innescata dal bottone per la ricerca del film per titolo
             //in homeManagement/view
@@ -93,6 +94,10 @@ public class HomeManagement {
                 FilmDAO filmDAO = daoFactory.getFilmDAO();
                 //Estrazione dati dei film per data di proiezione
                 filmsdp = filmDAO.findFilmByData_pro(data_proiezione);
+
+                ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
+                //Estrazione dati proiezioni per data di proiezione
+                pro = proiezioneDAO.findOraByOnlyData(data_proiezione);
             }
 
             commonView(daoFactory, sessionDAOFactory, request);
@@ -106,7 +111,7 @@ public class HomeManagement {
             request.setAttribute("film", film);
             request.setAttribute("titolo", titolo);
             request.setAttribute("filmsdp", filmsdp);
-
+            request.setAttribute("pro", pro);
             request.setAttribute("viewUrl", "homeManagement/view");
 
         } catch (Exception e) {

@@ -26,6 +26,7 @@ public class Proiezione {
 
     public Date getData_pro() { return data_pro; }
     public void setData_pro(Date data_pro) { this.data_pro = data_pro; }
+
     public Time getOra_pro() { return ora_pro; }
     public void setOra_pro(Time ora_pro) { this.ora_pro = ora_pro; }
 

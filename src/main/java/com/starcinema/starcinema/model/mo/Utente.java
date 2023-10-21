@@ -23,6 +23,8 @@ public class Utente {
     private Recensione[] recensioni;
     // 1:N (acquista)
     private Acquista[] acquisti;
+    // 1:N (acquista_abb)
+    private Acquista_abb[] acquisti_abb;
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
@@ -65,5 +67,7 @@ public class Utente {
     public Acquista getAcquisti(int index) { return this.acquisti[index]; }
     public void setAcquisti(int index, Acquista acquisti) { this.acquisti[index] = acquisti; }
 
+    public Acquista_abb getAcquisti_abb(int index) { return this.acquisti_abb[index]; }
+    public void setAcquisti_abb(int index, Acquista_abb acquisti_abb) { this.acquisti_abb[index] = acquisti_abb; }
 
 }

@@ -5,7 +5,9 @@ import com.starcinema.starcinema.model.mo.Biglietto;
 public interface BigliettoDAO {
 
     public Biglietto create(
-            String cod_b
+            Long cod_b,
+            Double prezzo,
+            String tipo
     );
 
     public void update(Biglietto biglietto);

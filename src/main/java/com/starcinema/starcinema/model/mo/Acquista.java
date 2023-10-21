@@ -10,6 +10,8 @@ public class Acquista {
     private Biglietto biglietto;
     // N:1 (film)
     private Film film;
+    // N:1 (posto)
+    private Posto posto;
     private Date data_acq;
     private String metodo_p;
 
@@ -21,6 +23,9 @@ public class Acquista {
 
     public Film getFilm() { return film; }
     public void setFilm(Film film) { this.film = film; }
+
+    public Posto getPosto() { return posto; }
+    public void setPosto(Posto posto) { this.posto = posto; }
 
     public Date getData_acq() { return data_acq; }
     public void setData_acq(Date data_acq) { this.data_acq = data_acq; }

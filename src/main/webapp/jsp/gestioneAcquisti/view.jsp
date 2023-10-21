@@ -2,6 +2,7 @@
 <%@ page import="com.starcinema.starcinema.model.mo.Utente" %>
 <%@ page import="com.starcinema.starcinema.model.mo.Film" %>
 <%@ page import="com.starcinema.starcinema.model.mo.Proiezione" %>
+<%@ page import="com.starcinema.starcinema.model.mo.Sala" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 
@@ -22,8 +23,9 @@
     <%@include file="/include/htmlHead.inc"%>
     <script language="javascript">
 
-        function acqbiglietto(selectedcodfilm){
+        function acqbiglietto(selectedcodfilm,num_sala){
             document.acqbigliettoForm.selectedcodfilm.value = selectedcodfilm;
+            document.acqbigliettoForm.num_sala.value = num_sala;
             document.acqbigliettoForm.submit();
         }
 
@@ -41,9 +43,10 @@
             String formattedTime = timeFormat.format(proiezione.getOra_pro());
         %>
         <%= formattedDate %><br><%= formattedTime %><br>
+        <%=proiezione.getSala().getNum_sala()%><br>
         <section id="bigliettoButtonSection">
             <a> <input type="button" id="bigliettoButton" name="bigliettoButton"
-                       class="button" value="Acquisto biglietto" onclick="acqbiglietto(<%=film.getCod_film()%>)"/></a>
+                       class="button" value="Acquisto biglietto" onclick="acqbiglietto(<%=film.getCod_film()%>,<%=proiezione.getSala().getNum_sala()%>)"/></a>
         </section><br>
         <section id="abbButtonSection">
             <a> <input type="button" id="abbButton" name="abbButton"
@@ -53,6 +56,7 @@
 
         <form name="acqbigliettoForm" method="post" action="Dispatcher">
             <input type="hidden" name="selectedcodfilm"/>
+            <input type="hidden" name="num_sala"/>
             <input type="hidden" name="controllerAction" value="GestioneAcquisti.view"/>
         </form>
 

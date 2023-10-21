@@ -109,7 +109,14 @@ public class MySQLJDBCDAOFactory extends DAOFactory{
     }
 
     @Override
-    public SingoloDAO getSingoloDAO() {
-        return new SingoloDAOMySQLJDBCImpl(connection);
+    public Acquista_abbDAO getAcquista_abbDAO() {
+        return new Acquista_abbDAOMySQLJDBCImpl(connection);
     }
+
+    @Override
+    public Utilizzo_abbDAO getUtilizzo_abbDAO() {
+        return new Utilizzo_abbDAOMySQLJDBCImpl(connection);
+    }
+
+
 }

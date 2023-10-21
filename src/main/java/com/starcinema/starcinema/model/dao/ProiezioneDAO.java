@@ -26,4 +26,6 @@ public interface ProiezioneDAO {
 
     public Proiezione findByDataOra(Date data_pro, Time ora_pro);
 
+    public List<Proiezione> findOraByOnlyData(Date data_pro);
+
 }

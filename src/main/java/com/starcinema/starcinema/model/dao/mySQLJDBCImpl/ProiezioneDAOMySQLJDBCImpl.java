@@ -219,6 +219,43 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         return proiezione;
     }
 
+    @Override
+    public List<Proiezione> findOraByOnlyData(Date data_pro) {
+        PreparedStatement ps;
+        Proiezione proiezione=null;
+        ArrayList<Proiezione> proiezioni = new ArrayList<Proiezione>();
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM proiezione "
+                    + " WHERE "
+                    + "    data_pro = ? "
+                    + " ORDER BY ora_pro ASC ";
+
+
+            ps = conn.prepareStatement(sql);
+            java.sql.Date dataProiezioneSQL = new java.sql.Date(data_pro.getTime());
+            ps.setDate(1, dataProiezioneSQL);
+
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                proiezione = read(resultSet);
+                proiezioni.add(proiezione);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return proiezioni;
+    }
+
     Proiezione read(ResultSet rs) {
         Proiezione proiezione = new Proiezione();
         Film film = new Film();

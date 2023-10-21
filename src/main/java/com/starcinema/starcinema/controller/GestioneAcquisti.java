@@ -1,9 +1,9 @@
 package com.starcinema.starcinema.controller;
 
-import com.starcinema.starcinema.model.dao.DAOFactory;
-import com.starcinema.starcinema.model.dao.FilmDAO;
-import com.starcinema.starcinema.model.dao.UtenteDAO;
+import com.starcinema.starcinema.model.dao.*;
+import com.starcinema.starcinema.model.mo.Composizione;
 import com.starcinema.starcinema.model.mo.Film;
+import com.starcinema.starcinema.model.mo.Sala;
 import com.starcinema.starcinema.model.mo.Utente;
 import com.starcinema.starcinema.services.config.Configuration;
 import com.starcinema.starcinema.services.logservice.LogService;
@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +45,8 @@ public class GestioneAcquisti {
             daoFactory.beginTransaction();
 
             Film film=null;
+            List<Composizione> composizioni=null;
+            Sala sala=null;
 
             String cod_film = request.getParameter("selectedcodfilm");
             if(cod_film != null){
@@ -52,6 +55,14 @@ public class GestioneAcquisti {
                 film = filmDAO.findByCodfilm(selectedcodfilm);
                 System.out.println(selectedcodfilm);
             }
+            Integer num_sala = Integer.parseInt(request.getParameter("num_sala"));
+            if(num_sala != null){
+                ComposizioneDAO composizioneDAO = daoFactory.getComposizioneDAO();
+                composizioni = composizioneDAO.findComposizioniByNum_sala(num_sala);
+
+                SalaDAO salaDAO = daoFactory.getSalaDAO();
+                sala = salaDAO.findSalaByNum_sala(num_sala);
+            }
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
@@ -59,6 +70,8 @@ public class GestioneAcquisti {
             request.setAttribute("loggedOn", loggedUtente != null);
             request.setAttribute("loggedUtente", loggedUtente);
             request.setAttribute("film", film);
+            request.setAttribute("composizioni", composizioni);
+            request.setAttribute("sala", sala);
             request.setAttribute("viewUrl", "gestioneAcquisti/sceltaposti");
 
         } catch (Exception e) {

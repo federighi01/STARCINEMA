@@ -18,6 +18,7 @@
     List<Film> films = (List<Film>) request.getAttribute("films");
     Film film = (Film) request.getAttribute("film");
     List<Film> filmsdp = (List<Film>) request.getAttribute("filmsdp");
+    List<Proiezione> pro = (List<Proiezione>) request.getAttribute("pro");
 
 %>
 <!DOCTYPE html>
@@ -232,6 +233,28 @@
             <a><b>Genere: </b><%=filmsdp.get(i).getGenere()%></a> <br>
             <a><b>Durata: </b><%=filmsdp.get(i).getDurata()%>'</a> <br>
 
+            <%
+                Date dataProiezione = null; // Inizializza la data di proiezione
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+                for (c = 0; c < pro.size(); c++) {
+                    // Controlla se il film e la data di proiezione corrispondono
+                    if (filmsdp.get(i).getCod_film() == pro.get(c).getFilm().getCod_film()) {
+                        if (dataProiezione == null || !dataProiezione.equals(pro.get(c).getData_pro())) {
+                            dataProiezione = pro.get(c).getData_pro();
+                            String data_pro = dateFormat.format(dataProiezione);
+            %>
+            <a><b>Data proiezione: </b><%= data_pro %></a><br>
+            <%
+                }
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                String ora_pro = timeFormat.format(pro.get(c).getOra_pro());
+            %>
+            <a><b>Ora proiezione: </b><%= ora_pro %></a><br>
+            <%
+                    }
+                }
+            %>
 
             <input type="hidden" name="filmId" value="<%=i%>">
             <input type="hidden" name="filmTitolo" value="<%=filmsdp.get(i).getTitolo()%>">

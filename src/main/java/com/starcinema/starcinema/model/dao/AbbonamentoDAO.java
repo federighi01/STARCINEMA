@@ -5,6 +5,8 @@ import com.starcinema.starcinema.model.mo.Abbonamento;
 public interface AbbonamentoDAO {
 
     public Abbonamento create(
+            Long cod_abb,
+            String PIN,
             Double prezzo,
             Integer num_ingressi
     );
