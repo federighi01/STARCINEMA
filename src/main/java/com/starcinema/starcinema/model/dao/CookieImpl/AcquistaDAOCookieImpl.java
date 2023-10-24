@@ -25,8 +25,6 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
         loggedAcquista.setBiglietto(biglietto);
         loggedAcquista.setFilm(film);
         loggedAcquista.setPosto(posto);
-        loggedAcquista.setData_acq(data_acq);
-        loggedAcquista.setMetodo_p(metodo_p);
 
         Cookie cookie;
         cookie = new Cookie("loggedAcquista", encode(loggedAcquista));
@@ -53,11 +51,27 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
         response.addCookie(cookie);
     }
 
+    @Override
+    public Acquista findLoggedAcquista() {
+        Cookie[] cookies = request.getCookies();
+        Acquista loggedAcquista = null;
+
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length && loggedAcquista == null; i++) {
+                if (cookies[i].getName().equals("loggedAcquista")) {
+                    loggedAcquista = decode(cookies[i].getValue());
+                }
+            }
+        }
+
+        return loggedAcquista;
+    }
+
     private String encode(Acquista loggedAcquista) {
 
         String encodedLoggedAcquista;
         encodedLoggedAcquista = loggedAcquista.getUtente().getUsername() + "#" + loggedAcquista.getBiglietto().getCod_b()
-                + "#" + loggedAcquista.getFilm().getCod_film() + "#" + loggedAcquista.getPosto().getNum_posto() + "#" + loggedAcquista.getData_acq() + "#" + loggedAcquista.getMetodo_p();
+                + "#" + loggedAcquista.getFilm().getCod_film() + "#" + loggedAcquista.getPosto().getNum_posto();
         return encodedLoggedAcquista;
 
     }
@@ -68,11 +82,10 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
 
         String[] values = encodedLoggedAcquista.split("#");
 
-        loggedAcquista.setUtente(values[0]);
-        loggedAcquista.setBiglietto(values[1]);
-        loggedAcquista.getFilm(values[2]);
-        loggedAcquista.setData_acq(values[3]);
-        loggedAcquista.setMetodo_p(values[4]);
+        loggedAcquista.getUtente().setUsername(values[0]);
+        loggedAcquista.getBiglietto().setCod_b(Long.parseLong(values[1]));
+        loggedAcquista.getFilm().setCod_film(Long.parseLong(values[2]));
+        loggedAcquista.getPosto().setNum_posto(values[3]);
 
         return loggedAcquista;
 

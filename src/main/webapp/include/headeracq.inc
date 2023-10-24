@@ -10,7 +10,10 @@
             <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
           </li>
           <li <%=menuActiveLink.equals("Sceltaposti")?"class=\"active\"":""%>>
-            <a href="Dispatcher?controllerAction=GestioneAcquisti.view">Scelta posti</a>
+            <a href="Dispatcher?controllerAction=GestioneAcquisti.sceltaposti">Scelta posti</a>
+          </li>
+          <li <%=menuActiveLink.equals("Carrello")?"class=\"active\"":""%>>
+                      <a href="Dispatcher?controllerAction=GestioneAcquisti.carrello">Carrello</a>
           </li>
         </ul>
     </nav>

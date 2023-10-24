@@ -67,6 +67,14 @@ public class Utente {
     public Acquista getAcquisti(int index) { return this.acquisti[index]; }
     public void setAcquisti(int index, Acquista acquisti) { this.acquisti[index] = acquisti; }
 
+    public Acquista[] getAcquisti() {
+        return acquisti;
+    }
+
+    public void setAcquisti(Acquista[] acquisti) {
+        this.acquisti = acquisti;
+    }
+
     public Acquista_abb getAcquisti_abb(int index) { return this.acquisti_abb[index]; }
     public void setAcquisti_abb(int index, Acquista_abb acquisti_abb) { this.acquisti_abb[index] = acquisti_abb; }
 

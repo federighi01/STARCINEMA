@@ -93,6 +93,11 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public Acquista findLoggedAcquista() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     Acquista read(ResultSet rs) {
         Acquista acquista = new Acquista();
         Utente utente = new Utente();

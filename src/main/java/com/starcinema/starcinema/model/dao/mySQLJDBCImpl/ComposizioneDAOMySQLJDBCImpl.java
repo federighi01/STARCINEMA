@@ -65,6 +65,42 @@ public class ComposizioneDAOMySQLJDBCImpl implements ComposizioneDAO {
         return composizioni;
     }
 
+    @Override
+    public List<Composizione> findCompByPosto(Integer num_sala, String num_posto) {
+        PreparedStatement ps;
+        Composizione composizione;
+        ArrayList<Composizione> composizioni = new ArrayList<Composizione>();
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM composizione "
+                    + " WHERE "
+                    + "   numero_sala = ? AND"
+                    + "   numero_posto = ? ";
+            //+ " AND  occupato = 'N' ";
+
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, num_sala);
+            ps.setString(2, num_posto);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                composizione = read(resultSet);
+                composizioni.add(composizione);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return composizioni;
+    }
+
     Composizione read(ResultSet rs) {
 
         Composizione composizione = new Composizione();

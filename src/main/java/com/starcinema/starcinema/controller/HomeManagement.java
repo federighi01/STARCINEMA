@@ -885,13 +885,13 @@ public class HomeManagement {
 
             List<Proiezione> proiezioni=null;
             ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
-
+            Date data_proiezione=null;
 
             String formattedDate = request.getParameter("formattedDate");
             if(formattedDate != null){
                 System.out.println(formattedDate);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                Date data_proiezione = sdf.parse(formattedDate);
+                data_proiezione = sdf.parse(formattedDate);
                 System.out.println(data_proiezione);
 
                 proiezioni = proiezioneDAO.findOraByData(selectedcodfilm,data_proiezione);
@@ -922,7 +922,7 @@ public class HomeManagement {
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
-
+            System.out.println(formattedDate);
             request.setAttribute("loggedOn", loggedUtente != null);
             request.setAttribute("loggedUtente", loggedUtente);
             request.setAttribute("film", film);

@@ -63,6 +63,7 @@ public class Film {
     public Acquista getAcquisti(int index) { return this.acquisti[index]; }
     public void setAcquisti(int index, Acquista acquisti) { this.acquisti[index] = acquisti; }
 
+
     public Proiezione[] getProiezioni() {
         return proiezioni;
     }

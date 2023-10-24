@@ -10,7 +10,7 @@
 
 <%  int i = 0;
     String formattedTime;
-
+    String data_pro=null;
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
     Utente loggedUtente = (Utente) request.getAttribute("loggedUtente");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
@@ -48,11 +48,11 @@
         function menuData(selectedcodfilm){
             var selectedDateElement = document.getElementById("dataProMenu");
             var formattedDate = selectedDateElement.value;
-            //if (formattedDate !== '') {
+            if (formattedDate != null) {
                 document.menuDataForm.selectedcodfilm.value = selectedcodfilm;
                 document.menuDataForm.formattedDate.value = formattedDate;
                 document.menuDataForm.submit();
-            //}
+            }
         }
 
         function submitAcq(selectedcodfilm){
@@ -90,15 +90,18 @@
                 <!-- Menu a tendina per data_pro -->
                 <label for="dataProMenu">Seleziona Data di Proiezione:</label>
                 <select id="dataProMenu" name="formattedDate" onchange="menuData(<%=film.getCod_film()%>)">
-                    <%--<option value="">Seleziona una data</option>--%>
+                    <%if (formattedDate != null){%>
+                    <option value="<%=formattedDate%>"><%=formattedDate%></option><%} else {%>
+                    <option>Seleziona una data</option>
                     <%
                         Date lastDataPro = null; // Memorizza l'ultima data_pro stampata
                     %>
                     <% if (film.getProiezioni() != null) { %>
                     <% for (int c = 0; c < film.getProiezioni().length; c++) {
                         Proiezione proiezione = film.getProiezioni(c);
+                        if(proiezione != null){
                         Date dataPro = proiezione.getData_pro();
-
+                        System.out.println("Data Proiezione: " + dataPro);
                         // Controlla se la data_pro è diversa dall'ultima data_pro stampata
                         if (lastDataPro == null || !lastDataPro.equals(dataPro)) {
                             // Memorizza la nuova data_pro
@@ -107,12 +110,14 @@
                     <%
                         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                         if (dataPro != null) {
-                            formattedDate = dateFormat.format(dataPro);
+                            data_pro = dateFormat.format(dataPro);
                         }
                     %>
 
-                    <option value="<%= formattedDate %>"><%= formattedDate %></option>
-                    <%}%><%}%><%}%>
+                    <option value="<%= data_pro %>">
+                        <%= data_pro %></option>
+                    <%}%><%}%><%}%><%}%><%}%>
+
                 </select>
 
                 <!-- Menu a tendina per ora_pro -->

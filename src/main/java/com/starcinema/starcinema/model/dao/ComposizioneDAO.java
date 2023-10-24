@@ -17,4 +17,6 @@ public interface ComposizioneDAO {
     public void delete(Composizione composizione);
 
     public List<Composizione> findComposizioniByNum_sala(Integer num_sala);
+
+    public List<Composizione> findCompByPosto(Integer num_sala, String num_posto);
 }

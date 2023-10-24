@@ -83,6 +83,11 @@ public class Acquista_abbDAOMySQLJDBCImpl implements Acquista_abbDAO {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public Acquista_abb findLoggedAcquista_abb() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     Acquista_abb read(ResultSet rs) {
         Acquista_abb acquista_abb = new Acquista_abb();
         Utente utente = new Utente();

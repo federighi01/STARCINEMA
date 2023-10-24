@@ -17,6 +17,9 @@ public interface AcquistaDAO {
     );
 
     public void update(Acquista acquista);
+
     public void delete(Acquista acquista);
+
+    public Acquista findLoggedAcquista();
 
 }

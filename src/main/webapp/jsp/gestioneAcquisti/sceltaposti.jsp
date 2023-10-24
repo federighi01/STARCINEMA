@@ -18,6 +18,7 @@
   Sala sala = (Sala) request.getAttribute("sala");
 %>
 
+<!DOCTYPE html>
 <html>
 <head>
     <title>Scelta posti</title>
@@ -40,16 +41,20 @@
     Sala n. <%=sala.getNum_sala()%>
     Seleziona i posti (Massimo 5 selezioni)
     <br><br>
-
-    <form action="process_selection.jsp" method="post" onsubmit="return checkSelections();">
+  <section id="postiFormSection">
+    <form name="postiForm" action="Dispatcher" method="post" onsubmit="return checkSelections();">
       <%for (int i = 0; i < composizioni.size(); i++) {%>
       <label class="checkbox-label" title="<%= composizioni.get(i).getPosto().getNum_posto() %>">
-      <input type="checkbox" name="posto" value="<%= composizioni.get(i).getPosto().getNum_posto() %>">
+      <input type="checkbox" name="selectedposti" value="<%= composizioni.get(i).getPosto().getNum_posto() %>">
       </label>
       <%}%>
       <br><br>
-      <input type="submit" value="Conferma selezione">
+        <a> <input type="submit" class="button" value="Conferma selezione"/></a>
+      <input type="hidden" name="num_sala" value="<%=sala.getNum_sala()%>">
+      <input type="hidden" name="controllerAction" value="GestioneAcquisti.sceltaposti"/>
     </form>
+  </section>
+
   </main>
 </body>
 </html>

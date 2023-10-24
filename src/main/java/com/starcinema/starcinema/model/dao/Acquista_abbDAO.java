@@ -1,6 +1,7 @@
 package com.starcinema.starcinema.model.dao;
 
 import com.starcinema.starcinema.model.mo.Abbonamento;
+import com.starcinema.starcinema.model.mo.Acquista;
 import com.starcinema.starcinema.model.mo.Acquista_abb;
 import com.starcinema.starcinema.model.mo.Utente;
 
@@ -15,5 +16,8 @@ public interface Acquista_abbDAO {
     );
 
     public void update(Acquista_abb acquista_abb);
+
     public void delete(Acquista_abb acquista_abb);
+
+    public Acquista_abb findLoggedAcquista_abb();
 }
