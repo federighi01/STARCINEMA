@@ -1,6 +1,7 @@
 package com.starcinema.starcinema.model.dao.mySQLJDBCImpl;
 
 import com.starcinema.starcinema.model.dao.PostoDAO;
+import com.starcinema.starcinema.model.mo.Film;
 import com.starcinema.starcinema.model.mo.Posto;
 
 import java.sql.Connection;
@@ -48,6 +49,37 @@ public class PostoDAOMySQLJDBCImpl implements PostoDAO {
     @Override
     public void delete(Posto posto) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Posto findPosto(String num_posto) {
+        PreparedStatement ps;
+        Posto posto = null;
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM posto "
+                    + " WHERE "
+                    + "   num_posto = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, num_posto);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                posto = read(resultSet);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return posto;
     }
 
     Posto read(ResultSet rs) {

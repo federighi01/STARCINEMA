@@ -18,7 +18,7 @@ public class Utilizzo_abbDAOMySQLJDBCImpl implements Utilizzo_abbDAO {
     }
 
     @Override
-    public Utilizzo_abb create(Abbonamento abbonamento, Biglietto biglietto, Date data_utilizzo) {
+    public Utilizzo_abb create(Abbonamento abbonamento, Biglietto biglietto, String data_utilizzo) {
         PreparedStatement ps;
         Utilizzo_abb utilizzo_abb = new Utilizzo_abb();
         utilizzo_abb.setAbbonamento(abbonamento);
@@ -38,9 +38,7 @@ public class Utilizzo_abbDAOMySQLJDBCImpl implements Utilizzo_abbDAO {
             int i = 1;
             ps.setLong(i++, utilizzo_abb.getAbbonamento().getCod_abb());
             ps.setLong(i++, utilizzo_abb.getBiglietto().getCod_b());
-            // Utilizza java.sql.Date per la data
-            java.sql.Date dataUtilizzoSQL = new java.sql.Date(utilizzo_abb.getData_utilizzo().getTime());
-            ps.setDate(i++, dataUtilizzoSQL);
+            ps.setString(i++, utilizzo_abb.getData_utilizzo());
 
             ps.executeUpdate();
 
@@ -68,9 +66,7 @@ public class Utilizzo_abbDAOMySQLJDBCImpl implements Utilizzo_abbDAO {
             int i = 1;
             ps.setLong(i++, utilizzo_abb.getAbbonamento().getCod_abb());
             ps.setLong(i++, utilizzo_abb.getBiglietto().getCod_b());
-            // Utilizza java.sql.Date per la data
-            java.sql.Date dataUtilizzoSQL = new java.sql.Date(utilizzo_abb.getData_utilizzo().getTime());
-            ps.setDate(i++, dataUtilizzoSQL);
+            ps.setString(i++, utilizzo_abb.getData_utilizzo());
             ps.executeUpdate();
 
         }catch (SQLException e) {
@@ -99,7 +95,7 @@ public class Utilizzo_abbDAOMySQLJDBCImpl implements Utilizzo_abbDAO {
         } catch (SQLException sqle) {
         }
         try {
-            utilizzo_abb.setData_utilizzo(rs.getTimestamp("data_utilizzo"));
+            utilizzo_abb.setData_utilizzo(rs.getString("data_utilizzo"));
         } catch (SQLException sqle) {
         }
 

@@ -1,19 +1,16 @@
 package com.starcinema.starcinema.controller;
 
 import com.starcinema.starcinema.model.dao.*;
-import com.starcinema.starcinema.model.mo.Composizione;
-import com.starcinema.starcinema.model.mo.Film;
-import com.starcinema.starcinema.model.mo.Sala;
-import com.starcinema.starcinema.model.mo.Utente;
+import com.starcinema.starcinema.model.mo.*;
 import com.starcinema.starcinema.services.config.Configuration;
 import com.starcinema.starcinema.services.logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +19,7 @@ public class GestioneAcquisti {
     private GestioneAcquisti() {
     }
 
-    public static void view(HttpServletRequest request, HttpServletResponse response) {
+    public static void sceltapostiView(HttpServletRequest request, HttpServletResponse response) {
 
         DAOFactory sessionDAOFactory = null;
         DAOFactory daoFactory = null;
@@ -45,32 +42,28 @@ public class GestioneAcquisti {
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
             daoFactory.beginTransaction();
 
-            Film film=null;
+
             List<Composizione> composizioni=null;
             Sala sala=null;
 
-            String cod_film = request.getParameter("selectedcodfilm");
-            if(cod_film != null){
-                FilmDAO filmDAO = daoFactory.getFilmDAO();
-                Long selectedcodfilm = Long.parseLong(cod_film);
-                film = filmDAO.findByCodfilm(selectedcodfilm);
-                System.out.println(selectedcodfilm);
-            }
+
             Integer num_sala = Integer.parseInt(request.getParameter("num_sala"));
+            Long cod_pro = Long.parseLong(request.getParameter("cod_pro"));
             if(num_sala != null){
                 ComposizioneDAO composizioneDAO = daoFactory.getComposizioneDAO();
-                composizioni = composizioneDAO.findComposizioniByNum_sala(num_sala);
+                composizioni = composizioneDAO.findComposizioniByNum_sala(num_sala,cod_pro);
 
                 SalaDAO salaDAO = daoFactory.getSalaDAO();
                 sala = salaDAO.findSalaByNum_sala(num_sala);
             }
+
+            commonView(daoFactory, sessionDAOFactory, request);
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn", loggedUtente != null);
             request.setAttribute("loggedUtente", loggedUtente);
-            request.setAttribute("film", film);
             request.setAttribute("composizioni", composizioni);
             request.setAttribute("sala", sala);
             request.setAttribute("viewUrl", "gestioneAcquisti/sceltaposti");
@@ -117,9 +110,6 @@ public class GestioneAcquisti {
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
             daoFactory.beginTransaction();
 
-            /*FilmDAO filmDAO = daoFactory.getFilmDAO();
-            Long selectedcodfilm = Long.parseLong(request.getParameter("selectedcodfilm"));
-            Film film = filmDAO.findByCodfilm(selectedcodfilm);*/
 
             //Ricezione posti selezionati nel checkbox
             String[] selectedposti = request.getParameterValues("selectedposti");
@@ -130,6 +120,8 @@ public class GestioneAcquisti {
             if (numSalaParam != null && !numSalaParam.isEmpty()) {
                 num_sala = Integer.parseInt(numSalaParam);
 
+                Long cod_pro = Long.parseLong(request.getParameter("cod_pro"));
+
                 //ComposizioneDAO composizioneDAO = daoFactory.getComposizioneDAO();
                 if (selectedposti != null) {
                     composizioni = new ArrayList<Composizione>(); // Inizializza la lista prima di iniziare ad aggiungere elementi
@@ -137,7 +129,7 @@ public class GestioneAcquisti {
 
                     for (int i = 0; i < selectedposti.length; i++) {
                         if (selectedposti[i] != null && !selectedposti[i].isEmpty()) {
-                            List<Composizione> composizioniPosto = composizioneDAO.findCompByPosto(num_sala, selectedposti[i]);
+                            List<Composizione> composizioniPosto = composizioneDAO.findCompByPosto(num_sala, selectedposti[i], cod_pro);
                             if (composizioniPosto != null) {
                                 composizioni.addAll(composizioniPosto); // Aggiungi tutti gli elementi della lista a composizioni
                             }
@@ -147,6 +139,7 @@ public class GestioneAcquisti {
                 }
             }
 
+            commonView(daoFactory, sessionDAOFactory, request);
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
@@ -154,7 +147,6 @@ public class GestioneAcquisti {
             request.setAttribute("loggedOn", loggedUtente != null);
             request.setAttribute("loggedUtente", loggedUtente);
             request.setAttribute("composizioni", composizioni);
-            //request.setAttribute("film", film);
             request.setAttribute("viewUrl", "gestioneAcquisti/carrello");
 
         } catch (Exception e) {
@@ -181,7 +173,8 @@ public class GestioneAcquisti {
         DAOFactory sessionDAOFactory = null;
         DAOFactory daoFactory = null;
         Utente loggedUtente;
-
+        Posto posto=null;
+        //Proiezione proiezione=null;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -199,9 +192,72 @@ public class GestioneAcquisti {
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
             daoFactory.beginTransaction();
 
-            /*FilmDAO filmDAO = daoFactory.getFilmDAO();
+
+            UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
+            Utente utente = utenteDAO.findByUsername(loggedUtente.getUsername());
+            System.out.println(loggedUtente.getUsername());
+
+            FilmDAO filmDAO = daoFactory.getFilmDAO();
             Long selectedcodfilm = Long.parseLong(request.getParameter("selectedcodfilm"));
-            Film film = filmDAO.findByCodfilm(selectedcodfilm);*/
+            Film film = filmDAO.findByCodfilm(selectedcodfilm);
+            System.out.println(selectedcodfilm);
+
+
+            /*ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
+
+            String formattedDate = request.getParameter("formattedDate");
+            String formattedTime = request.getParameter("formattedTime");
+            if(formattedDate != null && formattedTime != null){
+                try {
+                    System.out.println(formattedDate);
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    Date data_proiezione = sdf.parse(formattedDate);
+
+                    System.out.println(formattedTime);
+                    SimpleDateFormat sdft = new SimpleDateFormat("HH:mm");
+                    java.util.Date parsedDate = sdft.parse(formattedTime);
+                    Time ora_pro = new Time(parsedDate.getTime());
+
+                    proiezione = proiezioneDAO.findByDataOra(data_proiezione, ora_pro);
+                }catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }*/
+
+
+            //Ricezione composizioni dal carrello
+            String[] payments = request.getParameterValues("payments");
+
+            PostoDAO postoDAO = daoFactory.getPostoDAO();
+            AcquistaDAO acquistaDAO = daoFactory.getAcquistaDAO();
+
+            Date data_acq = new Date();
+            System.out.println(data_acq);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String data_acquisto = sdf.format(data_acq);
+            System.out.println(data_acquisto);
+
+
+            Long cod_pro = Long.parseLong(request.getParameter("cod_pro"));
+            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
+            Proiezione proiezione = proiezioneDAO.findPro(cod_pro);
+
+            ComposizioneDAO composizioneDAO = daoFactory.getComposizioneDAO();
+            if(payments != null){
+                for (int i = 0; i < payments.length; i++) {
+                    posto = postoDAO.findPosto(payments[i]);
+                    acquistaDAO.create(
+                            utente,
+                            film,
+                            posto,
+                            proiezione,
+                            data_acquisto,
+                            "INTERO");
+                    composizioneDAO.update(payments[i],cod_pro);
+                    System.out.println(payments[i]);
+                }
+            }
 
 
             daoFactory.commitTransaction();
@@ -209,8 +265,7 @@ public class GestioneAcquisti {
 
             request.setAttribute("loggedOn", loggedUtente != null);
             request.setAttribute("loggedUtente", loggedUtente);
-            //request.setAttribute("film", film);
-            request.setAttribute("viewUrl", "gestioneAcquisti/carrello");
+            request.setAttribute("viewUrl", "gestioneAcquisti/acqcompletato");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -230,4 +285,55 @@ public class GestioneAcquisti {
         }
 
     }
+
+    //Metodo comune agli altri metodi del controller GestioneAcquisti
+    //Utile per passare informazioni al carrello
+    private static void commonView(DAOFactory daoFactory, DAOFactory sessionDAOFactory, HttpServletRequest request) {
+
+        Film film=null;
+        Proiezione proiezione=null;
+        Biglietto biglietto=null;
+
+        //Film da passare al carrello
+        String cod_film = request.getParameter("selectedcodfilm");
+        if(cod_film != null){
+            FilmDAO filmDAO = daoFactory.getFilmDAO();
+            Long selectedcodfilm = Long.parseLong(cod_film);
+            film = filmDAO.findByCodfilm(selectedcodfilm);
+
+            //Biglietto da passare al carrello
+            BigliettoDAO bigliettoDAO = daoFactory.getBigliettoDAO();
+            biglietto = bigliettoDAO.findBigliettoByCod_film(selectedcodfilm);
+
+        }
+
+
+        //Proiezione da passare al carrello
+        ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
+
+        String formattedDate = request.getParameter("formattedDate");
+        String formattedTime = request.getParameter("formattedTime");
+        if(formattedDate != null && formattedTime != null){
+            try {
+                System.out.println(formattedDate);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                Date data_proiezione = sdf.parse(formattedDate);
+
+                System.out.println(formattedTime);
+                SimpleDateFormat sdft = new SimpleDateFormat("HH:mm");
+                java.util.Date parsedDate = sdft.parse(formattedTime);
+                Time ora_pro = new Time(parsedDate.getTime());
+
+                proiezione = proiezioneDAO.findByDataOra(data_proiezione, ora_pro);
+            }catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        request.setAttribute("film", film);
+        request.setAttribute("proiezione", proiezione);
+        request.setAttribute("biglietto", biglietto);
+    }
+
 }

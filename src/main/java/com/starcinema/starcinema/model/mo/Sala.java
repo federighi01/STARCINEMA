@@ -7,7 +7,7 @@ public class Sala {
 
     // 1:N (proiezione)
     private Proiezione[] proiezioni;
-    // 1:N (composizioni)
+    // 1:N (composizione)
     private Composizione[] composizioni;
 
     public Integer getNum_sala() { return num_sala; }

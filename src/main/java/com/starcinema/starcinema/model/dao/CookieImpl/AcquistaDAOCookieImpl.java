@@ -19,12 +19,12 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
     }
 
     @Override
-    public Acquista create(Utente utente, Biglietto biglietto, Film film, Posto posto, Date data_acq, String metodo_p) {
+    public Acquista create(Utente utente, Film film, Posto posto, Proiezione proiezione, String data_acq, String metodo_p) {
         Acquista loggedAcquista = new Acquista();
         loggedAcquista.setUtente(utente);
-        loggedAcquista.setBiglietto(biglietto);
         loggedAcquista.setFilm(film);
         loggedAcquista.setPosto(posto);
+        loggedAcquista.setProiezione(proiezione);
 
         Cookie cookie;
         cookie = new Cookie("loggedAcquista", encode(loggedAcquista));
@@ -70,8 +70,9 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
     private String encode(Acquista loggedAcquista) {
 
         String encodedLoggedAcquista;
-        encodedLoggedAcquista = loggedAcquista.getUtente().getUsername() + "#" + loggedAcquista.getBiglietto().getCod_b()
-                + "#" + loggedAcquista.getFilm().getCod_film() + "#" + loggedAcquista.getPosto().getNum_posto();
+        encodedLoggedAcquista = loggedAcquista.getUtente().getUsername()
+                + "#" + loggedAcquista.getFilm().getCod_film() + "#" + loggedAcquista.getPosto().getNum_posto()
+                + "#" + loggedAcquista.getProiezione().getCod_pro();
         return encodedLoggedAcquista;
 
     }
@@ -83,9 +84,9 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
         String[] values = encodedLoggedAcquista.split("#");
 
         loggedAcquista.getUtente().setUsername(values[0]);
-        loggedAcquista.getBiglietto().setCod_b(Long.parseLong(values[1]));
-        loggedAcquista.getFilm().setCod_film(Long.parseLong(values[2]));
-        loggedAcquista.getPosto().setNum_posto(values[3]);
+        loggedAcquista.getFilm().setCod_film(Long.parseLong(values[1]));
+        loggedAcquista.getPosto().setNum_posto(values[2]);
+        loggedAcquista.getProiezione().setCod_pro(Long.parseLong(values[3]));
 
         return loggedAcquista;
 

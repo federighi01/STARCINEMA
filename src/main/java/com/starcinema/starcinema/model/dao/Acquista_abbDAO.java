@@ -12,7 +12,7 @@ public interface Acquista_abbDAO {
     public Acquista_abb create(
             Utente utente,
             Abbonamento abbonamento,
-            Date data_acq_abb
+            String data_acq_abb
     );
 
     public void update(Acquista_abb acquista_abb);

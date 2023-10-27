@@ -9,10 +9,10 @@ public interface AcquistaDAO {
 
     public Acquista create(
             Utente utente,
-            Biglietto biglietto,
             Film film,
             Posto posto,
-            Date data_acq,
+            Proiezione proiezione,
+            String data_acq,
             String metodo_p
     );
 

@@ -256,6 +256,37 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         return proiezioni;
     }
 
+    @Override
+    public Proiezione findPro(Long cod_pro) {
+        PreparedStatement ps;
+        Proiezione proiezione = null;
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM proiezione "
+                    + " WHERE "
+                    + "   cod_pro = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, cod_pro);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                proiezione = read(resultSet);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return proiezione;
+    }
+
     Proiezione read(ResultSet rs) {
         Proiezione proiezione = new Proiezione();
         Film film = new Film();

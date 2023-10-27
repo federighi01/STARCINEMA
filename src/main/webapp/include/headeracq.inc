@@ -9,11 +9,14 @@
           <li <%=menuActiveLink.equals("Home")?"class=\"active\"":""%>>
             <a href="Dispatcher?controllerAction=HomeManagement.view">Home</a>
           </li>
-          <li <%=menuActiveLink.equals("Sceltaposti")?"class=\"active\"":""%>>
+          <li style="pointer-events: none;" <%=menuActiveLink.equals("Metodoingresso")?"class=\"active\"":""%>>
+                      <a href="Dispatcher?controllerAction=GestioneAcquisti.sceltapostiView">Metodo ingresso</a>
+          </li>
+          <li style="pointer-events: none;" <%=menuActiveLink.equals("Sceltaposti")?"class=\"active\"":""%>>
             <a href="Dispatcher?controllerAction=GestioneAcquisti.sceltaposti">Scelta posti</a>
           </li>
-          <li <%=menuActiveLink.equals("Carrello")?"class=\"active\"":""%>>
-                      <a href="Dispatcher?controllerAction=GestioneAcquisti.carrello">Carrello</a>
+          <li style="pointer-events: none;" <%=menuActiveLink.equals("Carrello")?"class=\"active\"":""%>>
+                      <a href="Dispatcher?controllerAction=GestioneAcquisti.carrelloView">Carrello</a>
           </li>
         </ul>
     </nav>

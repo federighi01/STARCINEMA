@@ -11,4 +11,6 @@ public interface PostoDAO {
 
     public void update(Posto posto);
     public void delete(Posto posto);
+
+    public Posto findPosto(String num_posto);
 }

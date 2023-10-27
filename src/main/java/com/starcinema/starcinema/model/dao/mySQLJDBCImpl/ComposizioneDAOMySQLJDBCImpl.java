@@ -17,13 +17,33 @@ public class ComposizioneDAOMySQLJDBCImpl implements ComposizioneDAO {
         this.conn = conn;
     }
     @Override
-    public Composizione create(Sala sala, Posto posto) {
+    public Composizione create(Proiezione proiezione, Sala sala, Posto posto) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void update(Composizione composizione) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void update(String num_posto, Long cod_proiezione) {
+        PreparedStatement ps;
+
+        try {
+
+            String sql
+                    = " UPDATE composizione "
+                    + " SET "
+                    + "   occupato = 'S' "
+                    + " WHERE "
+                    + "   numero_posto = ? AND"
+                    + "   cod_proiezione = ? ";
+
+            ps = conn.prepareStatement(sql);
+            int i = 1;
+            ps.setString(i++, num_posto);
+            ps.setLong(i++, cod_proiezione);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -32,7 +52,7 @@ public class ComposizioneDAOMySQLJDBCImpl implements ComposizioneDAO {
     }
 
     @Override
-    public List<Composizione> findComposizioniByNum_sala(Integer num_sala) {
+    public List<Composizione> findComposizioniByNum_sala(Integer num_sala, Long cod_proiezione) {
         PreparedStatement ps;
         Composizione composizione;
         ArrayList<Composizione> composizioni = new ArrayList<Composizione>();
@@ -43,11 +63,12 @@ public class ComposizioneDAOMySQLJDBCImpl implements ComposizioneDAO {
                     = " SELECT * "
                     + "   FROM composizione "
                     + " WHERE "
-                    + "   numero_sala = ? ";
-                    //+ " AND  occupato = 'N' ";
+                    + "   numero_sala = ? "
+                    + " AND  cod_proiezione = ? ";
 
             ps = conn.prepareStatement(sql);
             ps.setInt(1, num_sala);
+            ps.setLong(2, cod_proiezione);
 
             ResultSet resultSet = ps.executeQuery();
 
@@ -66,7 +87,7 @@ public class ComposizioneDAOMySQLJDBCImpl implements ComposizioneDAO {
     }
 
     @Override
-    public List<Composizione> findCompByPosto(Integer num_sala, String num_posto) {
+    public List<Composizione> findCompByPosto(Integer num_sala, String num_posto, Long cod_proiezione) {
         PreparedStatement ps;
         Composizione composizione;
         ArrayList<Composizione> composizioni = new ArrayList<Composizione>();
@@ -78,12 +99,13 @@ public class ComposizioneDAOMySQLJDBCImpl implements ComposizioneDAO {
                     + "   FROM composizione "
                     + " WHERE "
                     + "   numero_sala = ? AND"
-                    + "   numero_posto = ? ";
-            //+ " AND  occupato = 'N' ";
+                    + "   numero_posto = ? AND"
+                    + "   cod_proiezione = ? ";
 
             ps = conn.prepareStatement(sql);
             ps.setInt(1, num_sala);
             ps.setString(2, num_posto);
+            ps.setLong(3, cod_proiezione);
 
             ResultSet resultSet = ps.executeQuery();
 
@@ -104,11 +126,17 @@ public class ComposizioneDAOMySQLJDBCImpl implements ComposizioneDAO {
     Composizione read(ResultSet rs) {
 
         Composizione composizione = new Composizione();
+        Proiezione proiezione = new Proiezione();
         Sala sala = new Sala();
         Posto posto = new Posto();
+        composizione.setProiezione(proiezione);
         composizione.setSala(sala);
         composizione.setPosto(posto);
 
+        try {
+            composizione.getProiezione().setCod_pro(rs.getLong("cod_proiezione"));
+        } catch (SQLException sqle) {
+        }
         try {
             composizione.getSala().setNum_sala(rs.getInt("numero_sala"));
         } catch (SQLException sqle) {

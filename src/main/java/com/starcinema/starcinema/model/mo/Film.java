@@ -20,8 +20,10 @@ public class Film {
     private Recensione[] recensioni;
     // 1:N (acquista)
     private Acquista[] acquisti;
-
+    // 1:N (proiezione)
     private Proiezione[] proiezioni;
+    // 1:N (biglietto)
+    private Biglietto[] biglietti;
 
     public Long getCod_film() { return cod_film; }
     public void setCod_film(Long cod_film) { this.cod_film = cod_film; }
@@ -60,6 +62,7 @@ public class Film {
     public Recensione getRecensioni(int index) { return this.recensioni[index]; }
     public void setRecensioni(int index, Recensione recensioni) { this.recensioni[index] = recensioni; }
 
+
     public Acquista getAcquisti(int index) { return this.acquisti[index]; }
     public void setAcquisti(int index, Acquista acquisti) { this.acquisti[index] = acquisti; }
 
@@ -75,4 +78,7 @@ public class Film {
     public Proiezione getProiezioni(int index) { return this.proiezioni[index]; }
     public void setProiezioni(int index, Proiezione proiezioni) { this.proiezioni[index] = proiezioni; }
 
+
+    public Biglietto getBiglietti(int index) { return this.biglietti[index]; }
+    public void setBiglietti(int index, Biglietto biglietti) { this.biglietti[index] = biglietti; }
 }

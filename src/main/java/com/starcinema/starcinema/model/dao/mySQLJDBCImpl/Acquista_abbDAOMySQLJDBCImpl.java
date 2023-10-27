@@ -18,7 +18,7 @@ public class Acquista_abbDAOMySQLJDBCImpl implements Acquista_abbDAO {
     }
 
     @Override
-    public Acquista_abb create(Utente utente, Abbonamento abbonamento, Date data_acq_abb) {
+    public Acquista_abb create(Utente utente, Abbonamento abbonamento, String data_acq_abb) {
         PreparedStatement ps;
         Acquista_abb acquista_abb = new Acquista_abb();
         acquista_abb.setUtente(utente);
@@ -38,9 +38,7 @@ public class Acquista_abbDAOMySQLJDBCImpl implements Acquista_abbDAO {
             int i = 1;
             ps.setString(i++, acquista_abb.getUtente().getUsername());
             ps.setLong(i++, acquista_abb.getAbbonamento().getCod_abb());
-            // Utilizza java.sql.Date per la data
-            java.sql.Date dataAcquisto_abbSQL = new java.sql.Date(acquista_abb.getData_acq_abb().getTime());
-            ps.setDate(i++, dataAcquisto_abbSQL);
+            ps.setString(i++, acquista_abb.getData_acq_abb());
 
             ps.executeUpdate();
 
@@ -68,9 +66,7 @@ public class Acquista_abbDAOMySQLJDBCImpl implements Acquista_abbDAO {
             int i = 1;
             ps.setString(i++, acquista_abb.getUtente().getUsername());
             ps.setLong(i++, acquista_abb.getAbbonamento().getCod_abb());
-            // Utilizza java.sql.Date per la data
-            java.sql.Date dataAcquisto_abbSQL = new java.sql.Date(acquista_abb.getData_acq_abb().getTime());
-            ps.setDate(i++, dataAcquisto_abbSQL);
+            ps.setString(i++, acquista_abb.getData_acq_abb());
             ps.executeUpdate();
 
         }catch (SQLException e) {
@@ -104,7 +100,7 @@ public class Acquista_abbDAOMySQLJDBCImpl implements Acquista_abbDAO {
         } catch (SQLException sqle) {
         }
         try {
-            acquista_abb.setData_acq_abb(rs.getTimestamp("data_acq_abb"));
+            acquista_abb.setData_acq_abb(rs.getString("data_acq_abb"));
         } catch (SQLException sqle) {
         }
 

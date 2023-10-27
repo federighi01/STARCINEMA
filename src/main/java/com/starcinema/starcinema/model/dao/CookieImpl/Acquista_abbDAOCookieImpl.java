@@ -22,7 +22,7 @@ public class Acquista_abbDAOCookieImpl implements Acquista_abbDAO {
     }
 
     @Override
-    public Acquista_abb create(Utente utente, Abbonamento abbonamento, Date data_acq_abb) {
+    public Acquista_abb create(Utente utente, Abbonamento abbonamento, String data_acq_abb) {
         Acquista_abb loggedAcquista_abb = new Acquista_abb();
         loggedAcquista_abb.setUtente(utente);
         loggedAcquista_abb.setAbbonamento(abbonamento);

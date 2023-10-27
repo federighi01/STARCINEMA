@@ -10,6 +10,10 @@ public class Proiezione {
     private Film film;
     // N:1 (sala)
     private Sala sala;
+    // 1:N (composizione)
+    private Composizione[] composizioni;
+    // 1:N (acquista)
+    private Acquista[] acquisti;
     private Date data_pro;
     private Time ora_pro;
     private boolean deleted;
@@ -32,4 +36,11 @@ public class Proiezione {
 
     public boolean isDeleted() { return deleted; }
     public void setDeleted(boolean deleted) { this.deleted = deleted; }
+
+    //Array
+    public Composizione getComposizioni(int index) { return this.composizioni[index]; }
+    public void setComposizioni(int index, Composizione composizioni) { this.composizioni[index] = composizioni; }
+
+    public Acquista getAcquisti(int index) { return this.acquisti[index]; }
+    public void setAcquisti(int index, Acquista acquisti) { this.acquisti[index] = acquisti; }
 }

@@ -28,4 +28,6 @@ public interface ProiezioneDAO {
 
     public List<Proiezione> findOraByOnlyData(Date data_pro);
 
+    public Proiezione findPro(Long cod_pro);
+
 }
