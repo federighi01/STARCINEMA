@@ -10,9 +10,11 @@ import java.util.Date;
 public interface Acquista_abbDAO {
 
     public Acquista_abb create(
+            Long cod_acq_abb,
             Utente utente,
             Abbonamento abbonamento,
             String data_acq_abb
+            //Integer num_ingressi
     );
 
     public void update(Acquista_abb acquista_abb);

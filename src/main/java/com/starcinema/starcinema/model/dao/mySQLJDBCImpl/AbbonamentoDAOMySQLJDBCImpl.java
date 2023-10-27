@@ -17,30 +17,26 @@ public class AbbonamentoDAOMySQLJDBCImpl implements AbbonamentoDAO {
         this.conn = conn;
     }
     @Override
-    public Abbonamento create(Long cod_abb, String PIN, Double prezzo, Integer num_ingressi) {
+    public Abbonamento create(Long cod_abb, Double prezzo) {
         PreparedStatement ps;
         Abbonamento abbonamento = new Abbonamento();
         abbonamento.setCod_abb(cod_abb);
-        abbonamento.setPIN(PIN);
         abbonamento.setPrezzo(prezzo);
-        abbonamento.setNum_ingressi(num_ingressi);
+
 
         try{
             String sql
                     = " INSERT INTO abbonamento "
                     + "   ( cod_abb,"
-                    + "     PIN,"
                     + "     prezzo,"
-                    + "     num_ingressi,"
                     + "   ) "
-                    + " VALUES (?,?,?,?)";
+                    + " VALUES (?,?)";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
             ps.setLong(i++, abbonamento.getCod_abb());
-            ps.setString(i++, abbonamento.getPIN());
             ps.setDouble(i++, abbonamento.getPrezzo());
-            ps.setInt(i++, abbonamento.getNum_ingressi());
+
 
             ps.executeUpdate();
 
@@ -69,17 +65,10 @@ public class AbbonamentoDAOMySQLJDBCImpl implements AbbonamentoDAO {
         } catch (SQLException sqle) {
         }
         try {
-            abbonamento.setPIN(rs.getString("PIN"));
-        } catch (SQLException sqle) {
-        }
-        try {
             abbonamento.setPrezzo(rs.getDouble("prezzo"));
         } catch (SQLException sqle) {
         }
-        try {
-            abbonamento.setNum_ingressi(rs.getInt("num_ingressi"));
-        } catch (SQLException sqle) {
-        }
+
 
         return abbonamento;
     }

@@ -18,27 +18,34 @@ public class Acquista_abbDAOMySQLJDBCImpl implements Acquista_abbDAO {
     }
 
     @Override
-    public Acquista_abb create(Utente utente, Abbonamento abbonamento, String data_acq_abb) {
+    public Acquista_abb create(Long cod_acq_abb, Utente utente, Abbonamento abbonamento, String data_acq_abb/*, Integer num_ingressi*/) {
         PreparedStatement ps;
         Acquista_abb acquista_abb = new Acquista_abb();
+        acquista_abb.setCod_acq_abb(cod_acq_abb);
         acquista_abb.setUtente(utente);
         acquista_abb.setAbbonamento(abbonamento);
         acquista_abb.setData_acq_abb(data_acq_abb);
+        //acquista_abb.setNum_ingressi(num_ingressi);
 
         try{
             String sql
                     = " INSERT INTO acquista "
-                    + "   ( username,"
+                    + "   ( cod_acq_abb,"
+                    + "     username,"
                     + "     cod_abb,"
                     + "     data_acq_abb,"
+                    + "     num_ingressi,"
+                    + "     deleted "
                     + "   ) "
-                    + " VALUES (?,?,?)";
+                    + " VALUES (?,?,?,?,'10','N')";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
+            ps.setLong(i++, acquista_abb.getCod_acq_abb());
             ps.setString(i++, acquista_abb.getUtente().getUsername());
             ps.setLong(i++, acquista_abb.getAbbonamento().getCod_abb());
             ps.setString(i++, acquista_abb.getData_acq_abb());
+            //ps.setInt(i++, acquista_abb.getNum_ingressi());
 
             ps.executeUpdate();
 
@@ -92,6 +99,10 @@ public class Acquista_abbDAOMySQLJDBCImpl implements Acquista_abbDAO {
         acquista_abb.setAbbonamento(abbonamento);
 
         try {
+            acquista_abb.setCod_acq_abb(rs.getLong("cod_acq_abb"));
+        } catch (SQLException sqle) {
+        }
+        try {
             acquista_abb.getUtente().setUsername(rs.getString("username"));
         } catch (SQLException sqle) {
         }
@@ -101,6 +112,14 @@ public class Acquista_abbDAOMySQLJDBCImpl implements Acquista_abbDAO {
         }
         try {
             acquista_abb.setData_acq_abb(rs.getString("data_acq_abb"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            acquista_abb.setNum_ingressi(rs.getInt("num_ingressi"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            acquista_abb.setDeleted(rs.getString("deleted").equals("Y"));
         } catch (SQLException sqle) {
         }
 

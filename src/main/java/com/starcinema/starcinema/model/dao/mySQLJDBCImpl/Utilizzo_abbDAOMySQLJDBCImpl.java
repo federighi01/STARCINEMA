@@ -18,26 +18,33 @@ public class Utilizzo_abbDAOMySQLJDBCImpl implements Utilizzo_abbDAO {
     }
 
     @Override
-    public Utilizzo_abb create(Abbonamento abbonamento, Biglietto biglietto, String data_utilizzo) {
+    public Utilizzo_abb create(Long cod_ut_abb, Abbonamento abbonamento, Biglietto biglietto, Acquista_abb acquista_abb,  String data_utilizzo) {
         PreparedStatement ps;
         Utilizzo_abb utilizzo_abb = new Utilizzo_abb();
+        utilizzo_abb.setCod_ut_abb(cod_ut_abb);
         utilizzo_abb.setAbbonamento(abbonamento);
         utilizzo_abb.setBiglietto(biglietto);
+        utilizzo_abb.setAcquista_abb(acquista_abb);
         utilizzo_abb.setData_utilizzo(data_utilizzo);
 
         try{
             String sql
                     = " INSERT INTO utilizzo_abb "
-                    + "   ( cod_abb,"
+                    + "   ( cod_ut_abb,"
+                    + "     cod_abb,"
                     + "     cod_b,"
+                    + "     cod_acq_abb,"
                     + "     data_utilizzo,"
+                    + "     deleted "
                     + "   ) "
-                    + " VALUES (?,?,?)";
+                    + " VALUES (?,?,?,?,?,'N')";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
+            ps.setLong(i++, utilizzo_abb.getCod_ut_abb());
             ps.setLong(i++, utilizzo_abb.getAbbonamento().getCod_abb());
             ps.setLong(i++, utilizzo_abb.getBiglietto().getCod_b());
+            ps.setLong(i++, utilizzo_abb.getAcquista_abb().getCod_acq_abb());
             ps.setString(i++, utilizzo_abb.getData_utilizzo());
 
             ps.executeUpdate();
@@ -83,9 +90,15 @@ public class Utilizzo_abbDAOMySQLJDBCImpl implements Utilizzo_abbDAO {
         Utilizzo_abb utilizzo_abb = new Utilizzo_abb();
         Abbonamento abbonamento = new Abbonamento();
         Biglietto biglietto = new Biglietto();
+        Acquista_abb acquista_abb = new Acquista_abb();
         utilizzo_abb.setAbbonamento(abbonamento);
         utilizzo_abb.setBiglietto(biglietto);
+        utilizzo_abb.setAcquista_abb(acquista_abb);
 
+        try {
+            utilizzo_abb.getAcquista_abb().setCod_acq_abb(rs.getLong("cod_ut_abb"));
+        } catch (SQLException sqle) {
+        }
         try {
             utilizzo_abb.getAbbonamento().setCod_abb(rs.getLong("cod_abb"));
         } catch (SQLException sqle) {
@@ -95,7 +108,15 @@ public class Utilizzo_abbDAOMySQLJDBCImpl implements Utilizzo_abbDAO {
         } catch (SQLException sqle) {
         }
         try {
+            utilizzo_abb.getAcquista_abb().setCod_acq_abb(rs.getLong("cod_acq_abb"));
+        } catch (SQLException sqle) {
+        }
+        try {
             utilizzo_abb.setData_utilizzo(rs.getString("data_utilizzo"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            utilizzo_abb.setDeleted(rs.getString("deleted").equals("Y"));
         } catch (SQLException sqle) {
         }
 
