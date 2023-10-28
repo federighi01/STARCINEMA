@@ -57,12 +57,14 @@
                        onclick="acqbiglietto(<%=film.getCod_film()%>,<%=proiezione.getSala().getNum_sala()%>,<%=proiezione.getCod_pro()%>)"/></a>
         </section><br>
 
-        <section id="acqabbButtonSection">
-            <a> <input type="button" id="acqabbButton" name="acqabbButton"
-                       class="button" value="Acquisto abbonamento" onclick="addpro()"/></a>
+        <section id="acqabbFormSection">
+            <form name="acqabbForm" action="Dispatcher" method="post">
+                <a> <input type="submit" class="button" value="Acquisto abbonamento"/></a>
+                <input type="hidden" name="controllerAction" value="GestioneAcquisti.acqabb"/>
+            </form>
         </section><br>
 
-        <section id="useabbButtonSection">
+        <section id="useabbFormSection">
             <a> <input type="button" id="useabbButton" name="useabbButton"
                        class="button" value="Utilizzo abbonamento" onclick="addpro()"/></a>
         </section>

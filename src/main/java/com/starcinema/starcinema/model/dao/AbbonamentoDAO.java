@@ -12,4 +12,8 @@ public interface AbbonamentoDAO {
     public void update(Abbonamento abbonamento);
     public void delete(Abbonamento abbonamento);
 
+    public Abbonamento findAbb();
+
+    public Abbonamento findAbbByCod(Long cod_abb);
+
 }

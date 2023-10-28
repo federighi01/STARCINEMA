@@ -3,6 +3,7 @@ package com.starcinema.starcinema.model.dao.mySQLJDBCImpl;
 import com.starcinema.starcinema.model.dao.AbbonamentoDAO;
 import com.starcinema.starcinema.model.mo.Abbonamento;
 import com.starcinema.starcinema.model.mo.Biglietto;
+import com.starcinema.starcinema.model.mo.Film;
 import com.starcinema.starcinema.model.mo.Posto;
 
 import java.sql.Connection;
@@ -55,6 +56,64 @@ public class AbbonamentoDAOMySQLJDBCImpl implements AbbonamentoDAO {
     @Override
     public void delete(Abbonamento abbonamento) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Abbonamento findAbb() {
+        PreparedStatement ps;
+        Abbonamento abbonamento = null;
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM abbonamento ";
+
+            ps = conn.prepareStatement(sql);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                abbonamento = read(resultSet);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return abbonamento;
+    }
+
+    @Override
+    public Abbonamento findAbbByCod(Long cod_abb) {
+        PreparedStatement ps;
+        Abbonamento abbonamento = null;
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM abbonamento "
+                    + " WHERE cod_abb = ? ";
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, cod_abb);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                abbonamento = read(resultSet);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return abbonamento;
     }
 
     Abbonamento read(ResultSet rs) {

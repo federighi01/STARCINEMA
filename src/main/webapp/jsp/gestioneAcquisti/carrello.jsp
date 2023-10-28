@@ -20,6 +20,7 @@
     Film film = (Film) request.getAttribute("film");
     Proiezione proiezione = (Proiezione) request.getAttribute("proiezione");
     Biglietto biglietto = (Biglietto) request.getAttribute("biglietto");
+    Abbonamento abbonamento = (Abbonamento) request.getAttribute("abbonamento");
 %>
 
 <!DOCTYPE html>
@@ -69,14 +70,25 @@
       <a> <input type="submit" class="button" value="Conferma acquisto"/></a>
               <input type="hidden" name="selectedcodfilm" value="<%=film.getCod_film()%>">
               <input type="hidden" name="cod_pro" value="<%=proiezione.getCod_pro()%>">
-              <%--<input type="hidden" name="formattedDate" value="<%=formattedDate%>"/>
-              <input type="hidden" name="formattedTime" value="<%=formattedTime%>"/>--%>
               <input type="hidden" name="controllerAction" value="GestioneAcquisti.carrello"/>
           </form>
       </section>
-      <% } else { %>
-        non ci sono elementi nel carrello :(
-      <% } %>
+
+      <section id="payabbFormSection">
+          <form name="payabbForm" action="Dispatcher" method="post">
+      <% } else if (abbonamento != null){ %>
+              Abbonamento valido per 10 ingressi<br>
+              <%= "Prezzo: " + abbonamento.getPrezzo() + "0 €" %><br><br>
+      <%= "TOTALE: " + abbonamento.getPrezzo() + "0 €" %>
+              <a> <input type="submit" class="button" value="Conferma acquisto"/></a>
+              <input type="hidden" name="cod_abb" value="<%=abbonamento.getCod_abb()%>">
+              <input type="hidden" name="controllerAction" value="GestioneAcquisti.carrelloabb"/>
+      <%} else {%>
+              non ci sono elementi nel carrello :(
+      <%}%>
+          </form>
+      </section>
+
   </main>
 </body>
 </html>

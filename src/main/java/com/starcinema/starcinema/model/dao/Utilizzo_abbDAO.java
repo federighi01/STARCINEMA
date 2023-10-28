@@ -7,7 +7,6 @@ import java.util.Date;
 public interface Utilizzo_abbDAO {
 
     public Utilizzo_abb create(
-            Long cod_ut_abb,
             Abbonamento abbonamento,
             Biglietto biglietto,
             Acquista_abb acquista_abb,

@@ -168,13 +168,69 @@ public class GestioneAcquisti {
 
     }
 
+
+    //Metodo per l'acquisto di un abbonamento
+    public static void acqabb(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory = null;
+        DAOFactory daoFactory = null;
+        Utente loggedUtente;
+
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters = new HashMap<String, Object>();
+            sessionFactoryParameters.put("request", request);
+            sessionFactoryParameters.put("response", response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUtente = sessionUtenteDAO.findLoggedUtente();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            //Sezione per visualizzazione info abbonamento
+            AbbonamentoDAO abbonamentoDAO = daoFactory.getAbbonamentoDAO();
+            Abbonamento abbonamento = abbonamentoDAO.findAbb();
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            //Passaggio abbonamento al carrello
+            request.setAttribute("loggedOn", loggedUtente != null);
+            request.setAttribute("loggedUtente", loggedUtente);
+            request.setAttribute("abbonamento", abbonamento);
+            request.setAttribute("viewUrl", "gestioneAcquisti/carrello");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) daoFactory.closeTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
     public static void carrello(HttpServletRequest request, HttpServletResponse response) {
 
         DAOFactory sessionDAOFactory = null;
         DAOFactory daoFactory = null;
         Utente loggedUtente;
         Posto posto=null;
-        //Proiezione proiezione=null;
 
         Logger logger = LogService.getApplicationLogger();
 
@@ -197,33 +253,11 @@ public class GestioneAcquisti {
             Utente utente = utenteDAO.findByUsername(loggedUtente.getUsername());
             System.out.println(loggedUtente.getUsername());
 
+
             FilmDAO filmDAO = daoFactory.getFilmDAO();
             Long selectedcodfilm = Long.parseLong(request.getParameter("selectedcodfilm"));
             Film film = filmDAO.findByCodfilm(selectedcodfilm);
             System.out.println(selectedcodfilm);
-
-
-            /*ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
-
-            String formattedDate = request.getParameter("formattedDate");
-            String formattedTime = request.getParameter("formattedTime");
-            if(formattedDate != null && formattedTime != null){
-                try {
-                    System.out.println(formattedDate);
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                    Date data_proiezione = sdf.parse(formattedDate);
-
-                    System.out.println(formattedTime);
-                    SimpleDateFormat sdft = new SimpleDateFormat("HH:mm");
-                    java.util.Date parsedDate = sdft.parse(formattedTime);
-                    Time ora_pro = new Time(parsedDate.getTime());
-
-                    proiezione = proiezioneDAO.findByDataOra(data_proiezione, ora_pro);
-                }catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-            }*/
 
 
             //Ricezione composizioni dal carrello
@@ -258,6 +292,80 @@ public class GestioneAcquisti {
                     System.out.println(payments[i]);
                 }
             }
+
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+            request.setAttribute("loggedOn", loggedUtente != null);
+            request.setAttribute("loggedUtente", loggedUtente);
+            request.setAttribute("viewUrl", "gestioneAcquisti/acqcompletato");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) daoFactory.closeTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
+    public static void carrelloabb(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory = null;
+        DAOFactory daoFactory = null;
+        Utente loggedUtente;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters = new HashMap<String, Object>();
+            sessionFactoryParameters.put("request", request);
+            sessionFactoryParameters.put("response", response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUtente = sessionUtenteDAO.findLoggedUtente();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+
+            UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
+            Utente utente = utenteDAO.findByUsername(loggedUtente.getUsername());
+            System.out.println(loggedUtente.getUsername());
+
+
+
+
+            //Sezione per acquisto dell'abbonamento
+            Date data_acq_abb = new Date();
+            SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String data_acquisto_abb = sdf2.format(data_acq_abb);
+            System.out.println(data_acquisto_abb);
+
+            Long cod_abb = Long.parseLong(request.getParameter("cod_abb"));
+            System.out.println(cod_abb);
+            AbbonamentoDAO abbonamentoDAO = daoFactory.getAbbonamentoDAO();
+            Abbonamento abbonamento = abbonamentoDAO.findAbbByCod(cod_abb);
+
+
+            Acquista_abbDAO acquista_abbDAO = daoFactory.getAcquista_abbDAO();
+            acquista_abbDAO.create(utente,abbonamento,data_acquisto_abb);
+
+
 
 
             daoFactory.commitTransaction();

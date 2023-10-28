@@ -22,9 +22,8 @@ public class Acquista_abbDAOCookieImpl implements Acquista_abbDAO {
     }
 
     @Override
-    public Acquista_abb create(Long cod_acq_abb, Utente utente, Abbonamento abbonamento, String data_acq_abb/*, Integer num_ingressi*/) {
+    public Acquista_abb create(Utente utente, Abbonamento abbonamento, String data_acq_abb/*, Integer num_ingressi*/) {
         Acquista_abb loggedAcquista_abb = new Acquista_abb();
-        loggedAcquista_abb.setCod_acq_abb(cod_acq_abb);
         loggedAcquista_abb.setUtente(utente);
         loggedAcquista_abb.setAbbonamento(abbonamento);
         //loggedAcquista_abb.setNum_ingressi(num_ingressi);
@@ -73,8 +72,7 @@ public class Acquista_abbDAOCookieImpl implements Acquista_abbDAO {
     private String encode(Acquista_abb loggedAcquista_abb) {
 
         String encodedLoggedAcquista_abb;
-        encodedLoggedAcquista_abb = loggedAcquista_abb.getUtente().getUsername() + "#" + loggedAcquista_abb.getAbbonamento().getCod_abb()
-                + "#" + loggedAcquista_abb.getCod_acq_abb();
+        encodedLoggedAcquista_abb = loggedAcquista_abb.getUtente().getUsername() + "#" + loggedAcquista_abb.getAbbonamento().getCod_abb();
         return encodedLoggedAcquista_abb;
 
     }
@@ -85,9 +83,8 @@ public class Acquista_abbDAOCookieImpl implements Acquista_abbDAO {
 
         String[] values = encodedLoggedAcquista_abb.split("#");
 
-        loggedAcquista_abb.setCod_acq_abb(Long.parseLong(values[0]));
-        loggedAcquista_abb.getUtente().setUsername(values[1]);
-        loggedAcquista_abb.getAbbonamento().setCod_abb(Long.parseLong(values[2]));
+        loggedAcquista_abb.getUtente().setUsername(values[0]);
+        loggedAcquista_abb.getAbbonamento().setCod_abb(Long.parseLong(values[1]));
 
         return loggedAcquista_abb;
 
