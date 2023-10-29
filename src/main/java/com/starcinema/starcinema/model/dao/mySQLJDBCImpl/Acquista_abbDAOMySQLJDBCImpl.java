@@ -42,7 +42,6 @@ public class Acquista_abbDAOMySQLJDBCImpl implements Acquista_abbDAO {
             ps.setString(i++, acquista_abb.getUtente().getUsername());
             ps.setLong(i++, acquista_abb.getAbbonamento().getCod_abb());
             ps.setString(i++, acquista_abb.getData_acq_abb());
-            //ps.setInt(i++, acquista_abb.getNum_ingressi());
 
             ps.executeUpdate();
 
@@ -61,16 +60,13 @@ public class Acquista_abbDAOMySQLJDBCImpl implements Acquista_abbDAO {
             String sql
                     = " UPDATE acquista_abb "
                     + " SET "
-                    + "   data_acq_abb = ?, "
+                    + "   num_ingressi = num_ingressi - 1 "
                     + " WHERE "
-                    + "   username = ? "
-                    + "   cod_abb = ? ";
+                    + "   cod_acq_abb = ? ";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
-            ps.setString(i++, acquista_abb.getUtente().getUsername());
-            ps.setLong(i++, acquista_abb.getAbbonamento().getCod_abb());
-            ps.setString(i++, acquista_abb.getData_acq_abb());
+            ps.setLong(i++, acquista_abb.getCod_acq_abb());
             ps.executeUpdate();
 
         }catch (SQLException e) {
@@ -80,12 +76,91 @@ public class Acquista_abbDAOMySQLJDBCImpl implements Acquista_abbDAO {
 
     @Override
     public void delete(Acquista_abb acquista_abb) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        PreparedStatement ps;
+
+        try {
+
+            String sql
+                    = " UPDATE acquista_abb "
+                    + " SET deleted = 'Y' "
+                    + " WHERE "
+                    + " cod_acq_abb = ? ";
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, acquista_abb.getCod_acq_abb());
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public Acquista_abb findLoggedAcquista_abb() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Acquista_abb findAcqByUsername(Utente utente) {
+        PreparedStatement ps;
+        Acquista_abb acquista_abb = null;
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM acquista_abb "
+                    + " WHERE "
+                    + "   username = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, utente.getUsername());
+
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                acquista_abb = read(resultSet);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return acquista_abb;
+    }
+
+    @Override
+    public Acquista_abb findAcqByCod_acq_abb(Long cod_acq_abb) {
+        PreparedStatement ps;
+        Acquista_abb acquista_abb = null;
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM acquista_abb "
+                    + " WHERE "
+                    + "   cod_acq_abb = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, cod_acq_abb);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                acquista_abb = read(resultSet);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return acquista_abb;
     }
 
     Acquista_abb read(ResultSet rs) {

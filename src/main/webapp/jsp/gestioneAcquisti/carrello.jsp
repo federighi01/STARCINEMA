@@ -21,6 +21,7 @@
     Proiezione proiezione = (Proiezione) request.getAttribute("proiezione");
     Biglietto biglietto = (Biglietto) request.getAttribute("biglietto");
     Abbonamento abbonamento = (Abbonamento) request.getAttribute("abbonamento");
+    Acquista_abb acquista_abb = (Acquista_abb) request.getAttribute("acquista_abb");
 %>
 
 <!DOCTYPE html>
@@ -65,12 +66,31 @@
                     %>
                 <% } %>
 
-      <br><br>
-      <%= "TOTALE: " + tot + "0 €" %>
-      <a> <input type="submit" class="button" value="Conferma acquisto"/></a>
-              <input type="hidden" name="selectedcodfilm" value="<%=film.getCod_film()%>">
-              <input type="hidden" name="cod_pro" value="<%=proiezione.getCod_pro()%>">
-              <input type="hidden" name="controllerAction" value="GestioneAcquisti.carrello"/>
+
+
+               <!-- Controllo se utente ha un abbonamento -->
+              <%if (acquista_abb != null && abbonamento != null) {%>
+              <br><br>
+              <%= "TOTALE: 0 €" %><br>
+              <%= "Utilizzo abbonamento, ingressi disponibili: " + acquista_abb.getNum_ingressi()%>
+                    <!-- Bottone per acquistare tramite abbonamento -->
+                    <a> <input type="submit" class="button" value="Conferma acquisto con abbonamento"/></a>
+                        <input type="hidden" name="selectedcodfilm" value="<%=film.getCod_film()%>">
+                        <input type="hidden" name="cod_pro" value="<%=proiezione.getCod_pro()%>">
+                        <input type="hidden" name="cod_b" value="<%=biglietto.getCod_b()%>">
+                        <input type="hidden" name="cod_abb" value="<%=abbonamento.getCod_abb()%>">
+                        <input type="hidden" name="cod_acq_abb" value="<%=acquista_abb.getCod_acq_abb()%>">
+                        <input type="hidden" name="num_ingressi" value="<%=acquista_abb.getNum_ingressi()%>">
+                        <input type="hidden" name="controllerAction" value="GestioneAcquisti.carrello_ut_abb"/>
+                <%} else {%>
+              <br><br>
+              <%= "TOTALE: " + tot + "0 €" %>
+                    <!-- Bottone per acquistare biglietto senza abbonamento -->
+                    <a> <input type="submit" class="button" value="Conferma acquisto"/></a>
+                        <input type="hidden" name="selectedcodfilm" value="<%=film.getCod_film()%>">
+                        <input type="hidden" name="cod_pro" value="<%=proiezione.getCod_pro()%>">
+                        <input type="hidden" name="controllerAction" value="GestioneAcquisti.carrello"/>
+              <%}%>
           </form>
       </section>
 

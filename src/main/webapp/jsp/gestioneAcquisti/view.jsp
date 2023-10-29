@@ -15,6 +15,7 @@
     Film film = (Film) request.getAttribute("film");
     Proiezione proiezione = (Proiezione) request.getAttribute("proiezione");
     Biglietto biglietto = (Biglietto) request.getAttribute("biglietto");
+    Acquista_abb acquista_abb = (Acquista_abb) request.getAttribute("acquista_abb");
 %>
 
 <!DOCTYPE html>
@@ -31,7 +32,12 @@
             document.acqbigliettoForm.submit();
         }
 
-
+        function acqbigliettoabb(selectedcodfilm,num_sala,cod_pro){
+            document.acqbigliettoabbForm.selectedcodfilm.value = selectedcodfilm;
+            document.acqbigliettoabbForm.num_sala.value = num_sala;
+            document.acqbigliettoabbForm.cod_pro.value = cod_pro;
+            document.acqbigliettoabbForm.submit();
+        }
 
 
     </script>
@@ -51,23 +57,33 @@
         %>
         <%= formattedDate %><br><%= formattedTime %><br>
         <%=proiezione.getSala().getNum_sala()%><br><%=proiezione.getCod_pro()%><%}%>
+
+
         <section id="bigliettoButtonSection">
             <a> <input type="button" id="bigliettoButton" name="bigliettoButton"
                        class="button" value="Acquisto biglietto"
                        onclick="acqbiglietto(<%=film.getCod_film()%>,<%=proiezione.getSala().getNum_sala()%>,<%=proiezione.getCod_pro()%>)"/></a>
         </section><br>
 
+        <!-- Se l'utente ha già un abbonamento, non può comprarne un'altro -->
+        <%if (acquista_abb == null || acquista_abb.isDeleted()) {%>
         <section id="acqabbFormSection">
             <form name="acqabbForm" action="Dispatcher" method="post">
                 <a> <input type="submit" class="button" value="Acquisto abbonamento"/></a>
                 <input type="hidden" name="controllerAction" value="GestioneAcquisti.acqabb"/>
             </form>
         </section><br>
+        <%}%>
 
+        <!-- Se l'utente possiede un abbonamento, può utilizzarlo-->
+        <%if (acquista_abb != null && !acquista_abb.isDeleted()) {%>
         <section id="useabbFormSection">
             <a> <input type="button" id="useabbButton" name="useabbButton"
-                       class="button" value="Utilizzo abbonamento" onclick="addpro()"/></a>
+                       class="button" value="Acquisto biglietto tramite abbonamento"
+                       onclick="acqbigliettoabb(<%=film.getCod_film()%>,<%=proiezione.getSala().getNum_sala()%>,<%=proiezione.getCod_pro()%>)"/></a>
         </section>
+        <%=acquista_abb.getCod_acq_abb()%>cr
+        <%}%>
 
         <form name="acqbigliettoForm" method="post" action="Dispatcher">
             <input type="hidden" name="selectedcodfilm"/>
@@ -76,6 +92,15 @@
             <input type="hidden" name="formattedDate" value="<%=formattedDate%>"/>
             <input type="hidden" name="formattedTime" value="<%=formattedTime%>"/>
             <input type="hidden" name="controllerAction" value="GestioneAcquisti.sceltapostiView"/>
+        </form>
+
+        <form name="acqbigliettoabbForm" method="post" action="Dispatcher">
+            <input type="hidden" name="selectedcodfilm"/>
+            <input type="hidden" name="num_sala"/>
+            <input type="hidden" name="cod_pro"/>
+            <input type="hidden" name="formattedDate" value="<%=formattedDate%>"/>
+            <input type="hidden" name="formattedTime" value="<%=formattedTime%>"/>
+            <input type="hidden" name="controllerAction" value="GestioneAcquisti.sceltapostiViewabb"/>
         </form>
 
     </main>

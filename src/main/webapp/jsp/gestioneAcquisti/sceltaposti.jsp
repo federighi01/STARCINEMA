@@ -19,6 +19,7 @@
   List<Composizione> composizioni = (List<Composizione>) request.getAttribute("composizioni");
   Sala sala = (Sala) request.getAttribute("sala");
   Biglietto biglietto = (Biglietto) request.getAttribute("biglietto");
+  Abbonamento abbonamento = (Abbonamento) request.getAttribute("abbonamento");
 %>
 
 <!DOCTYPE html>
@@ -36,6 +37,7 @@
       }
       return true;
     }
+
   </script>
 </head>
 <body>
@@ -58,6 +60,7 @@
     <%}%>
     Seleziona i posti (Massimo 5 selezioni)
     <br><br>
+
   <section id="postiFormSection">
     <form name="postiForm" action="Dispatcher" method="post" onsubmit="return checkSelections();">
       <%for (int i = 0; i < composizioni.size(); i++) {%>
@@ -66,19 +69,18 @@
           <% if (composizioni.get(i).isOccupato()) { %>
                disabled="disabled"
           <% } %>
-        >
-      </label>
-      <%}%>
-      <br><br>
+          <% } %>
+        <br><br>
+
         <a> <input type="submit" class="button" value="Conferma selezione"/></a>
-      <input type="hidden" name="num_sala" value="<%=sala.getNum_sala()%>">
-      <input type="hidden" name="selectedcodfilm" value="<%=film.getCod_film()%>">
-      <input type="hidden" name="cod_pro" value="<%=proiezione.getCod_pro()%>">
-      <input type="hidden" name="formattedDate" value="<%=formattedDate%>"/>
-      <input type="hidden" name="formattedTime" value="<%=formattedTime%>"/>
-      <input type="hidden" name="controllerAction" value="GestioneAcquisti.sceltaposti"/>
-    </form>
-  </section>
+        <input type="hidden" name="num_sala" value="<%=sala.getNum_sala()%>">
+        <input type="hidden" name="selectedcodfilm" value="<%=film.getCod_film()%>">
+        <input type="hidden" name="cod_pro" value="<%=proiezione.getCod_pro()%>">
+        <input type="hidden" name="formattedDate" value="<%=formattedDate%>"/>
+        <input type="hidden" name="formattedTime" value="<%=formattedTime%>"/>
+        <input type="hidden" name="controllerAction" value="GestioneAcquisti.sceltaposti"/>
+      </form>
+    </section>
 
   </main>
 </body>

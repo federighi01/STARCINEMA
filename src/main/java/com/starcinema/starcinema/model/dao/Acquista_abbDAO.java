@@ -21,4 +21,8 @@ public interface Acquista_abbDAO {
     public void delete(Acquista_abb acquista_abb);
 
     public Acquista_abb findLoggedAcquista_abb();
+
+    public Acquista_abb findAcqByUsername(Utente utente);
+
+    public Acquista_abb findAcqByCod_acq_abb(Long cod_acq_abb);
 }

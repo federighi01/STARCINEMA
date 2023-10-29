@@ -17,4 +17,6 @@ public interface BigliettoDAO {
 
     public Biglietto findBigliettoByCod_film(Long cod_film);
 
+    public Biglietto findBigliettoByCod_b(Long cod_b);
+
 }

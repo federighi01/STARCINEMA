@@ -93,6 +93,37 @@ public class BigliettoDAOMySQLJDBCImpl implements BigliettoDAO {
         return biglietto;
     }
 
+    @Override
+    public Biglietto findBigliettoByCod_b(Long cod_b) {
+        PreparedStatement ps;
+        Biglietto biglietto = null;
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM biglietto "
+                    + " WHERE "
+                    + "   cod_b = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, cod_b);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                biglietto = read(resultSet);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return biglietto;
+    }
+
     Biglietto read(ResultSet rs) {
 
         Biglietto biglietto = new Biglietto();

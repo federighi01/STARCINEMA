@@ -69,6 +69,16 @@ public class Acquista_abbDAOCookieImpl implements Acquista_abbDAO {
         return loggedAcquista_abb;
     }
 
+    @Override
+    public Acquista_abb findAcqByUsername(Utente utente) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Acquista_abb findAcqByCod_acq_abb(Long cod_acq_abb) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     private String encode(Acquista_abb loggedAcquista_abb) {
 
         String encodedLoggedAcquista_abb;

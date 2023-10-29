@@ -1000,6 +1000,12 @@ public class HomeManagement {
                 proiezione = proiezioneDAO.findByDataOra(data_proiezione,ora_pro);
             }
 
+            //Gestisco qui l'acquisto abbonamento
+            //Se l'utente loggato detiene un abbonamento, gli sblocca il bottone
+            //'acquisto biglietto tramite abbonamento' in gestioneAcquisti/view, altrimenti no
+            Acquista_abbDAO acquista_abbDAO = daoFactory.getAcquista_abbDAO();
+            Acquista_abb acquista_abb = acquista_abbDAO.findAcqByUsername(loggedUtente);
+
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
@@ -1008,6 +1014,7 @@ public class HomeManagement {
             request.setAttribute("loggedUtente", loggedUtente);
             request.setAttribute("film", film);
             request.setAttribute("proiezione", proiezione);
+            request.setAttribute("acquista_abb", acquista_abb);
             request.setAttribute("viewUrl", "gestioneAcquisti/view");
 
         } catch (Exception e) {
