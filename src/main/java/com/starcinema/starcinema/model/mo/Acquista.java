@@ -14,6 +14,7 @@ public class Acquista {
     private Proiezione proiezione;
     private String data_acq;
     private String metodo_p;
+    private String num_carta;
 
     public Utente getUtente() { return utente; }
     public void setUtente(Utente utente) { this.utente = utente; }
@@ -32,4 +33,7 @@ public class Acquista {
 
     public String getMetodo_p() { return metodo_p; }
     public void setMetodo_p(String metodo_p) { this.metodo_p = metodo_p; }
+
+    public String getNum_carta() { return num_carta; }
+    public void setNum_carta(String num_carta) { this.num_carta = num_carta; }
 }

@@ -48,7 +48,7 @@
         function menuData(selectedcodfilm){
             var selectedDateElement = document.getElementById("dataProMenu");
             var formattedDate = selectedDateElement.value;
-            if (formattedDate != null) {
+            if (formattedDate != null && formattedDate != "nul") {
                 document.menuDataForm.selectedcodfilm.value = selectedcodfilm;
                 document.menuDataForm.formattedDate.value = formattedDate;
                 document.menuDataForm.submit();
@@ -60,10 +60,12 @@
             var formattedDate = selectedDateElement.value;
             var selectedTimeElement = document.getElementById("oraProMenu");
             var formattedTime = selectedTimeElement.value;
+            if (formattedDate != null && formattedDate != "nul") {
             document.submitAcqForm.selectedcodfilm.value = selectedcodfilm;
             document.submitAcqForm.formattedDate.value = formattedDate;
             document.submitAcqForm.formattedTime.value = formattedTime;
             document.submitAcqForm.submit();
+            }
         }
 
     </script>
@@ -92,7 +94,7 @@
                 <select id="dataProMenu" name="formattedDate" onchange="menuData(<%=film.getCod_film()%>)">
                     <%if (formattedDate != null){%>
                     <option value="<%=formattedDate%>"><%=formattedDate%></option><%} else {%>
-                    <option>Seleziona una data</option>
+                    <option value="nul"></option>
                     <%
                         Date lastDataPro = null; // Memorizza l'ultima data_pro stampata
                     %>
@@ -114,8 +116,7 @@
                         }
                     %>
 
-                    <option value="<%= data_pro %>">
-                        <%= data_pro %></option>
+                    <option value="<%= data_pro %>"><%= data_pro %></option>
                     <%}%><%}%><%}%><%}%><%}%>
 
                 </select>

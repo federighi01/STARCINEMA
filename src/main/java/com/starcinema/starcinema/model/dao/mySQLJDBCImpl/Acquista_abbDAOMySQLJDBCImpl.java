@@ -18,13 +18,14 @@ public class Acquista_abbDAOMySQLJDBCImpl implements Acquista_abbDAO {
     }
 
     @Override
-    public Acquista_abb create(Utente utente, Abbonamento abbonamento, String data_acq_abb/*, Integer num_ingressi*/) {
+    public Acquista_abb create(Utente utente, Abbonamento abbonamento, String data_acq_abb, String metodo_p, String numero_carta) {
         PreparedStatement ps;
         Acquista_abb acquista_abb = new Acquista_abb();
         acquista_abb.setUtente(utente);
         acquista_abb.setAbbonamento(abbonamento);
         acquista_abb.setData_acq_abb(data_acq_abb);
-        //acquista_abb.setNum_ingressi(num_ingressi);
+        acquista_abb.setMetodo_p(metodo_p);
+        acquista_abb.setNumero_carta(numero_carta);
 
         try{
             String sql
@@ -32,16 +33,20 @@ public class Acquista_abbDAOMySQLJDBCImpl implements Acquista_abbDAO {
                     + "   ( username,"
                     + "     cod_abbonamento,"
                     + "     data_acq_abb,"
+                    + "     metodo_p,"
+                    + "     numero_carta,"
                     + "     num_ingressi,"
                     + "     deleted "
                     + "   ) "
-                    + " VALUES (?,?,?,'10','N')";
+                    + " VALUES (?,?,?,?,?,'10','N')";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
             ps.setString(i++, acquista_abb.getUtente().getUsername());
             ps.setLong(i++, acquista_abb.getAbbonamento().getCod_abb());
             ps.setString(i++, acquista_abb.getData_acq_abb());
+            ps.setString(i++, acquista_abb.getMetodo_p());
+            ps.setString(i++, acquista_abb.getNumero_carta());
 
             ps.executeUpdate();
 
@@ -184,6 +189,14 @@ public class Acquista_abbDAOMySQLJDBCImpl implements Acquista_abbDAO {
         }
         try {
             acquista_abb.setData_acq_abb(rs.getString("data_acq_abb"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            acquista_abb.setMetodo_p(rs.getString("metodo_p"));
+        } catch (SQLException sqle) {
+        }
+        try{
+            acquista_abb.setNumero_carta(rs.getString("numero_carta"));
         } catch (SQLException sqle) {
         }
         try {

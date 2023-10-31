@@ -215,6 +215,101 @@ public class HomeManagement {
 
     }
 
+    //Metodi per la gestione dei menù a tendina nella schedafilm.jsp
+    public static void menuData(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory = null;
+        DAOFactory daoFactory = null;
+        Utente loggedUtente;
+
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters = new HashMap<String, Object>();
+            sessionFactoryParameters.put("request", request);
+            sessionFactoryParameters.put("response", response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUtente = sessionUtenteDAO.findLoggedUtente();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            FilmDAO filmDAO = daoFactory.getFilmDAO();
+            Long selectedcodfilm = Long.parseLong(request.getParameter("selectedcodfilm"));
+            Film film = filmDAO.findByCodfilm(selectedcodfilm);
+            System.out.println(selectedcodfilm);
+
+            List<Proiezione> proiezioni=null;
+            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
+            Date data_proiezione=null;
+
+            String formattedDate = request.getParameter("formattedDate");
+            if(formattedDate != null){
+                System.out.println(formattedDate);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                data_proiezione = sdf.parse(formattedDate);
+                System.out.println(data_proiezione);
+
+                proiezioni = proiezioneDAO.findOraByData(selectedcodfilm,data_proiezione);
+
+            }else{
+
+                //Estrarre dati di proiezione per il film
+                proiezioni = proiezioneDAO.findData_proByCod_film(film);
+
+            }
+            int j;
+            //Conversione lista in array
+            Proiezione [] proiezioniArray = new Proiezione[proiezioni.size()];
+            System.out.println(proiezioni.size());
+            for(j=0;j<proiezioni.size();j++){
+                proiezioniArray[j] = proiezioni.get(j);
+            }
+            System.out.println(j);
+            film.setProiezioni(proiezioniArray);
+
+
+            //Sezione dedicata alle recensioni
+            List<Recensione> recensioni;
+
+            RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
+            //Estrazione informazioni recensioni per codice del film
+            recensioni = recensioneDAO.findRecensioni(film.getCod_film());
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+            System.out.println(formattedDate);
+            request.setAttribute("loggedOn", loggedUtente != null);
+            request.setAttribute("loggedUtente", loggedUtente);
+            request.setAttribute("film", film);
+            request.setAttribute("formattedDate", formattedDate);
+            request.setAttribute("recensioni", recensioni);
+            request.setAttribute("viewUrl", "homeManagement/schedafilm");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) daoFactory.closeTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
 
 
     //Metodi per inserimento e cancellazione recensioni
@@ -832,103 +927,6 @@ public class HomeManagement {
             request.setAttribute("applicationMessage", applicationMessage);
 
             request.setAttribute("viewUrl", "homeManagement/view");
-
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Controller Error", e);
-            try {
-                if (daoFactory != null) daoFactory.rollbackTransaction();
-                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
-            } catch (Throwable t) {
-            }
-            throw new RuntimeException(e);
-
-        } finally {
-            try {
-                if (daoFactory != null) daoFactory.closeTransaction();
-                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
-            } catch (Throwable t) {
-            }
-        }
-
-    }
-
-
-
-    //Metodi per la gestione dei menù a tendina nella schedafilm.jsp
-    public static void menuData(HttpServletRequest request, HttpServletResponse response) {
-
-        DAOFactory sessionDAOFactory = null;
-        DAOFactory daoFactory = null;
-        Utente loggedUtente;
-
-
-        Logger logger = LogService.getApplicationLogger();
-
-        try {
-
-            Map sessionFactoryParameters = new HashMap<String, Object>();
-            sessionFactoryParameters.put("request", request);
-            sessionFactoryParameters.put("response", response);
-            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
-            sessionDAOFactory.beginTransaction();
-
-            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
-            loggedUtente = sessionUtenteDAO.findLoggedUtente();
-
-            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
-            daoFactory.beginTransaction();
-
-            FilmDAO filmDAO = daoFactory.getFilmDAO();
-            Long selectedcodfilm = Long.parseLong(request.getParameter("selectedcodfilm"));
-            Film film = filmDAO.findByCodfilm(selectedcodfilm);
-            System.out.println(selectedcodfilm);
-
-            List<Proiezione> proiezioni=null;
-            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
-            Date data_proiezione=null;
-
-            String formattedDate = request.getParameter("formattedDate");
-            if(formattedDate != null){
-                System.out.println(formattedDate);
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                data_proiezione = sdf.parse(formattedDate);
-                System.out.println(data_proiezione);
-
-                proiezioni = proiezioneDAO.findOraByData(selectedcodfilm,data_proiezione);
-
-            }else{
-
-                //Estrarre dati di proiezione per il film
-                proiezioni = proiezioneDAO.findData_proByCod_film(film);
-
-            }
-            int j;
-            //Conversione lista in array
-            Proiezione [] proiezioniArray = new Proiezione[proiezioni.size()];
-            System.out.println(proiezioni.size());
-            for(j=0;j<proiezioni.size();j++){
-                proiezioniArray[j] = proiezioni.get(j);
-            }
-            System.out.println(j);
-            film.setProiezioni(proiezioniArray);
-
-
-            //Sezione dedicata alle recensioni
-            List<Recensione> recensioni;
-
-            RecensioneDAO recensioneDAO = daoFactory.getRecensioneDAO();
-            //Estrazione informazioni recensioni per codice del film
-            recensioni = recensioneDAO.findRecensioni(film.getCod_film());
-
-            daoFactory.commitTransaction();
-            sessionDAOFactory.commitTransaction();
-            System.out.println(formattedDate);
-            request.setAttribute("loggedOn", loggedUtente != null);
-            request.setAttribute("loggedUtente", loggedUtente);
-            request.setAttribute("film", film);
-            request.setAttribute("formattedDate", formattedDate);
-            request.setAttribute("recensioni", recensioni);
-            request.setAttribute("viewUrl", "homeManagement/schedafilm");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);

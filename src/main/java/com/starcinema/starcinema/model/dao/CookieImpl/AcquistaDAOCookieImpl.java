@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.Date;
+import java.util.List;
 
 public class AcquistaDAOCookieImpl implements AcquistaDAO {
 
@@ -19,7 +20,7 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
     }
 
     @Override
-    public Acquista create(Utente utente, Film film, Posto posto, Proiezione proiezione, String data_acq, String metodo_p) {
+    public Acquista create(Utente utente, Film film, Posto posto, Proiezione proiezione, String data_acq, String metodo_p, String num_carta) {
         Acquista loggedAcquista = new Acquista();
         loggedAcquista.setUtente(utente);
         loggedAcquista.setFilm(film);
@@ -65,6 +66,11 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
         }
 
         return loggedAcquista;
+    }
+
+    @Override
+    public List<Acquista> findAcqByUsername(Utente utente) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     private String encode(Acquista loggedAcquista) {

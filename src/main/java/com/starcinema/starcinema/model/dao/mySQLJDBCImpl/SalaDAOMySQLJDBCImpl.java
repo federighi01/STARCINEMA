@@ -1,12 +1,15 @@
 package com.starcinema.starcinema.model.dao.mySQLJDBCImpl;
 
 import com.starcinema.starcinema.model.dao.SalaDAO;
+import com.starcinema.starcinema.model.mo.Film;
 import com.starcinema.starcinema.model.mo.Sala;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SalaDAOMySQLJDBCImpl implements SalaDAO {
     Connection conn;
@@ -100,6 +103,36 @@ public class SalaDAOMySQLJDBCImpl implements SalaDAO {
         }
 
         return sala;
+    }
+
+    @Override
+    public List<Sala> findSale() {
+        PreparedStatement ps;
+        Sala sala;
+        ArrayList<Sala> sale = new ArrayList<Sala>();
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM sala ";
+
+            ps = conn.prepareStatement(sql);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                sala = read(resultSet);
+                sale.add(sala);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return sale;
     }
 
     Sala read(ResultSet rs) {

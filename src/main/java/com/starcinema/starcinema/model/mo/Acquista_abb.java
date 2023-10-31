@@ -10,6 +10,8 @@ public class Acquista_abb {
     // N:1 (abbonamento)
     private Abbonamento abbonamento;
     private String data_acq_abb;
+    private String metodo_p;
+    private String numero_carta;
     private Integer num_ingressi;
     private boolean deleted;
 
@@ -28,6 +30,12 @@ public class Acquista_abb {
 
     public String getData_acq_abb() { return data_acq_abb; }
     public void setData_acq_abb(String data_acq_abb) { this.data_acq_abb = data_acq_abb; }
+
+    public String getMetodo_p() { return metodo_p; }
+    public void setMetodo_p(String metodo_p) { this.metodo_p = metodo_p; }
+
+    public String getNumero_carta() { return numero_carta; }
+    public void setNumero_carta(String num_carta) { this.numero_carta = num_carta; }
 
     public Integer getNum_ingressi() { return num_ingressi; }
     public void setNum_ingressi(Integer num_ingressi) { this.num_ingressi = num_ingressi; }

@@ -85,11 +85,29 @@
                 <%} else {%>
               <br><br>
               <%= "TOTALE: " + tot + "0 €" %>
+
+              <!-- Menù a tendina per metodo di pagamento -->
+              <label for="metodopMenu">Seleziona metodo di pagamento:</label>
+              <select id="metodopMenu" name="metodo_p">
+                  <option value="Paypal">Paypal</option>
+                  <option value="PostePay">PostePay</option>
+                  <option value="Visa">Visa</option>
+                  <option value="Mastercard">Mastercard</option>
+              </select>
+
+              <div class="field clearfix">
+                  <label for="num_carta">Numero carta</label>
+                  <input type="text" id="num_carta" name="num_carta"
+                         value=""
+                         required size="20" maxlength="50"/>
+              </div><br>
+
                     <!-- Bottone per acquistare biglietto senza abbonamento -->
                     <a> <input type="submit" class="button" value="Conferma acquisto"/></a>
                         <input type="hidden" name="selectedcodfilm" value="<%=film.getCod_film()%>">
                         <input type="hidden" name="cod_pro" value="<%=proiezione.getCod_pro()%>">
-                        <input type="hidden" name="controllerAction" value="GestioneAcquisti.carrello"/>
+
+              <input type="hidden" name="controllerAction" value="GestioneAcquisti.carrello"/>
               <%}%>
           </form>
       </section>
@@ -100,6 +118,23 @@
               Abbonamento valido per 10 ingressi<br>
               <%= "Prezzo: " + abbonamento.getPrezzo() + "0 €" %><br><br>
       <%= "TOTALE: " + abbonamento.getPrezzo() + "0 €" %>
+
+              <!-- Menù a tendina per metodo di pagamento -->
+              <label for="metodopMenu">Seleziona metodo di pagamento:</label>
+              <select id="metodopMenu" name="metodo_p">
+                  <option value="Paypal">Paypal</option>
+                  <option value="PostePay">PostePay</option>
+                  <option value="Visa">Visa</option>
+                  <option value="Mastercard">Mastercard</option>
+              </select>
+
+              <div class="field clearfix">
+                  <label for="numero_carta">Numero carta</label>
+                  <input type="text" id="numero_carta" name="numero_carta"
+                         value=""
+                         required size="20" maxlength="50"/>
+              </div><br>
+
               <a> <input type="submit" class="button" value="Conferma acquisto"/></a>
               <input type="hidden" name="cod_abb" value="<%=abbonamento.getCod_abb()%>">
               <input type="hidden" name="controllerAction" value="GestioneAcquisti.carrelloabb"/>

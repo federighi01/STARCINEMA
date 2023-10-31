@@ -13,7 +13,8 @@ public interface AcquistaDAO {
             Posto posto,
             Proiezione proiezione,
             String data_acq,
-            String metodo_p
+            String metodo_p,
+            String num_carta
     );
 
     public void update(Acquista acquista);
@@ -21,5 +22,7 @@ public interface AcquistaDAO {
     public void delete(Acquista acquista);
 
     public Acquista findLoggedAcquista();
+
+    public List<Acquista> findAcqByUsername(Utente utente);
 
 }

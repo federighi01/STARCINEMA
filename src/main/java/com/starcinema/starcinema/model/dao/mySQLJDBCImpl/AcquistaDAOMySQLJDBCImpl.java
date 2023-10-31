@@ -7,7 +7,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
     Connection conn;
@@ -16,7 +18,7 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
         this.conn = conn;
     }
     @Override
-    public Acquista create(Utente utente, Film film, Posto posto, Proiezione proiezione, String data_acq, String metodo_p) {
+    public Acquista create(Utente utente, Film film, Posto posto, Proiezione proiezione, String data_acq, String metodo_p, String num_carta) {
         PreparedStatement ps;
         Acquista acquista = new Acquista();
         acquista.setUtente(utente);
@@ -25,6 +27,7 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
         acquista.setProiezione(proiezione);
         acquista.setData_acq(data_acq);
         acquista.setMetodo_p(metodo_p);
+        acquista.setNum_carta(num_carta);
 
         try{
             String sql
@@ -34,9 +37,10 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
                     + "     num_posto,"
                     + "     codice_proiezione,"
                     + "     data_acquisto,"
-                    + "     metodo_p"
+                    + "     metodo_p,"
+                    + "     num_carta"
                     + "   ) "
-                    + " VALUES (?,?,?,?,?,?)";
+                    + " VALUES (?,?,?,?,?,?,?)";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
@@ -46,6 +50,7 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
             ps.setLong(i++, acquista.getProiezione().getCod_pro());
             ps.setString(i++, acquista.getData_acq());
             ps.setString(i++, acquista.getMetodo_p());
+            ps.setString(i++, acquista.getNum_carta());
 
             ps.executeUpdate();
 
@@ -95,6 +100,39 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public List<Acquista> findAcqByUsername(Utente utente) {
+        PreparedStatement ps;
+        Acquista acquista;
+        ArrayList<Acquista> acquisti = new ArrayList<Acquista>();
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM acquista "
+                    + " WHERE "
+                    + "   id_utente = ? ";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, utente.getUsername());
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                acquista = read(resultSet);
+                acquisti.add(acquista);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return acquisti;
+    }
+
     Acquista read(ResultSet rs) {
         Acquista acquista = new Acquista();
         Utente utente = new Utente();
@@ -128,6 +166,10 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
         }
         try {
             acquista.setMetodo_p(rs.getString("metodo_p"));
+        } catch (SQLException sqle) {
+        }
+        try{
+            acquista.setNum_carta(rs.getString("num_carta"));
         } catch (SQLException sqle) {
         }
 

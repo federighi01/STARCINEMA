@@ -30,4 +30,8 @@ public interface ProiezioneDAO {
 
     public Proiezione findPro(Long cod_pro);
 
+    public List<Proiezione> findProByNum_sala(Integer num_sala);
+
+    public List<Proiezione> findOraBySalaData(Integer num_sala, Date data_pro);
+
 }

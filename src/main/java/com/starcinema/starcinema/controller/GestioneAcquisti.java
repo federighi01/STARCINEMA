@@ -448,6 +448,10 @@ public class GestioneAcquisti {
             ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
             Proiezione proiezione = proiezioneDAO.findPro(cod_pro);
 
+            String metodo_p = request.getParameter("metodo_p");
+            System.out.println(metodo_p);
+            String num_carta = request.getParameter("num_carta");
+
             ComposizioneDAO composizioneDAO = daoFactory.getComposizioneDAO();
             if(payments != null){
                 for (int i = 0; i < payments.length; i++) {
@@ -458,7 +462,8 @@ public class GestioneAcquisti {
                             posto,
                             proiezione,
                             data_acquisto,
-                            "INTERO");
+                            metodo_p,
+                            num_carta);
                     composizioneDAO.update(payments[i],cod_pro);
                     System.out.println(payments[i]);
                 }
@@ -533,10 +538,12 @@ public class GestioneAcquisti {
             AbbonamentoDAO abbonamentoDAO = daoFactory.getAbbonamentoDAO();
             Abbonamento abbonamento = abbonamentoDAO.findAbbByCod(cod_abb);
 
+            String metodo_p = request.getParameter("metodo_p");
+            System.out.println(metodo_p);
+            String numero_carta = request.getParameter("numero_carta");
 
             Acquista_abbDAO acquista_abbDAO = daoFactory.getAcquista_abbDAO();
-            acquista_abbDAO.create(utente,abbonamento,data_acquisto_abb);
-
+            acquista_abbDAO.create(utente,abbonamento,data_acquisto_abb,metodo_p,numero_carta);
 
 
 
@@ -619,6 +626,7 @@ public class GestioneAcquisti {
             ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
             Proiezione proiezione = proiezioneDAO.findPro(cod_pro);
 
+
             ComposizioneDAO composizioneDAO = daoFactory.getComposizioneDAO();
             if(payments != null){
                 for (int i = 0; i < payments.length; i++) {
@@ -629,7 +637,8 @@ public class GestioneAcquisti {
                             posto,
                             proiezione,
                             data_acquisto,
-                            "INTERO");
+                            "",
+                            "");
                     composizioneDAO.update(payments[i],cod_pro);
                     System.out.println(payments[i]);
                 }

@@ -12,8 +12,9 @@ public interface Acquista_abbDAO {
     public Acquista_abb create(
             Utente utente,
             Abbonamento abbonamento,
-            String data_acq_abb
-            //Integer num_ingressi
+            String data_acq_abb,
+            String metodo_p,
+            String numero_carta
     );
 
     public void update(Acquista_abb acquista_abb);

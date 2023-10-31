@@ -287,6 +287,79 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         return proiezione;
     }
 
+    @Override
+    public List<Proiezione> findProByNum_sala(Integer num_sala) {
+        PreparedStatement ps;
+        Proiezione proiezione=null;
+        ArrayList<Proiezione> proiezioni = new ArrayList<Proiezione>();
+
+        try {
+
+            String sql
+                    = " SELECT DISTINCT data_pro"
+                    + "   FROM proiezione "
+                    + " WHERE "
+                    + "    num_sala = ? ";
+
+
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, num_sala);
+
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                proiezione = read(resultSet);
+                proiezioni.add(proiezione);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return proiezioni;
+    }
+
+    @Override
+    public List<Proiezione> findOraBySalaData(Integer num_sala, Date data_pro) {
+        PreparedStatement ps;
+        Proiezione proiezione=null;
+        ArrayList<Proiezione> proiezioni = new ArrayList<Proiezione>();
+
+        try {
+
+            String sql
+                    = " SELECT ora_pro "
+                    + "   FROM proiezione "
+                    + " WHERE "
+                    + "    num_sala = ? AND"
+                    + "    data_pro = ? ";
+
+
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, num_sala);
+            java.sql.Date dataProiezioneSQL = new java.sql.Date(data_pro.getTime());
+            ps.setDate(2, dataProiezioneSQL);
+
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                proiezione = read(resultSet);
+                proiezioni.add(proiezione);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return proiezioni;
+    }
+
     Proiezione read(ResultSet rs) {
         Proiezione proiezione = new Proiezione();
         Film film = new Film();
