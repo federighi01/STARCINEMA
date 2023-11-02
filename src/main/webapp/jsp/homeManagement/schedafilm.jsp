@@ -143,35 +143,6 @@
         <%}%>
 
 
-        <%--<% if (film.getProiezioni() != null) { %>
-        <h2>Orari di Proiezione:</h2>
-        <%
-            Date lastDataPro = null; // Memorizza l'ultima data_pro stampata
-        %>
-        <% for (int c = 0; c < film.getProiezioni().length; c++) {
-            Proiezione proiezione = film.getProiezioni(c);
-            Date dataPro = proiezione.getData_pro();
-
-            // Controlla se la data_pro è diversa dall'ultima data_pro stampata
-            if (lastDataPro == null || !lastDataPro.equals(dataPro)) {
-                // Memorizza la nuova data_pro
-                lastDataPro = dataPro;
-        %>
-        <%
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            String formattedDate = dateFormat.format(dataPro);
-        %>
-        <h3>Data di Proiezione: <%= formattedDate %></h3>
-        <%}%>
-        <%
-            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-            String formattedTime = timeFormat.format(proiezione.getOra_pro());
-        %>
-        <a>Ora di Proiezione: <%= formattedTime %></a><br>
-        <%}%><%}%>--%>
-
-
-
 
         <%if (loggedOn) {%>
         <!-- Possibilità di inserire recensioni -->

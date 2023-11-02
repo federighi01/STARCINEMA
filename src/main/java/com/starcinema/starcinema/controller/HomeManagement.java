@@ -975,7 +975,7 @@ public class HomeManagement {
             FilmDAO filmDAO = daoFactory.getFilmDAO();
             Long selectedcodfilm = Long.parseLong(request.getParameter("selectedcodfilm"));
             Film film = filmDAO.findByCodfilm(selectedcodfilm);
-            //System.out.println(selectedcodfilm);
+
 
 
             Proiezione proiezione=null;
@@ -988,7 +988,7 @@ public class HomeManagement {
                 System.out.println(formattedDate);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                 Date data_proiezione = sdf.parse(formattedDate);
-                //System.out.println(data_proiezione);
+
 
                 System.out.println(formattedTime);
                 SimpleDateFormat sdft = new SimpleDateFormat("HH:mm");

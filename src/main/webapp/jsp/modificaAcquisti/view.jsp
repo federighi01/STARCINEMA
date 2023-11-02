@@ -11,6 +11,8 @@
 
     Utente utente = (Utente) request.getAttribute("utente");
     List<Acquista> acquisti = (List<Acquista>) request.getAttribute("acquisti");
+    List<Film> films = (List<Film>) request.getAttribute("films");
+    List<Proiezione> proiezioni = (List<Proiezione>) request.getAttribute("proiezioni");
 %>
 
 <!DOCTYPE html>
@@ -22,21 +24,31 @@
 <body>
 <%@include file="/include/header.inc"%>
     <main>
+
+        <section id="viewacq" class="clearfix">
+            <form name="viewacqForm" action="Dispatcher" method="post">
         <%if (acquisti != null) {%>
         <%= "Hai effettuato " + acquisti.size() + " acquisti"%><br><br><br>
             <%for (int i = 0; i < acquisti.size(); i++) {%>
                 <% c+=i;%>
                 <%= "Acquisto n° " + c%><br>
 
-                <b>Data di proiezione: </b> <%=acquisti.get(i).getProiezione().getData_pro()%><br>
-                <b>Ora di proiezione: </b> <%=acquisti.get(i).getProiezione().getOra_pro()%><br>
-                <b>Titolo del film: </b> <%=acquisti.get(i).getFilm().getTitolo()%><br>
-                <b>Posto acquistato: </b><%=acquisti.get(i).getPosto().getNum_posto()%><br><br>
+                <b>Data di proiezione: </b> <%=proiezioni.get(i).getData_pro()%><br>
+                <b>Ora di proiezione: </b> <%=proiezioni.get(i).getOra_pro()%><br>
+                <b>Titolo del film: </b> <%=films.get(i).getTitolo()%><br>
+                <b>Numero sala: </b> <%=proiezioni.get(i).getSala().getNum_sala()%><br>
+                <b>Posto acquistato: </b><%=acquisti.get(i).getPosto().getNum_posto()%>
+
+                <input type="submit" class="button" value="Modifica acquisto">
+                <input type="hidden" name="controllerAction" value="ModificaAcquisti.modview"/><br><br>
             <%}%>
         <%}%>
         <%if (acquisti.size() == 0) {%>
             Nessun acquisto effettuato.
         <%}%>
+
+            </form>
+        </section>
 
     </main>
 </body>

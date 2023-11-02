@@ -360,6 +360,121 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         return proiezioni;
     }
 
+    @Override
+    public List<Proiezione> findSalaByCod_film(Long cod_film) {
+        PreparedStatement ps;
+        Proiezione proiezione=null;
+        ArrayList<Proiezione> proiezioni = new ArrayList<Proiezione>();
+
+        try {
+
+            String sql
+                    = " SELECT DISTINCT num_sala "
+                    + "   FROM proiezione "
+                    + " WHERE "
+                    + "    codice_film = ? "
+                    + " ORDER BY num_sala ASC ";
+
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, cod_film);
+
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                proiezione = read(resultSet);
+                proiezioni.add(proiezione);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return proiezioni;
+    }
+
+    @Override
+    public List<Proiezione> findProBySalaFilm(Long cod_film, Integer num_sala) {
+        PreparedStatement ps;
+        Proiezione proiezione=null;
+        ArrayList<Proiezione> proiezioni = new ArrayList<Proiezione>();
+
+        try {
+
+            String sql
+                    = " SELECT DISTINCT data_pro "
+                    + "   FROM proiezione "
+                    + " WHERE "
+                    + "    codice_film = ? AND"
+                    + "     num_sala = ? "
+                    + " ORDER BY data_pro ASC ";
+
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, cod_film);
+            ps.setInt(2,num_sala);
+
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                proiezione = read(resultSet);
+                proiezioni.add(proiezione);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return proiezioni;
+    }
+
+    @Override
+    public List<Proiezione> findProBySalaFilmData(Long cod_film, Integer num_sala, Date data_pro) {
+        PreparedStatement ps;
+        Proiezione proiezione=null;
+        ArrayList<Proiezione> proiezioni = new ArrayList<Proiezione>();
+
+        try {
+
+            String sql
+                    = " SELECT DISTINCT ora_pro "
+                    + "   FROM proiezione "
+                    + " WHERE "
+                    + "    codice_film = ? AND"
+                    + "     num_sala = ? AND"
+                    + "     data_pro = ? "
+                    + " ORDER BY ora_pro ASC ";
+
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, cod_film);
+            ps.setInt(2,num_sala);
+            java.sql.Date dataProiezioneSQL = new java.sql.Date(data_pro.getTime());
+            ps.setDate(3, dataProiezioneSQL);
+
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                proiezione = read(resultSet);
+                proiezioni.add(proiezione);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return proiezioni;
+    }
+
     Proiezione read(ResultSet rs) {
         Proiezione proiezione = new Proiezione();
         Film film = new Film();

@@ -40,7 +40,6 @@
     }
 
     function mainOnLoadHandler() {
-      //document.querySelector("#newproButton").addEventListener("click", submitInspro);
       document.insForm.addEventListener("submit", submitIns());
 
       document.insForm.backButton.addEventListener("click", goback);
@@ -51,6 +50,8 @@
 <body>
 <%@include file="/include/header.inc"%>
 <main>
+
+  <!-- Se viene cliccato nella barra di navigazione "Nuovo spettacolo" -->
   <%if (selectedcodfilm == null) {%>
   <section id="insFormSection">
     <form name="insForm" action="Dispatcher" method="post">
@@ -122,6 +123,7 @@
   </section>
   <%}%>
 
+  <!-- Quando viene premuto il bottone "aggiungi proiezioni" nella home -->
   <%if (selectedcodfilm != null) {%>
   <section id="insproFormSection">
     <form name="insproForm" action="Dispatcher" method="post">

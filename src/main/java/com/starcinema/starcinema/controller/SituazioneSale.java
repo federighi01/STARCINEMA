@@ -45,26 +45,7 @@ public class SituazioneSale {
             daoFactory.beginTransaction();
 
 
-
-            List<Film> films;
-            List<Proiezione> proiezioni;
-
-            FilmDAO filmDAO = daoFactory.getFilmDAO();
-            films = filmDAO.findFilm();
-
-            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
-
-            for(int i=0;i< films.size();i++){
-                //Estrarre dati di proiezione per ogni film
-                proiezioni=proiezioneDAO.findData_proByCod_film(films.get(i));
-                //Conversione lista in array
-                Proiezione [] proiezioniArray = new Proiezione[proiezioni.size()];
-                for(int j=0;j<proiezioni.size();j++){
-                    proiezioniArray[j] = proiezioni.get(j);
-                }
-                films.get(i).setProiezioni(proiezioniArray);
-            }
-
+            //Trova tutte le sale disponibili
             List<Sala> sale = null;
             SalaDAO salaDAO = daoFactory.getSalaDAO();
             sale = salaDAO.findSale();
@@ -73,10 +54,9 @@ public class SituazioneSale {
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
-            //Passaggio informazioni a homeManagement/schedafilm
+
             request.setAttribute("loggedOn", loggedUtente != null);
             request.setAttribute("loggedUtente", loggedUtente);
-            request.setAttribute("films", films);
             request.setAttribute("sale", sale);
             request.setAttribute("viewUrl", "situazioneSale/view");
 
@@ -99,177 +79,8 @@ public class SituazioneSale {
 
     }
 
-    //Metodi per la gestione dei menù a tendina
-    /*public static void menuData(HttpServletRequest request, HttpServletResponse response) {
 
-        DAOFactory sessionDAOFactory = null;
-        DAOFactory daoFactory = null;
-        Utente loggedUtente;
-
-
-        Logger logger = LogService.getApplicationLogger();
-
-        try {
-
-            Map sessionFactoryParameters = new HashMap<String, Object>();
-            sessionFactoryParameters.put("request", request);
-            sessionFactoryParameters.put("response", response);
-            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
-            sessionDAOFactory.beginTransaction();
-
-            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
-            loggedUtente = sessionUtenteDAO.findLoggedUtente();
-
-            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
-            daoFactory.beginTransaction();
-
-            FilmDAO filmDAO = daoFactory.getFilmDAO();
-            Long selectedcodfilm = Long.parseLong(request.getParameter("selectedcodfilm"));
-            Film film = filmDAO.findByCodfilm(selectedcodfilm);
-            System.out.println(selectedcodfilm);
-
-            List<Proiezione> proiezioni=null;
-            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
-            Date data_proiezione=null;
-
-            String formattedDate = request.getParameter("formattedDate");
-            if(formattedDate != null){
-                System.out.println(formattedDate);
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                data_proiezione = sdf.parse(formattedDate);
-                System.out.println(data_proiezione);
-
-                proiezioni = proiezioneDAO.findOraByData(selectedcodfilm,data_proiezione);
-
-            }else{
-
-                //Estrarre dati di proiezione per il film
-                proiezioni = proiezioneDAO.findData_proByCod_film(film);
-
-            }
-            int j;
-            //Conversione lista in array
-            Proiezione [] proiezioniArray = new Proiezione[proiezioni.size()];
-            System.out.println(proiezioni.size());
-            for(j=0;j<proiezioni.size();j++){
-                proiezioniArray[j] = proiezioni.get(j);
-            }
-            System.out.println(j);
-            film.setProiezioni(proiezioniArray);
-
-
-
-            daoFactory.commitTransaction();
-            sessionDAOFactory.commitTransaction();
-
-
-            System.out.println(formattedDate);
-
-            request.setAttribute("loggedOn", loggedUtente != null);
-            request.setAttribute("loggedUtente", loggedUtente);
-            request.setAttribute("film", film);
-            request.setAttribute("formattedDate", formattedDate);
-            request.setAttribute("viewUrl", "situazioneSale/view");
-
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Controller Error", e);
-            try {
-                if (daoFactory != null) daoFactory.rollbackTransaction();
-                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
-            } catch (Throwable t) {
-            }
-            throw new RuntimeException(e);
-
-        } finally {
-            try {
-                if (daoFactory != null) daoFactory.closeTransaction();
-                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
-            } catch (Throwable t) {
-            }
-        }
-
-    }*/
-
-
-    public static void menuData(HttpServletRequest request, HttpServletResponse response) {
-
-        DAOFactory sessionDAOFactory = null;
-        DAOFactory daoFactory = null;
-        Utente loggedUtente;
-
-
-        Logger logger = LogService.getApplicationLogger();
-
-        try {
-
-            Map sessionFactoryParameters = new HashMap<String, Object>();
-            sessionFactoryParameters.put("request", request);
-            sessionFactoryParameters.put("response", response);
-            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
-            sessionDAOFactory.beginTransaction();
-
-            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
-            loggedUtente = sessionUtenteDAO.findLoggedUtente();
-
-            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
-            daoFactory.beginTransaction();
-
-
-
-            List<Proiezione> proiezioni_ora=null;
-            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
-
-
-            Integer num_sala = Integer.parseInt(request.getParameter("num_sala"));
-            System.out.println(num_sala);
-
-
-
-            String data_pro = request.getParameter("data_pro");
-            System.out.println(data_pro);
-            Date data_proiezione = null;
-            if(data_pro != null){
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                data_proiezione = sdf.parse(data_pro);
-                System.out.println(data_proiezione);
-
-
-                proiezioni_ora = proiezioneDAO.findOraBySalaData(num_sala,data_proiezione);
-                System.out.println(proiezioni_ora.size());
-            }
-
-
-
-            daoFactory.commitTransaction();
-            sessionDAOFactory.commitTransaction();
-
-
-            request.setAttribute("loggedOn", loggedUtente != null);
-            request.setAttribute("loggedUtente", loggedUtente);
-            request.setAttribute("proiezioni_ora", proiezioni_ora);
-            request.setAttribute("num_sala", num_sala);
-            request.setAttribute("data_pro", data_pro);
-            request.setAttribute("viewUrl", "situazioneSale/view");
-
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Controller Error", e);
-            try {
-                if (daoFactory != null) daoFactory.rollbackTransaction();
-                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
-            } catch (Throwable t) {
-            }
-            throw new RuntimeException(e);
-
-        } finally {
-            try {
-                if (daoFactory != null) daoFactory.closeTransaction();
-                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
-            } catch (Throwable t) {
-            }
-        }
-
-    }
-
+    //Metodo per la gestione del menù a tendina del numero di sala
     public static void menuSala(HttpServletRequest request, HttpServletResponse response) {
 
         DAOFactory sessionDAOFactory = null;
@@ -294,7 +105,7 @@ public class SituazioneSale {
             daoFactory.beginTransaction();
 
 
-
+            //Visualizzazione proiezione filtrata per numero di sala
             List<Proiezione> proiezioni=null;
             ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
 
@@ -336,6 +147,87 @@ public class SituazioneSale {
     }
 
 
+    //Metodo per la gestione del menù a tendina della data di proiezione
+    public static void menuData(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory = null;
+        DAOFactory daoFactory = null;
+        Utente loggedUtente;
+
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters = new HashMap<String, Object>();
+            sessionFactoryParameters.put("request", request);
+            sessionFactoryParameters.put("response", response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUtente = sessionUtenteDAO.findLoggedUtente();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+
+
+            List<Proiezione> proiezioni_ora=null;
+            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
+
+
+            Integer num_sala = Integer.parseInt(request.getParameter("num_sala"));
+            System.out.println(num_sala);
+
+
+            String data_pro = request.getParameter("data_pro");
+            System.out.println(data_pro);
+            Date data_proiezione = null;
+            if(data_pro != null){
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                data_proiezione = sdf.parse(data_pro);
+                System.out.println(data_proiezione);
+
+                //Trova l'ora di proiezione tramite numero di sala e data di proiezione
+                proiezioni_ora = proiezioneDAO.findOraBySalaData(num_sala,data_proiezione);
+                System.out.println(proiezioni_ora.size());
+            }
+
+
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+
+            request.setAttribute("loggedOn", loggedUtente != null);
+            request.setAttribute("loggedUtente", loggedUtente);
+            request.setAttribute("proiezioni_ora", proiezioni_ora);
+            request.setAttribute("num_sala", num_sala);
+            request.setAttribute("data_pro", data_pro);
+            request.setAttribute("viewUrl", "situazioneSale/view");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) daoFactory.closeTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
+
+    //Metodo per la visualizzazione della sala e relativi posti
     public static void cercaSala(HttpServletRequest request, HttpServletResponse response) {
 
         DAOFactory sessionDAOFactory = null;
@@ -390,20 +282,18 @@ public class SituazioneSale {
 
             if(ora_proiezione != null && data_proiezione != null){
 
+                //Trova proiezione filtrata per data e ora di proiezione
                 ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
                 Proiezione proiezione = proiezioneDAO.findByDataOra(data_proiezione,ora_proiezione);
 
+                //Trova i posti per numero sala, data e ora proiezione selezionati
                 ComposizioneDAO composizioneDAO = daoFactory.getComposizioneDAO();
                 composizioni = composizioneDAO.findComposizioniByNum_sala(num_sala, proiezione.getCod_pro());
 
-
             }
-
-
 
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
-
 
             request.setAttribute("loggedOn", loggedUtente != null);
             request.setAttribute("loggedUtente", loggedUtente);

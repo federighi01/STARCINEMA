@@ -47,20 +47,6 @@
             }
         }
 
-        /*function cercaSala(data_pro,num_sala) {
-            console.log("Valore di data_pro prima della submit:", data_pro);
-            var selectedOraElement = document.getElementById("OraProMenu");
-            var ora_pro = selectedOraElement.value;
-
-
-            document.cercaSalaForm.data_pro.value = data_pro;
-            document.cercaSalaForm.ora_pro.value = ora_pro;
-            document.cercaSalaForm.num_sala.value = num_sala;
-            document.cercaSalaForm.submit();
-        }*/
-
-
-
     </script>
 </head>
 <body>
@@ -160,7 +146,7 @@
         </form>
     </section>
 
-
+    <!-- Visualizzazione sala e relativi posti (dopo aver premuto il bottone) -->
     <%if (composizioni != null) { %>
 
     <%if (num_sala != null) { %>
@@ -195,8 +181,6 @@
                 <input type="hidden" name="ora_pro"/>
                 <input type="hidden" name="controllerAction" value="SituazioneSale.cercaSala"/>
             </form>
-
-
 
 </main>
 </body>

@@ -30,8 +30,18 @@ public interface ProiezioneDAO {
 
     public Proiezione findPro(Long cod_pro);
 
+
+    //Metodi utilizzati per SituazioneSale
     public List<Proiezione> findProByNum_sala(Integer num_sala);
 
     public List<Proiezione> findOraBySalaData(Integer num_sala, Date data_pro);
+
+
+    //Metodi utilizzati per ModificaAcquisti
+    public List<Proiezione> findSalaByCod_film(Long cod_film);
+
+    public List<Proiezione> findProBySalaFilm(Long cod_film, Integer num_sala);
+
+    public List<Proiezione> findProBySalaFilmData(Long cod_film, Integer num_sala, Date data_pro);
 
 }

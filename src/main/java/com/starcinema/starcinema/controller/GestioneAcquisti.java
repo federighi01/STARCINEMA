@@ -19,6 +19,7 @@ public class GestioneAcquisti {
     private GestioneAcquisti() {
     }
 
+    //Invio informazioni alla scelta dei posti per l'utente (biglietto singolo)
     public static void sceltapostiView(HttpServletRequest request, HttpServletResponse response) {
 
         DAOFactory sessionDAOFactory = null;
@@ -86,7 +87,7 @@ public class GestioneAcquisti {
         }
 
     }
-
+    //Invio informazioni alla scelta dei posti per l'utente (utilizzo abbonamento)
     public static void sceltapostiViewabb(HttpServletRequest request, HttpServletResponse response) {
 
         DAOFactory sessionDAOFactory = null;
@@ -165,6 +166,8 @@ public class GestioneAcquisti {
 
     }
 
+
+    //Invio informazioni al carrello (biglietto singolo)
     public static void sceltaposti(HttpServletRequest request, HttpServletResponse response) {
 
         DAOFactory sessionDAOFactory = null;
@@ -245,7 +248,7 @@ public class GestioneAcquisti {
         }
 
     }
-
+    //Invio informazioni al carrello (utilizzo abbonamento)
     public static void sceltapostiabb(HttpServletRequest request, HttpServletResponse response) {
 
         DAOFactory sessionDAOFactory = null;
