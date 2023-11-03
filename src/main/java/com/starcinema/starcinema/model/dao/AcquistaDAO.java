@@ -17,7 +17,7 @@ public interface AcquistaDAO {
             String num_carta
     );
 
-    public void update(Acquista acquista);
+    public void update(Utente utente, Long cod_film, String num_posto, Long cod_pro);
 
     public void delete(Acquista acquista);
 

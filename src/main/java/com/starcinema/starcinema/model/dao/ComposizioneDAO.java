@@ -22,4 +22,7 @@ public interface ComposizioneDAO {
     public List<Composizione> findComposizioniByNum_sala(Integer num_sala, Long cod_proiezione);
 
     public List<Composizione> findCompByPosto(Integer num_sala, String num_posto, Long cod_proiezione);
+
+    //Metodo utilizzato in ModificaAcquisti
+    public List<Composizione> findCompByCod_pro(Long cod_pro);
 }

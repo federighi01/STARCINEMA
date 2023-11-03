@@ -62,27 +62,31 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
     }
 
     @Override
-    public void update(Acquista acquista) {
+    public void update(Utente utente, Long cod_film, String num_posto, Long cod_pro) {
         PreparedStatement ps;
 
         try{
             String sql
-                    = " UPDATE acquista "
-                    + " SET "
-                    + "   metodo_p = ? "
-                    + " WHERE "
-                    + "   id_utente = ? AND"
-                    + "   num_posto = ? AND"
-                    + "   id_f = ? AND"
-                    + "   codice_proiezione = ? ";
+                    = "UPDATE acquista "
+                    + "SET "
+                    + "  id_f = ?, "
+                    + "  num_posto = ?, "
+                    + "  codice_proiezione = ? "
+                    + "WHERE "
+                    + "  id_utente = ? AND "
+                    + "  id_f = ? AND "
+                    + "  num_posto = ? AND "
+                    + "  codice_proiezione = ?";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
-            ps.setString(i++, acquista.getUtente().getUsername());
-            ps.setLong(i++, acquista.getFilm().getCod_film());
-            ps.setString(i++, acquista.getPosto().getNum_posto());
-            ps.setLong(i++, acquista.getProiezione().getCod_pro());
-            ps.setString(i++, acquista.getMetodo_p());
+            ps.setLong(i++, cod_film);
+            ps.setString(i++, num_posto);
+            ps.setLong(i++, cod_pro);
+            ps.setString(i++, utente.getUsername());
+            ps.setLong(i++, cod_film);
+            ps.setString(i++, num_posto);
+            ps.setLong(i++, cod_pro);
             ps.executeUpdate();
 
         }catch (SQLException e) {

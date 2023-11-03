@@ -475,6 +475,44 @@ public class ProiezioneDAOMySQLJDBCImpl implements ProiezioneDAO {
         return proiezioni;
     }
 
+    @Override
+    public Proiezione findProBySalaFilmDataOra(Long cod_film, Integer num_sala, Date data_pro, Time ora_pro) {
+        PreparedStatement ps;
+        Proiezione proiezione = null;
+
+        try {
+
+            String sql
+                    = " SELECT cod_pro "
+                    + "   FROM proiezione "
+                    + " WHERE "
+                    + "    codice_film = ? AND"
+                    + "     num_sala = ? AND"
+                    + "     data_pro = ? AND"
+                    + "     ora_pro = ? ";
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, cod_film);
+            ps.setInt(2,num_sala);
+            java.sql.Date dataProiezioneSQL = new java.sql.Date(data_pro.getTime());
+            ps.setDate(3, dataProiezioneSQL);
+            ps.setTime(4,ora_pro);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                proiezione = read(resultSet);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return proiezione;
+    }
+
     Proiezione read(ResultSet rs) {
         Proiezione proiezione = new Proiezione();
         Film film = new Film();

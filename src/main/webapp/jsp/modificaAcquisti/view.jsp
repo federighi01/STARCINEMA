@@ -27,7 +27,7 @@
 
         <section id="viewacq" class="clearfix">
             <form name="viewacqForm" action="Dispatcher" method="post">
-        <%if (acquisti != null) {%>
+        <%if (acquisti != null && !acquisti.isEmpty()) {%>
         <%= "Hai effettuato " + acquisti.size() + " acquisti"%><br><br><br>
             <%for (int i = 0; i < acquisti.size(); i++) {%>
                 <% c+=i;%>
@@ -42,8 +42,7 @@
                 <input type="submit" class="button" value="Modifica acquisto">
                 <input type="hidden" name="controllerAction" value="ModificaAcquisti.modview"/><br><br>
             <%}%>
-        <%}%>
-        <%if (acquisti.size() == 0) {%>
+        <%} else {%>
             Nessun acquisto effettuato.
         <%}%>
 

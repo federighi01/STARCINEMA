@@ -44,4 +44,6 @@ public interface ProiezioneDAO {
 
     public List<Proiezione> findProBySalaFilmData(Long cod_film, Integer num_sala, Date data_pro);
 
+    public Proiezione findProBySalaFilmDataOra(Long cod_film, Integer num_sala, Date data_pro, Time ora_pro);
+
 }

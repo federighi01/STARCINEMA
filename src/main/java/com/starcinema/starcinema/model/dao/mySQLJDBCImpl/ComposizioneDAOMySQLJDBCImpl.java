@@ -123,6 +123,39 @@ public class ComposizioneDAOMySQLJDBCImpl implements ComposizioneDAO {
         return composizioni;
     }
 
+    @Override
+    public List<Composizione> findCompByCod_pro(Long cod_pro) {
+        PreparedStatement ps;
+        Composizione composizione;
+        ArrayList<Composizione> composizioni = new ArrayList<Composizione>();
+
+        try {
+
+            String sql
+                    = " SELECT * "
+                    + "   FROM composizione "
+                    + " WHERE "
+                    + "   cod_proiezione = ? ";
+
+            ps = conn.prepareStatement(sql);
+            ps.setLong(1, cod_pro);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                composizione = read(resultSet);
+                composizioni.add(composizione);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return composizioni;
+    }
+
     Composizione read(ResultSet rs) {
 
         Composizione composizione = new Composizione();

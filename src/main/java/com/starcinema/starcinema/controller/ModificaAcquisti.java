@@ -1,15 +1,13 @@
 package com.starcinema.starcinema.controller;
 
 import com.starcinema.starcinema.model.dao.*;
-import com.starcinema.starcinema.model.mo.Acquista;
-import com.starcinema.starcinema.model.mo.Film;
-import com.starcinema.starcinema.model.mo.Proiezione;
-import com.starcinema.starcinema.model.mo.Utente;
+import com.starcinema.starcinema.model.mo.*;
 import com.starcinema.starcinema.services.config.Configuration;
 import com.starcinema.starcinema.services.logservice.LogService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
@@ -248,7 +246,7 @@ public class ModificaAcquisti {
             daoFactory.beginTransaction();
 
 
-            //Visualizzazione proiezione filtrata per numero di sala
+            //Visualizzazione proiezione filtrata per numero di sala e codice film
             List<Proiezione> proiezioni_data=null;
             ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
 
@@ -319,7 +317,7 @@ public class ModificaAcquisti {
             daoFactory.beginTransaction();
 
 
-            //Visualizzazione proiezione filtrata per numero di sala
+            //Visualizzazione proiezione filtrata per numero di sala, codice film e data proiezione
             List<Proiezione> proiezioni_ora=null;
             ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
 
@@ -356,6 +354,209 @@ public class ModificaAcquisti {
             request.setAttribute("titolo", titolo);
             request.setAttribute("data_pro", data_pro);
             request.setAttribute("viewUrl", "modificaAcquisti/modview");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) daoFactory.closeTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
+    //Metodo per la gestione del menù a tendina dell'ora di proiezione
+    public static void menuOra(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory = null;
+        DAOFactory daoFactory = null;
+        Utente loggedUtente;
+
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters = new HashMap<String, Object>();
+            sessionFactoryParameters.put("request", request);
+            sessionFactoryParameters.put("response", response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUtente = sessionUtenteDAO.findLoggedUtente();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+
+            //Visualizzazione proiezione filtrata per numero di sala, codice film e data proiezione
+            Proiezione proiezione=null;
+            List<Composizione> composizioni=null;
+            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
+            ComposizioneDAO composizioneDAO = daoFactory.getComposizioneDAO();
+
+
+            //Ricezione del titolo ed estrazione del codice del film
+            String titolo = request.getParameter("titolo");
+            System.out.println("titolo "+titolo);
+            FilmDAO filmDAO = daoFactory.getFilmDAO();
+            Film film = filmDAO.findByTitolo(titolo);
+
+            //Ricezione del numero della sala
+            Integer num_sala = Integer.parseInt(request.getParameter("num_sala"));
+            System.out.println("num sala "+num_sala);
+
+            //Ricezione della data e ora di proiezione selezionate
+            String data_pro = request.getParameter("data_pro");
+            String ora_pro = request.getParameter("ora_pro");
+            System.out.println(data_pro);
+            System.out.println(ora_pro);
+            if(data_pro != null && ora_pro != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date data_proiezione = sdf.parse(data_pro);
+                System.out.println(data_proiezione);
+
+                SimpleDateFormat sdft = new SimpleDateFormat("HH:mm");
+                java.util.Date parsedDate = sdft.parse(ora_pro);
+                Time ora_proiezione = new Time(parsedDate.getTime());
+                System.out.println(ora_proiezione);
+
+                proiezione = proiezioneDAO.findProBySalaFilmDataOra(film.getCod_film(), num_sala, data_proiezione, ora_proiezione);
+
+                //Trovo i posti delle sale filtrati per codice proiezione
+                composizioni = composizioneDAO.findCompByCod_pro(proiezione.getCod_pro());
+
+            }
+
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+
+            request.setAttribute("loggedOn", loggedUtente != null);
+            request.setAttribute("loggedUtente", loggedUtente);
+            request.setAttribute("composizioni", composizioni);
+            request.setAttribute("num_sala", num_sala);
+            request.setAttribute("titolo", titolo);
+            request.setAttribute("data_pro", data_pro);
+            request.setAttribute("ora_pro", ora_pro);
+            request.setAttribute("viewUrl", "modificaAcquisti/modview");
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+            } catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+
+        } finally {
+            try {
+                if (daoFactory != null) daoFactory.closeTransaction();
+                if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
+            } catch (Throwable t) {
+            }
+        }
+
+    }
+
+    //Metodo per l'aggiornamento dell'acquisto
+    public static void updatemod(HttpServletRequest request, HttpServletResponse response) {
+
+        DAOFactory sessionDAOFactory = null;
+        DAOFactory daoFactory = null;
+        Utente loggedUtente;
+
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            Map sessionFactoryParameters = new HashMap<String, Object>();
+            sessionFactoryParameters.put("request", request);
+            sessionFactoryParameters.put("response", response);
+            sessionDAOFactory = DAOFactory.getDAOFactory(Configuration.COOKIE_IMPL, sessionFactoryParameters);
+            sessionDAOFactory.beginTransaction();
+
+            UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
+            loggedUtente = sessionUtenteDAO.findLoggedUtente();
+
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+
+            //Visualizzazione proiezione filtrata per numero di sala, codice film e data proiezione
+            Proiezione proiezione=null;
+            List<Composizione> composizioni=null;
+            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
+            ComposizioneDAO composizioneDAO = daoFactory.getComposizioneDAO();
+
+
+            //Ricezione del titolo ed estrazione del codice del film
+            String titolo = request.getParameter("titolo");
+            System.out.println("titolo "+titolo);
+            FilmDAO filmDAO = daoFactory.getFilmDAO();
+            Film film = filmDAO.findByTitolo(titolo);
+
+            //Ricezione del numero della sala
+            Integer num_sala = Integer.parseInt(request.getParameter("num_sala"));
+            System.out.println("num sala "+num_sala);
+
+            //Ricezione del posto selezionato
+            String selectedposto = request.getParameter("selectedposto");
+            System.out.println("posto "+selectedposto);
+
+            //Ricezione della data e ora di proiezione selezionate
+            String data_pro = request.getParameter("data_pro");
+            String ora_pro = request.getParameter("ora_pro");
+            System.out.println(data_pro);
+            System.out.println(ora_pro);
+            if(data_pro != null && ora_pro != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date data_proiezione = sdf.parse(data_pro);
+                System.out.println(data_proiezione);
+
+                SimpleDateFormat sdft = new SimpleDateFormat("HH:mm");
+                java.util.Date parsedDate = sdft.parse(ora_pro);
+                Time ora_proiezione = new Time(parsedDate.getTime());
+                System.out.println(ora_proiezione);
+
+                //Ricavazione codice proiezione
+                proiezione = proiezioneDAO.findProBySalaFilmDataOra(film.getCod_film(), num_sala, data_proiezione, ora_proiezione);
+
+                System.out.println(loggedUtente);
+                System.out.println(film.getCod_film());
+                System.out.println(selectedposto);
+                System.out.println(proiezione.getCod_pro());
+
+
+                //Aggiornamento acquisto
+                AcquistaDAO acquistaDAO = daoFactory.getAcquistaDAO();
+                acquistaDAO.update(loggedUtente, film.getCod_film(), selectedposto, proiezione.getCod_pro());
+
+            }
+
+
+            daoFactory.commitTransaction();
+            sessionDAOFactory.commitTransaction();
+
+
+            request.setAttribute("loggedOn", loggedUtente != null);
+            request.setAttribute("loggedUtente", loggedUtente);
+
+            request.setAttribute("viewUrl", "modificaAcquisti/view");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);

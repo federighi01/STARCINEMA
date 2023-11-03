@@ -63,12 +63,15 @@
 
   <section id="postiFormSection">
     <form name="postiForm" action="Dispatcher" method="post" onsubmit="return checkSelections();">
+
       <%for (int i = 0; i < composizioni.size(); i++) {%>
       <label class="checkbox-label" title="<%= composizioni.get(i).getPosto().getNum_posto() %>">
         <input type="checkbox" name="selectedposti" value="<%= composizioni.get(i).getPosto().getNum_posto() %>"
           <% if (composizioni.get(i).isOccupato()) { %>
                disabled="disabled"
           <% } %>
+          <!-- Vai a capo dopo ogni 20 checkbox -->
+          <% if ((i + 1) % 20 == 0) { %><br/><% } %>
           <% } %>
         <br><br>
 

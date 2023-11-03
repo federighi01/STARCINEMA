@@ -1,9 +1,9 @@
 <%@page session="false"%>
 <%@ page import="com.starcinema.starcinema.model.mo.Film" %>
 <%@ page import="com.starcinema.starcinema.model.mo.Utente" %>
-<%@ page import="java.util.List" %>
 <%@ page import="com.starcinema.starcinema.model.mo.Proiezione" %>
-
+<%@ page import="com.starcinema.starcinema.model.mo.Composizione" %>
+<%@ page import="java.util.List" %>
 
 <%  int c = 0;
 
@@ -17,9 +17,11 @@
     List<Proiezione> proiezioni = (List<Proiezione>) request.getAttribute("proiezioni");
     List<Proiezione> proiezioni_data = (List<Proiezione>) request.getAttribute("proiezioni_data");
     List<Proiezione> proiezioni_ora = (List<Proiezione>) request.getAttribute("proiezioni_ora");
+    List<Composizione> composizioni = (List<Composizione>) request.getAttribute("composizioni");
     String titolo = (String) request.getAttribute("titolo");
     Integer num_sala = (Integer) request.getAttribute("num_sala");
     String data_pro = (String) request.getAttribute("data_pro");
+    String ora_pro = (String) request.getAttribute("ora_pro");
 
 %>
 
@@ -50,7 +52,6 @@
         }
 
         function menuData(titolo,num_sala){
-            console.log("jswb ",titolo);
             var selectedDataElement = document.getElementById("DataProMenu");
             var data_pro = selectedDataElement.value;
             if(data_pro != null && data_pro != "nul") {
@@ -61,6 +62,29 @@
             }
         }
 
+        function menuOra(titolo,num_sala,data_pro){
+            var selectedOraElement = document.getElementById("OraProMenu");
+            var ora_pro = selectedOraElement.value;
+            if(ora_pro != null && ora_pro != "nul") {
+                document.menuOraForm.ora_pro.value = ora_pro;
+                document.menuOraForm.titolo.value = titolo;
+                document.menuOraForm.num_sala.value = num_sala;
+                document.menuOraForm.data_pro.value = data_pro;
+                document.menuOraForm.submit();
+            }
+        }
+
+
+        function checkSelections() {
+            var selectedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            if (selectedCheckboxes.length > 1) {
+                alert("Puoi selezionare al massimo 1 posto.");
+                return false;
+            }
+            console.log("La funzione checkSelections() è stata chiamata.");
+            return true;
+        }
+
     </script>
 </head>
 <body>
@@ -68,7 +92,7 @@
     <main>
 
             <section id="modview" class="clearfix">
-                <form name="modviewForm" action="Dispatcher" method="post">
+                <form name="modviewForm" action="Dispatcher" method="post" onsubmit="return checkSelections();">
 
                     <!-- Visualizzazione film -->
                     <%if (films != null) {%>
@@ -160,7 +184,7 @@
                     <%}%>
                     <br>
 
-                    <!-- Viene visualizzato il numero della sala selezionato -->
+                    <!-- Viene visualizzato la data di proiezione selezionata -->
                     <%if (data_pro != null){%>
                     <label for="DataProMenu">Data proiezione </label>
                     <select id="DataProMenu" name="data_pro">
@@ -170,7 +194,7 @@
                     <br>
 
                     <label for="OraProMenu">Cerca per ora di calendario </label>
-                    <select id="OraProMenu" name="ora_pro" onchange="menuOra(<%=titolo%>,<%=num_sala%>,<%=data_pro%>)">
+                    <select id="OraProMenu" name="ora_pro" onchange="menuOra('<%=titolo%>','<%=num_sala%>','<%=data_pro%>')">
                         <option value="nul"></option>
                         <%for (c = 0; c < proiezioni_ora.size(); c++) {%>
                         <option value="<%=proiezioni_ora.get(c).getOra_pro()%>"><%=proiezioni_ora.get(c).getOra_pro()%></option>
@@ -179,8 +203,76 @@
                     <%}%>
 
 
+
+                    <!-- I posti della sala compaiono solo dopo aver
+             selezionato l'ora di proiezione -->
+                    <%if (composizioni != null) {%>
+                    <!-- Viene visualizzato il titolo del film selezionato -->
+                    <%if (titolo != null){%>
+                    <label for="TitolofilmsMenu">Inserisci titolo film </label>
+                    <select id="TitolofilmsMenu" name="titolo">
+                        <option value="<%=titolo%>"><%=titolo%></option>
+                    </select>
+                    <%}%>
+                    <br>
+
+                    <!-- Viene visualizzato il numero della sala selezionato -->
+                    <%if (num_sala != null){%>
+                    <label for="Num_salaMenu">Numero sala </label>
+                    <select id="Num_salaMenu" name="num_sala">
+                        <option value="<%=num_sala%>"><%=num_sala%></option>
+                    </select>
+                    <%}%>
+                    <br>
+
+                    <!-- Viene visualizzato la data di proiezione selezionata -->
+                    <%if (data_pro != null){%>
+                    <label for="DataProMenu">Data proiezione </label>
+                    <select id="DataProMenu" name="data_pro">
+                        <option value="<%=data_pro%>"><%=data_pro%></option>
+                    </select>
+                    <%}%>
+                    <br>
+
+                    <!-- Viene visualizzato il numero della sala selezionato -->
+                    <%if (ora_pro != null){%>
+                    <label for="OraProMenu">Ora proiezione </label>
+                    <select id="OraProMenu" name="ora_pro">
+                        <option value="<%=ora_pro%>"><%=ora_pro%></option>
+                    </select>
+                    <%}%>
+                    <br><br><br><br>
+
+                    Sala n. <%=num_sala%>
+
+                    <br><br>
+
+                    <section id="postiFormSection">
+                        <form name="postiForm" action="Dispatcher" method="post">
+                    <%for (int i = 0; i < composizioni.size(); i++) {%>
+                            <label class="checkbox-label" title="<%= composizioni.get(i).getPosto().getNum_posto() %>">
+                        <input type="checkbox" name="selectedposto" value="<%= composizioni.get(i).getPosto().getNum_posto() %>"
+                                <% if (composizioni.get(i).isOccupato()) { %>
+                               disabled="disabled"
+                    <% } %>
+                    <% } %>
+
+                            <a><input type="submit" class="button" value="Conferma modifiche"></a>
+                                <input type="hidden" name="titolo">
+                                <input type="hidden" name="num_sala">
+                                <input type="hidden" name="data_pro">
+                                <input type="hidden" name="ora_pro">
+                                <input type="hidden" name="controllerAction" value="ModificaAcquisti.updatemod"/>
+                        </form>
+                    </section>
+                    <%}%>
+
                 </form>
             </section>
+
+
+
+
 
         <form name="menuFilmForm" method="post" action="Dispatcher">
             <input type="hidden" name="titolo"/>
@@ -198,6 +290,14 @@
             <input type="hidden" name="titolo"/>
             <input type="hidden" name="num_sala"/>
             <input type="hidden" name="controllerAction" value="ModificaAcquisti.menuData"/>
+        </form>
+
+        <form name="menuOraForm" method="post" action="Dispatcher">
+            <input type="hidden" name="ora_pro"/>
+            <input type="hidden" name="titolo"/>
+            <input type="hidden" name="num_sala"/>
+            <input type="hidden" name="data_pro"/>
+            <input type="hidden" name="controllerAction" value="ModificaAcquisti.menuOra"/>
         </form>
 
     </main>

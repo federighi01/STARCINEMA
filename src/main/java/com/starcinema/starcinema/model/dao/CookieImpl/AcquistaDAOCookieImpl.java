@@ -6,7 +6,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.Date;
 import java.util.List;
 
 public class AcquistaDAOCookieImpl implements AcquistaDAO {
@@ -36,12 +35,17 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
     }
 
     @Override
+    public void update(Utente utente, Long cod_film, String num_posto, Long cod_pro) {
+
+    }
+
+   /* @Override
     public void update(Acquista loggedAcquista) {
         Cookie cookie;
         cookie = new Cookie("loggedAcquista", encode(loggedAcquista));
         cookie.setPath("/");
         response.addCookie(cookie);
-    }
+    }*/
 
     @Override
     public void delete(Acquista acquista) {
