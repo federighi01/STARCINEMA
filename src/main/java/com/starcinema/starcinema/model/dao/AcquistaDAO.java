@@ -21,7 +21,7 @@ public interface AcquistaDAO {
 
     public void delete(Acquista acquista);
 
-    public Acquista findLoggedAcquista();
+    public List<Acquista> findLoggedAcquisti();
 
     public List<Acquista> findAcqByUsername(Utente utente);
 

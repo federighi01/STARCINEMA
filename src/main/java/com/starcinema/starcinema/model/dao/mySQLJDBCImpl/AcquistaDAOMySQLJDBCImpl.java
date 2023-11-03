@@ -100,7 +100,7 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
     }
 
     @Override
-    public Acquista findLoggedAcquista() {
+    public List<Acquista> findLoggedAcquisti() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
