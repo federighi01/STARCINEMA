@@ -62,32 +62,41 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
     }
 
     @Override
-    public void update(Utente utente, Long cod_film, String num_posto, Long cod_pro) {
+    public void update(Long cod_film, String num_posto, Long cod_pro, String username,
+                       Long cod_film_old, String num_posto_old, Long cod_pro_old) {
         PreparedStatement ps;
 
         try{
             String sql
-                    = "UPDATE acquista "
-                    + "SET "
-                    + "  id_f = ?, "
-                    + "  num_posto = ?, "
+                    = " UPDATE acquista "
+                    + " SET "
+                    + "  id_f = ? , "
+                    + "  num_posto = ? , "
                     + "  codice_proiezione = ? "
-                    + "WHERE "
+                    + " WHERE "
                     + "  id_utente = ? AND "
                     + "  id_f = ? AND "
                     + "  num_posto = ? AND "
-                    + "  codice_proiezione = ?";
+                    + "  codice_proiezione = ? ";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
             ps.setLong(i++, cod_film);
             ps.setString(i++, num_posto);
             ps.setLong(i++, cod_pro);
-            ps.setString(i++, utente.getUsername());
-            ps.setLong(i++, cod_film);
-            ps.setString(i++, num_posto);
-            ps.setLong(i++, cod_pro);
+            ps.setString(i++, username);
+            ps.setLong(i++, cod_film_old);
+            ps.setString(i++, num_posto_old);
+            ps.setLong(i++, cod_pro_old);
+
+            System.out.println("cf "+cod_film+" cfo "+cod_film_old);
+            System.out.println("cp "+cod_pro+" cpo "+cod_pro_old);
+            System.out.println("np "+num_posto+" npo "+num_posto_old);
+            System.out.println(username);
+
             ps.executeUpdate();
+
+
 
         }catch (SQLException e) {
             throw new RuntimeException(e);
@@ -95,7 +104,12 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
     }
 
     @Override
-    public void delete(Acquista acquista) {
+    public void updateCookie(List<Acquista> acquistiToUpdate) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void delete(List<Acquista> acquistiDaEliminare) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

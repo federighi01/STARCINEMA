@@ -70,6 +70,8 @@
                         <% if (composizioni.get(i).isOccupato()) { %>
                        disabled="disabled"
                     <% } %>
+                    <!-- Vai a capo dopo ogni 20 checkbox -->
+                    <% if ((i + 1) % 20 == 0) { %><br/><% } %>
                     <% } %>
                 <br><br>
 

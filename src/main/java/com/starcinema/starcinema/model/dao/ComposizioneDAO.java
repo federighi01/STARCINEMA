@@ -17,6 +17,8 @@ public interface ComposizioneDAO {
 
     public void update(String num_posto, Long cod_proiezione);
 
+    public void freeposto(String num_posto, Long cod_proiezione);
+
     public void delete(Composizione composizione);
 
     public List<Composizione> findComposizioniByNum_sala(Integer num_sala, Long cod_proiezione);

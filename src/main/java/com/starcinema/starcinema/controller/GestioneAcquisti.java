@@ -470,13 +470,13 @@ public class GestioneAcquisti {
                             num_carta);
                     composizioneDAO.update(payments[i],cod_pro);
                     System.out.println(payments[i]);
-                    loggedAcquista.create(utente,
+                    /*loggedAcquista.create(utente,
                             film,
                             posto,
                             proiezione,
                             data_acquisto,
                             metodo_p,
-                            num_carta);
+                            num_carta);*/
                 }
             }
 
@@ -486,7 +486,7 @@ public class GestioneAcquisti {
 
             request.setAttribute("loggedOn", loggedUtente != null);
             request.setAttribute("loggedUtente", loggedUtente);
-            request.setAttribute("loggedAcquista", loggedAcquista);
+            //request.setAttribute("loggedAcquista", loggedAcquista);
             request.setAttribute("viewUrl", "gestioneAcquisti/acqcompletato");
 
         } catch (Exception e) {

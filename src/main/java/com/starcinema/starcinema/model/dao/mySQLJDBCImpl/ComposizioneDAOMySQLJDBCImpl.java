@@ -47,6 +47,31 @@ public class ComposizioneDAOMySQLJDBCImpl implements ComposizioneDAO {
     }
 
     @Override
+    public void freeposto(String num_posto, Long cod_proiezione) {
+        PreparedStatement ps;
+
+        try {
+
+            String sql
+                    = " UPDATE composizione "
+                    + " SET "
+                    + "   occupato = 'N' "
+                    + " WHERE "
+                    + "   numero_posto = ? AND"
+                    + "   cod_proiezione = ? ";
+
+            ps = conn.prepareStatement(sql);
+            int i = 1;
+            ps.setString(i++, num_posto);
+            ps.setLong(i++, cod_proiezione);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void delete(Composizione composizione) {
         throw new UnsupportedOperationException("Not supported yet.");
     }

@@ -12,6 +12,15 @@
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String menuActiveLink = "Modificaacquisti";
 
+    String cod_pro_old = (String) request.getAttribute("cod_pro_old");
+    String cod_film_old = (String) request.getAttribute("cod_film_old");
+    String num_posto_old = (String) request.getAttribute("num_posto_old");
+
+    System.out.println("bcjbid"+cod_pro_old);
+    System.out.println("bcjbid"+cod_film_old);
+    System.out.println("bcjbid"+num_posto_old);
+
+
     Utente utente = (Utente) request.getAttribute("utente");
     List<Film> films = (List<Film>) request.getAttribute("films");
     List<Proiezione> proiezioni = (List<Proiezione>) request.getAttribute("proiezioni");
@@ -22,6 +31,8 @@
     Integer num_sala = (Integer) request.getAttribute("num_sala");
     String data_pro = (String) request.getAttribute("data_pro");
     String ora_pro = (String) request.getAttribute("ora_pro");
+
+
 
 %>
 
@@ -255,13 +266,20 @@
                                 <% if (composizioni.get(i).isOccupato()) { %>
                                disabled="disabled"
                     <% } %>
+                                <!-- Vai a capo dopo ogni 20 checkbox -->
+                                    <% if ((i + 1) % 20 == 0) { %><br/><% } %>
                     <% } %>
-
+                            <!-- Passaggio dati da modificare e nuovi dati -->
                             <a><input type="submit" class="button" value="Conferma modifiche"></a>
                                 <input type="hidden" name="titolo">
                                 <input type="hidden" name="num_sala">
                                 <input type="hidden" name="data_pro">
                                 <input type="hidden" name="ora_pro">
+
+                                <input type="hidden" name="cod_film_old" value="<%=cod_film_old%>">
+                                <input type="hidden" name="cod_pro_old" value="<%=cod_pro_old%>">
+                                <input type="hidden" name="num_posto_old" value="<%=num_posto_old%>">
+
                                 <input type="hidden" name="controllerAction" value="ModificaAcquisti.updatemod"/>
                         </form>
                     </section>
@@ -276,12 +294,22 @@
 
         <form name="menuFilmForm" method="post" action="Dispatcher">
             <input type="hidden" name="titolo"/>
+
+            <input type="hidden" name="cod_film_old" value="<%=cod_film_old%>">
+            <input type="hidden" name="cod_pro_old" value="<%=cod_pro_old%>">
+            <input type="hidden" name="num_posto_old" value="<%=num_posto_old%>">
+
             <input type="hidden" name="controllerAction" value="ModificaAcquisti.menuFilm"/>
         </form>
 
         <form name="menuSalaForm" method="post" action="Dispatcher">
             <input type="hidden" name="titolo"/>
             <input type="hidden" name="num_sala">
+
+            <input type="hidden" name="cod_film_old" value="<%=cod_film_old%>">
+            <input type="hidden" name="cod_pro_old" value="<%=cod_pro_old%>">
+            <input type="hidden" name="num_posto_old" value="<%=num_posto_old%>">
+
             <input type="hidden" name="controllerAction" value="ModificaAcquisti.menuSala"/>
         </form>
 
@@ -289,6 +317,11 @@
             <input type="hidden" name="data_pro"/>
             <input type="hidden" name="titolo"/>
             <input type="hidden" name="num_sala"/>
+
+            <input type="hidden" name="cod_film_old" value="<%=cod_film_old%>">
+            <input type="hidden" name="cod_pro_old" value="<%=cod_pro_old%>">
+            <input type="hidden" name="num_posto_old" value="<%=num_posto_old%>">
+
             <input type="hidden" name="controllerAction" value="ModificaAcquisti.menuData"/>
         </form>
 
@@ -297,6 +330,11 @@
             <input type="hidden" name="titolo"/>
             <input type="hidden" name="num_sala"/>
             <input type="hidden" name="data_pro"/>
+
+            <input type="hidden" name="cod_film_old" value="<%=cod_film_old%>">
+            <input type="hidden" name="cod_pro_old" value="<%=cod_pro_old%>">
+            <input type="hidden" name="num_posto_old" value="<%=num_posto_old%>">
+
             <input type="hidden" name="controllerAction" value="ModificaAcquisti.menuOra"/>
         </form>
 

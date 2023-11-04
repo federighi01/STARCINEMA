@@ -3,7 +3,7 @@
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<%  int c = 1;
+<%  int c = 0;
     boolean loggedOn = true;
     Utente loggedUtente = (Utente) request.getAttribute("loggedUtente");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
@@ -30,7 +30,7 @@
         <%if (acquisti != null && !acquisti.isEmpty()) {%>
         <%= "Hai effettuato " + acquisti.size() + " acquisti"%><br><br><br>
             <%for (int i = 0; i < acquisti.size(); i++) {%>
-                <% c+=i;%>
+                <% c++;%>
                 <%= "Acquisto n° " + c%><br>
 
                 <b>Data di proiezione: </b> <%=proiezioni.get(i).getData_pro()%><br>
@@ -39,7 +39,11 @@
                 <b>Numero sala: </b> <%=proiezioni.get(i).getSala().getNum_sala()%><br>
                 <b>Posto acquistato: </b><%=acquisti.get(i).getPosto().getNum_posto()%>
 
+                <!-- Invio dati da modificare -->
                 <input type="submit" class="button" value="Modifica acquisto">
+                <input type="hidden" name="cod_film_old" value="<%=acquisti.get(i).getFilm().getCod_film()%>">
+                <input type="hidden" name="cod_pro_old" value="<%=acquisti.get(i).getProiezione().getCod_pro()%>">
+                <input type="hidden" name="num_posto_old" value="<%=acquisti.get(i).getPosto().getNum_posto()%>">
                 <input type="hidden" name="controllerAction" value="ModificaAcquisti.modview"/><br><br>
             <%}%>
         <%} else {%>

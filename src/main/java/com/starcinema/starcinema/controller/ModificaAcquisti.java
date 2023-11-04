@@ -42,9 +42,13 @@ public class ModificaAcquisti {
             daoFactory.beginTransaction();
 
             //Visualizzazione acquisti effettuati da un utente
+            /*AcquistaDAO acquistaDAO = sessionDAOFactory.getAcquistaDAO();
+            List<Acquista> acquisti = acquistaDAO.findLoggedAcquisti();*/
             AcquistaDAO acquistaDAO = daoFactory.getAcquistaDAO();
             List<Acquista> acquisti = acquistaDAO.findAcqByUsername(loggedUtente);
             System.out.println(acquisti.size());
+
+            //acquistaDAO.delete(acquisti);
 
             List<Film> films = new ArrayList<>();
             List<Proiezione> proiezioni = new ArrayList<>();
@@ -120,6 +124,14 @@ public class ModificaAcquisti {
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL,null);
             daoFactory.beginTransaction();
 
+            String cod_pro_old = request.getParameter("cod_pro_old");
+            String cod_film_old = request.getParameter("cod_film_old");
+            String num_posto_old = request.getParameter("num_posto_old");
+
+            System.out.println("csdfse"+cod_pro_old);
+            System.out.println("csdfse"+cod_film_old);
+            System.out.println("csdfse"+num_posto_old);
+
             List<Film> films = null;
 
             FilmDAO filmDAO = daoFactory.getFilmDAO();
@@ -129,10 +141,14 @@ public class ModificaAcquisti {
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
+
             request.setAttribute("loggedOn",loggedUtente!=null);
             request.setAttribute("loggedUtente", loggedUtente);
             request.setAttribute("applicationMessage", applicationMessage);
             request.setAttribute("films", films);
+            request.setAttribute("cod_pro_old", cod_pro_old);
+            request.setAttribute("cod_film_old", cod_film_old);
+            request.setAttribute("num_posto_old", num_posto_old);
             request.setAttribute("viewUrl", "modificaAcquisti/modview");
 
         } catch (Exception e) {
@@ -179,6 +195,12 @@ public class ModificaAcquisti {
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
             daoFactory.beginTransaction();
 
+
+            String cod_pro_old = request.getParameter("cod_pro_old");
+            String cod_film_old = request.getParameter("cod_film_old");
+            String num_posto_old = request.getParameter("num_posto_old");
+
+
             //Trovo il film in base al titolo selezionato
             String titolo = request.getParameter("titolo");
             System.out.println(titolo);
@@ -200,6 +222,11 @@ public class ModificaAcquisti {
             request.setAttribute("loggedUtente", loggedUtente);
             request.setAttribute("proiezioni", proiezioni);
             request.setAttribute("titolo", titolo);
+
+            request.setAttribute("cod_pro_old", cod_pro_old);
+            request.setAttribute("cod_film_old", cod_film_old);
+            request.setAttribute("num_posto_old", num_posto_old);
+
             request.setAttribute("viewUrl", "modificaAcquisti/modview");
 
         } catch (Exception e) {
@@ -245,6 +272,10 @@ public class ModificaAcquisti {
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
             daoFactory.beginTransaction();
 
+            String cod_pro_old = request.getParameter("cod_pro_old");
+            String cod_film_old = request.getParameter("cod_film_old");
+            String num_posto_old = request.getParameter("num_posto_old");
+
 
             //Visualizzazione proiezione filtrata per numero di sala e codice film
             List<Proiezione> proiezioni_data=null;
@@ -271,6 +302,11 @@ public class ModificaAcquisti {
             request.setAttribute("proiezioni_data", proiezioni_data);
             request.setAttribute("num_sala", num_sala);
             request.setAttribute("titolo", titolo);
+
+            request.setAttribute("cod_pro_old", cod_pro_old);
+            request.setAttribute("cod_film_old", cod_film_old);
+            request.setAttribute("num_posto_old", num_posto_old);
+
             request.setAttribute("viewUrl", "modificaAcquisti/modview");
 
         } catch (Exception e) {
@@ -317,6 +353,11 @@ public class ModificaAcquisti {
             daoFactory.beginTransaction();
 
 
+            String cod_pro_old = request.getParameter("cod_pro_old");
+            String cod_film_old = request.getParameter("cod_film_old");
+            String num_posto_old = request.getParameter("num_posto_old");
+
+
             //Visualizzazione proiezione filtrata per numero di sala, codice film e data proiezione
             List<Proiezione> proiezioni_ora=null;
             ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
@@ -353,6 +394,11 @@ public class ModificaAcquisti {
             request.setAttribute("num_sala", num_sala);
             request.setAttribute("titolo", titolo);
             request.setAttribute("data_pro", data_pro);
+
+            request.setAttribute("cod_pro_old", cod_pro_old);
+            request.setAttribute("cod_film_old", cod_film_old);
+            request.setAttribute("num_posto_old", num_posto_old);
+
             request.setAttribute("viewUrl", "modificaAcquisti/modview");
 
         } catch (Exception e) {
@@ -397,6 +443,10 @@ public class ModificaAcquisti {
 
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
             daoFactory.beginTransaction();
+
+            String cod_pro_old = request.getParameter("cod_pro_old");
+            String cod_film_old = request.getParameter("cod_film_old");
+            String num_posto_old = request.getParameter("num_posto_old");
 
 
             //Visualizzazione proiezione filtrata per numero di sala, codice film e data proiezione
@@ -450,6 +500,11 @@ public class ModificaAcquisti {
             request.setAttribute("titolo", titolo);
             request.setAttribute("data_pro", data_pro);
             request.setAttribute("ora_pro", ora_pro);
+
+            request.setAttribute("cod_pro_old", cod_pro_old);
+            request.setAttribute("cod_film_old", cod_film_old);
+            request.setAttribute("num_posto_old", num_posto_old);
+
             request.setAttribute("viewUrl", "modificaAcquisti/modview");
 
         } catch (Exception e) {
@@ -477,11 +532,12 @@ public class ModificaAcquisti {
         DAOFactory sessionDAOFactory = null;
         DAOFactory daoFactory = null;
         Utente loggedUtente;
-
+        List<Acquista> loggedAcquisti = null;
 
         Logger logger = LogService.getApplicationLogger();
 
         try {
+            logger.info("Inizio della transazione");
 
             Map sessionFactoryParameters = new HashMap<String, Object>();
             sessionFactoryParameters.put("request", request);
@@ -497,12 +553,24 @@ public class ModificaAcquisti {
             daoFactory.beginTransaction();
 
 
+            //Dati dell'acquisto da modificare
+            Long cod_pro_old = Long.parseLong(request.getParameter("cod_pro_old"));
+            Long cod_film_old = Long.parseLong(request.getParameter("cod_film_old"));
+            String num_posto_old = request.getParameter("num_posto_old");
+
+            System.out.println("www"+cod_pro_old);
+            System.out.println("www"+cod_film_old);
+            System.out.println("www"+num_posto_old);
+
+
             //Visualizzazione proiezione filtrata per numero di sala, codice film e data proiezione
             Proiezione proiezione=null;
             List<Composizione> composizioni=null;
+            Composizione composizione = null;
             ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
             ComposizioneDAO composizioneDAO = daoFactory.getComposizioneDAO();
-
+            AcquistaDAO acquistaDAO = daoFactory.getAcquistaDAO();
+            AcquistaDAO loggedAcquistaDAO = sessionDAOFactory.getAcquistaDAO();
 
             //Ricezione del titolo ed estrazione del codice del film
             String titolo = request.getParameter("titolo");
@@ -533,38 +601,59 @@ public class ModificaAcquisti {
                 Time ora_proiezione = new Time(parsedDate.getTime());
                 System.out.println(ora_proiezione);
 
-                //Ricavazione codice proiezione
+                //Ricavo codice proiezione
                 proiezione = proiezioneDAO.findProBySalaFilmDataOra(film.getCod_film(), num_sala, data_proiezione, ora_proiezione);
 
-                System.out.println(loggedUtente);
+                System.out.println("Riepilogo dati: ");
+                System.out.println(loggedUtente.getUsername());
                 System.out.println(film.getCod_film());
                 System.out.println(selectedposto);
                 System.out.println(proiezione.getCod_pro());
-
+                System.out.println("www"+cod_pro_old);
+                System.out.println("www"+cod_film_old);
+                System.out.println("www"+num_posto_old);
 
                 //Aggiornamento acquisto
-                AcquistaDAO acquistaDAO = daoFactory.getAcquistaDAO();
-                acquistaDAO.update(loggedUtente, film.getCod_film(), selectedposto, proiezione.getCod_pro());
+                acquistaDAO.update(film.getCod_film(), selectedposto, proiezione.getCod_pro(), loggedUtente.getUsername(),
+                        cod_film_old, num_posto_old, cod_pro_old);
+
+                //Aggiornamento cookie
+                //loggedAcquistaDAO.updateCookie(acquistaDAO.findAcqByUsername(loggedUtente));
+
+                //Visualizza acquisti modificati
+                //loggedAcquisti = loggedAcquistaDAO.findLoggedAcquisti();
+
+                //Blocco il nuovo posto
+                composizioneDAO.update(selectedposto, proiezione.getCod_pro());
+                //Libero il vecchio posto
+                composizioneDAO.freeposto(num_posto_old, cod_pro_old);
+
 
             }
 
 
+
+
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
+            logger.info("Transazione completata con successo");
 
 
             request.setAttribute("loggedOn", loggedUtente != null);
             request.setAttribute("loggedUtente", loggedUtente);
-
-            request.setAttribute("viewUrl", "modificaAcquisti/view");
+            //request.setAttribute("acquisti", loggedAcquisti);
+            request.setAttribute("viewUrl", "modificaAcquisti/modcompletata");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
             try {
                 if (daoFactory != null) daoFactory.rollbackTransaction();
                 if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
+                logger.info("Transazione annullata a causa di un'eccezione");
             } catch (Throwable t) {
+                logger.info("Errore durante il rollback della transazione");
             }
+            e.printStackTrace();
             throw new RuntimeException(e);
 
         } finally {
@@ -572,6 +661,7 @@ public class ModificaAcquisti {
                 if (daoFactory != null) daoFactory.closeTransaction();
                 if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
             } catch (Throwable t) {
+                logger.info("Errore durante chiusura  della transazione");
             }
         }
 
