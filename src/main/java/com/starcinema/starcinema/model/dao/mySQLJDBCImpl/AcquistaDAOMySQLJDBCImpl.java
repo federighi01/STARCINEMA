@@ -104,7 +104,7 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
     }
 
     @Override
-    public void updateCookie(List<Acquista> acquistiToUpdate) {
+    public void updateCookie(List<Acquista> acquistiToUpdate, Utente utente) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -114,7 +114,7 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
     }
 
     @Override
-    public List<Acquista> findLoggedAcquisti() {
+    public List<Acquista> findLoggedAcquisti(Utente utente) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -130,7 +130,8 @@ public class AcquistaDAOMySQLJDBCImpl implements AcquistaDAO {
                     = " SELECT * "
                     + "   FROM acquista "
                     + " WHERE "
-                    + "   id_utente = ? ";
+                    + "   id_utente = ? "
+                    + " ORDER BY data_acquisto DESC";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, utente.getUsername());

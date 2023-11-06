@@ -14,27 +14,37 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
     HttpServletRequest request;
     HttpServletResponse response;
 
+    private List<Acquista> acquisti;
+
+    Utente utente = new Utente();
+
     public AcquistaDAOCookieImpl(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;
+        acquisti = findLoggedAcquisti(utente); // Recupera gli acquisti esistenti per l'utente
     }
 
     @Override
     public Acquista create(Utente utente, Film film, Posto posto, Proiezione proiezione, String data_acq, String metodo_p, String num_carta) {
+
+
+        System.out.println("size1"+findLoggedAcquisti(utente).size());
         Acquista loggedAcquista = new Acquista();
         loggedAcquista.setUtente(utente);
         loggedAcquista.setFilm(film);
         loggedAcquista.setPosto(posto);
         loggedAcquista.setProiezione(proiezione);
 
-        System.out.println("utente"+utente.getUsername());
+        acquisti.add(loggedAcquista); // Aggiungi il nuovo acquisto agli acquisti esistenti
 
-        List<Acquista> acquisti = findLoggedAcquisti();
-        acquisti.add(loggedAcquista);
-        System.out.println("loggedacq"+loggedAcquista.getUtente().getUsername());
-        saveAcquistiToCookie(acquisti);
+        saveAcquistiToCookie(acquisti); // Salva l'array aggiornato nel cookie
+
+        System.out.println("utente" + utente.getUsername());
+        System.out.println("loggedacq" + loggedAcquista.getUtente().getUsername());
+
         return loggedAcquista;
     }
+
 
     @Override
     public void update(Long cod_film, String num_posto, Long cod_pro, String username,
@@ -44,25 +54,42 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
 
 
     @Override
-    public void updateCookie(List<Acquista> acquistiToUpdate) {
+    public void updateCookie(List<Acquista> acquistiToUpdate, Utente utente) {
         // Recupera l'elenco completo degli acquisti dal cookie
-        List<Acquista> acquisti = findLoggedAcquisti();
+        List<Acquista> acquisti = findLoggedAcquisti(utente);
 
+        int i = 0;
         // Esegui la logica di aggiornamento
-        for (Acquista acquistoToUpdate : acquistiToUpdate) {
+        //for (Acquista acquistoToUpdate : acquistiToUpdate) {
             for (Acquista acquisto : acquisti) {
-                if (acquisto.getUtente().getUsername() == acquistoToUpdate.getUtente().getUsername()) {
+                Acquista acquistoToUpdate = acquistiToUpdate.get(i);
+                System.out.println(acquisto.getUtente().getUsername()+"  "+acquisto.getUtente().getUsername());
+                System.out.println(acquisto.getProiezione().getCod_pro()+"  "+acquistoToUpdate.getProiezione().getCod_pro());
+                System.out.println(acquisto.getFilm().getCod_film()+"  "+acquistoToUpdate.getFilm().getCod_film());
+                System.out.println(acquisto.getPosto().getNum_posto()+"  "+acquistoToUpdate.getPosto().getNum_posto());
+
+                if (acquisto.getUtente().getUsername().equals(acquistoToUpdate.getUtente().getUsername()) ) {
+
                     // Esegui l'aggiornamento desiderato sugli acquisti
-                    acquisto.getProiezione().setCod_pro(acquistoToUpdate.getProiezione().getCod_pro());
-                    acquisto.getFilm().setCod_film(acquistoToUpdate.getFilm().getCod_film());
-                    acquisto.getPosto().setNum_posto(acquistoToUpdate.getPosto().getNum_posto());
+                    acquisto.setProiezione(acquistoToUpdate.getProiezione());
+                    acquisto.setFilm(acquistoToUpdate.getFilm());
+                    acquisto.setPosto(acquistoToUpdate.getPosto());
+                    i++;
                 }
+
             }
-        }
+        //}
 
         // Salva l'array di acquisti aggiornato nei cookie
         saveAcquistiToCookie(acquisti);
     }
+
+
+    @Override
+    public void delete(List<Acquista> acquistiDaEliminare) {
+
+    }
+
 
     /*@Override
     public void update(Acquista loggedAcquista) {
@@ -79,14 +106,14 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
         saveAcquistiToCookie(acquisti);
     }*/
 
-    public void delete(List<Acquista> acquistiDaEliminare) {
+    /*public void delete(List<Acquista> acquistiDaEliminare) {
         List<Acquista> acquisti = findLoggedAcquisti();
         acquisti.removeAll(acquistiDaEliminare);
         saveAcquistiToCookie(acquisti);
-    }
+    }*/
 
     @Override
-    public List<Acquista> findLoggedAcquisti() {
+    public List<Acquista> findLoggedAcquisti(Utente utente) {
         List<Acquista> loggedAcquisti = new ArrayList<>();
         Cookie[] cookies = request.getCookies();
 
@@ -94,13 +121,20 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("loggedAcquista")) {
                     List<Acquista> loggedAcquistiFromCookie = decode(cookie.getValue());
-                    loggedAcquisti.addAll(loggedAcquistiFromCookie);
+
+                    // Filtra gli acquisti per l'utente corrente
+                    for (Acquista acquisto : loggedAcquistiFromCookie) {
+                        //if (acquisto.getUtente().getUsername().equals(utente.getUsername())) {
+                            loggedAcquisti.add(acquisto);
+                        //}
+                    }
                 }
             }
         }
 
         return loggedAcquisti;
     }
+
 
     /*@Override
     public List<Acquista> findLoggedAcquisti(String username) {
@@ -171,22 +205,24 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
     private Acquista decodeSingleAcquisto(String encodedLoggedAcquista) {
         String[] values = encodedLoggedAcquista.split("#");
 
-        Acquista loggedAcquista = new Acquista();
-        Utente utente = new Utente();
-        Film film = new Film();
-        Posto posto = new Posto();
-        Proiezione proiezione = new Proiezione();
+            Acquista loggedAcquista = new Acquista();
+            Utente utente = new Utente();
+            Film film = new Film();
+            Posto posto = new Posto();
+            Proiezione proiezione = new Proiezione();
 
-        utente.setUsername(values[0]);
-        film.setCod_film(Long.parseLong(values[1]));
-        posto.setNum_posto(values[2]);
-        proiezione.setCod_pro(Long.parseLong(values[3]));
+            utente.setUsername(values[0]);
+            film.setCod_film(Long.parseLong(values[1]));
+            posto.setNum_posto(values[2]);
+            proiezione.setCod_pro(Long.parseLong(values[3]));
 
-        loggedAcquista.setUtente(utente);
-        loggedAcquista.setFilm(film);
-        loggedAcquista.setPosto(posto);
-        loggedAcquista.setProiezione(proiezione);
+            loggedAcquista.setUtente(utente);
+            loggedAcquista.setFilm(film);
+            loggedAcquista.setPosto(posto);
+            loggedAcquista.setProiezione(proiezione);
 
-        return loggedAcquista;
+
+            return loggedAcquista;
+
     }
 }

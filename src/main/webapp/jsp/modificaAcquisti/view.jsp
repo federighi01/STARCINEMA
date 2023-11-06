@@ -20,6 +20,19 @@
 <head>
     <title>Modifica acquisti</title>
     <%@include file="/include/htmlHead.inc"%>
+    <script language="javascript">
+
+        function datitochange(cod_film_old, cod_pro_old, num_posto_old){
+            console.log(cod_film_old);
+            document.viewacqForm.cod_film_old.value = cod_film_old;
+            document.viewacqForm.cod_pro_old.value = cod_pro_old;
+            document.viewacqForm.num_posto_old.value = num_posto_old;
+
+            console.log(document.viewacqForm.cod_film_old.value);
+            document.viewacqForm.submit();
+        }
+
+    </script>
 </head>
 <body>
 <%@include file="/include/header.inc"%>
@@ -27,11 +40,13 @@
 
         <section id="viewacq" class="clearfix">
             <form name="viewacqForm" action="Dispatcher" method="post">
-        <%if (acquisti != null && !acquisti.isEmpty()) {%>
+        <%if (acquisti != null /*&& !acquisti.isEmpty() && acquisti.equals("")*/ && proiezioni != null && films != null) {%>
         <%= "Hai effettuato " + acquisti.size() + " acquisti"%><br><br><br>
             <%for (int i = 0; i < acquisti.size(); i++) {%>
+                <%if (acquisti.get(i).getUtente().getUsername().equals(loggedUtente.getUsername())) {%>
                 <% c++;%>
                 <%= "Acquisto n° " + c%><br>
+
 
                 <b>Data di proiezione: </b> <%=proiezioni.get(i).getData_pro()%><br>
                 <b>Ora di proiezione: </b> <%=proiezioni.get(i).getOra_pro()%><br>
@@ -40,16 +55,18 @@
                 <b>Posto acquistato: </b><%=acquisti.get(i).getPosto().getNum_posto()%>
 
                 <!-- Invio dati da modificare -->
-                <input type="submit" class="button" value="Modifica acquisto">
-                <input type="hidden" name="cod_film_old" value="<%=acquisti.get(i).getFilm().getCod_film()%>">
-                <input type="hidden" name="cod_pro_old" value="<%=acquisti.get(i).getProiezione().getCod_pro()%>">
-                <input type="hidden" name="num_posto_old" value="<%=acquisti.get(i).getPosto().getNum_posto()%>">
-                <input type="hidden" name="controllerAction" value="ModificaAcquisti.modview"/><br><br>
+                <input type="button" class="button" value="Modifica acquisto"
+                       onclick="datitochange('<%=acquisti.get(i).getFilm().getCod_film()%>','<%=acquisti.get(i).getProiezione().getCod_pro()%>','<%=acquisti.get(i).getPosto().getNum_posto()%>')">
+                <br><br>
+                <%}%>
             <%}%>
         <%} else {%>
             Nessun acquisto effettuato.
         <%}%>
-
+                <input type="hidden" name="cod_film_old">
+                <input type="hidden" name="cod_pro_old">
+                <input type="hidden" name="num_posto_old">
+                <input type="hidden" name="controllerAction" value="ModificaAcquisti.modview"/>
             </form>
         </section>
 

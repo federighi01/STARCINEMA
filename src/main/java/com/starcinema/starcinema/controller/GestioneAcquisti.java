@@ -470,13 +470,14 @@ public class GestioneAcquisti {
                             num_carta);
                     composizioneDAO.update(payments[i],cod_pro);
                     System.out.println(payments[i]);
-                    /*loggedAcquista.create(utente,
+                    loggedAcquista.create(utente,
                             film,
                             posto,
                             proiezione,
                             data_acquisto,
                             metodo_p,
-                            num_carta);*/
+                            num_carta);
+                    //System.out.println("logg"+loggedAcquista.findLoggedAcquisti(loggedUtente).get(i).getPosto().getNum_posto());
                 }
             }
 
@@ -486,7 +487,7 @@ public class GestioneAcquisti {
 
             request.setAttribute("loggedOn", loggedUtente != null);
             request.setAttribute("loggedUtente", loggedUtente);
-            //request.setAttribute("loggedAcquista", loggedAcquista);
+            request.setAttribute("loggedAcquista", loggedAcquista);
             request.setAttribute("viewUrl", "gestioneAcquisti/acqcompletato");
 
         } catch (Exception e) {
@@ -638,6 +639,7 @@ public class GestioneAcquisti {
             ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
             Proiezione proiezione = proiezioneDAO.findPro(cod_pro);
 
+            AcquistaDAO loggedAcquista = sessionDAOFactory.getAcquistaDAO();
 
             ComposizioneDAO composizioneDAO = daoFactory.getComposizioneDAO();
             if(payments != null){
@@ -653,6 +655,13 @@ public class GestioneAcquisti {
                             "");
                     composizioneDAO.update(payments[i],cod_pro);
                     System.out.println(payments[i]);
+                    loggedAcquista.create(utente,
+                            film,
+                            posto,
+                            proiezione,
+                            data_acquisto,
+                            "",
+                            "");
                 }
             }
 

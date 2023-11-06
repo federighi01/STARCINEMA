@@ -27,12 +27,46 @@
 <head>
     <title>Scelta posti</title>
     <%@include file="/include/htmlHead.inc"%>
+
+  <style>
+    #checkboxContainer {
+      background-color: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 57vh; /* Imposta l'altezza desiderata per il riquadro */
+      max-width: 500px; /* Imposta la larghezza massima desiderata per il riquadro */
+      margin: 0 auto; /* Centra il riquadro orizzontalmente sulla pagina */
+      align: center;
+    }
+
+    /* Stile per i checkbox */
+    .checkbox-label input[type="checkbox"] {
+      margin-top: 10px; /* Modifica il valore 10px a seconda dell'aspetto desiderato */
+    }
+
+    /* Stile per l'immagine SCHERMO */
+    #schermo {
+      position: absolute;
+      top: 77%; /* Posiziona l'immagine al centro verticalmente */
+      left: 50%; /* Posiziona l'immagine al centro orizzontalmente */
+      transform: translate(-50%, -50%); /* Centra l'immagine in base alle dimensioni */
+      max-width: 32%; /* Imposta la larghezza massima dell'immagine */
+      max-height: 38%; /* Imposta l'altezza massima dell'immagine */
+    }
+
+  </style>
+
   <script language="javascript">
 
     function checkSelections() {
       var selectedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
       if (selectedCheckboxes.length > 5) {
         alert("Puoi selezionare al massimo 5 posti.");
+        return false;
+      }
+      if (selectedCheckboxes.length < 1) {
+        alert("Seleziona almeno un posto.");
         return false;
       }
       return true;
@@ -62,9 +96,12 @@
     <br><br>
 
   <section id="postiFormSection">
+    <div id="checkboxContainer">
     <form name="postiForm" action="Dispatcher" method="post" onsubmit="return checkSelections();">
 
+      <% int d = 0; %>
       <%for (int i = 0; i < composizioni.size(); i++) {%>
+      <% d++; %>
       <label class="checkbox-label" title="<%= composizioni.get(i).getPosto().getNum_posto() %>">
         <input type="checkbox" name="selectedposti" value="<%= composizioni.get(i).getPosto().getNum_posto() %>"
           <% if (composizioni.get(i).isOccupato()) { %>
@@ -72,8 +109,16 @@
           <% } %>
           <!-- Vai a capo dopo ogni 20 checkbox -->
           <% if ((i + 1) % 20 == 0) { %><br/><% } %>
+        <!-- Aggiungi uno spazio tra il quarto e il quinto checkbox -->
+          <% if (d==4) { %>&nbsp;&nbsp;<% } %>
+          <% if (d==20) { d=0; } %>
+        <!-- Aggiungi uno spazio tra il sedicesimo e il diciasettesimo checkbox -->
+          <% if (d==16) { %>&nbsp;&nbsp;<% } %>
           <% } %>
         <br><br>
+        <center title="SCHERMO"><img id="schermo" src="images/schermo_cinema.png"></center>
+        <center title="SCHERMO">SCHERMO</center>
+    </div>
 
         <a> <input type="submit" class="button" value="Conferma selezione"/></a>
         <input type="hidden" name="num_sala" value="<%=sala.getNum_sala()%>">
@@ -83,6 +128,7 @@
         <input type="hidden" name="formattedTime" value="<%=formattedTime%>"/>
         <input type="hidden" name="controllerAction" value="GestioneAcquisti.sceltaposti"/>
       </form>
+
     </section>
 
   </main>

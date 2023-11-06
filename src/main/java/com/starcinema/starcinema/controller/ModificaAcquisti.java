@@ -42,33 +42,37 @@ public class ModificaAcquisti {
             daoFactory.beginTransaction();
 
             //Visualizzazione acquisti effettuati da un utente
-            /*AcquistaDAO acquistaDAO = sessionDAOFactory.getAcquistaDAO();
-            List<Acquista> acquisti = acquistaDAO.findLoggedAcquisti();*/
-            AcquistaDAO acquistaDAO = daoFactory.getAcquistaDAO();
-            List<Acquista> acquisti = acquistaDAO.findAcqByUsername(loggedUtente);
-            System.out.println(acquisti.size());
+            AcquistaDAO acquistaDAO = sessionDAOFactory.getAcquistaDAO();
+            List<Acquista> acquisti = acquistaDAO.findLoggedAcquisti(loggedUtente);
+            //AcquistaDAO acquistaDAO = daoFactory.getAcquistaDAO();
+            //List<Acquista> acquisti = acquistaDAO.findAcqByUsername(loggedUtente);
 
-            //acquistaDAO.delete(acquisti);
+                //System.out.println(acquisti.size());
 
-            List<Film> films = new ArrayList<>();
-            List<Proiezione> proiezioni = new ArrayList<>();
-            Film film = null;
-            Proiezione proiezione = null;
-            FilmDAO filmDAO = daoFactory.getFilmDAO();
-            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
-            //Ricavo le altre info di proiezione e film relative al cod_film e cod_proiezione
-            //contenuti nella tabella acquista
-            for(int i=0; i<acquisti.size(); i++){
-                film = filmDAO.findByCodfilm(acquisti.get(i).getFilm().getCod_film());
-                films.add(film);
-                proiezione = proiezioneDAO.findPro(acquisti.get(i).getProiezione().getCod_pro());
-                proiezioni.add(proiezione);
-                System.out.println(films.get(i).getTitolo());
-                System.out.println(proiezioni.get(i).getData_pro());
+
+                List<Film> films = new ArrayList<>();
+                List<Proiezione> proiezioni = new ArrayList<>();
+                Film film = null;
+                Proiezione proiezione = null;
+                FilmDAO filmDAO = daoFactory.getFilmDAO();
+                ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
+
+            if (acquisti != null && !acquisti.isEmpty() && films != null && proiezioni != null) {
+                //Ricavo le altre info di proiezione e film relative al cod_film e cod_proiezione
+                //contenuti nella tabella acquista
+                for (int i = 0; i < acquisti.size(); i++) {
+                    if (acquisti.get(i) != null) {
+                        film = filmDAO.findByCodfilm(acquisti.get(i).getFilm().getCod_film());
+                        films.add(film);
+                        proiezione = proiezioneDAO.findPro(acquisti.get(i).getProiezione().getCod_pro());
+                        proiezioni.add(proiezione);
+                        //System.out.println(films.get(i).getTitolo());
+                        //System.out.println(proiezioni.get(i).getData_pro());
+                    }
+                }
+                System.out.println("sss" + films.size());
+
             }
-            System.out.println("sss"+films.size());
-
-
             daoFactory.commitTransaction();
             sessionDAOFactory.commitTransaction();
 
@@ -618,10 +622,10 @@ public class ModificaAcquisti {
                         cod_film_old, num_posto_old, cod_pro_old);
 
                 //Aggiornamento cookie
-                //loggedAcquistaDAO.updateCookie(acquistaDAO.findAcqByUsername(loggedUtente));
+                loggedAcquistaDAO.updateCookie(acquistaDAO.findAcqByUsername(loggedUtente),loggedUtente);
 
                 //Visualizza acquisti modificati
-                //loggedAcquisti = loggedAcquistaDAO.findLoggedAcquisti();
+                loggedAcquisti = loggedAcquistaDAO.findLoggedAcquisti(loggedUtente);
 
                 //Blocco il nuovo posto
                 composizioneDAO.update(selectedposto, proiezione.getCod_pro());
