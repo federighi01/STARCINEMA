@@ -43,7 +43,7 @@ public class ModificaAcquisti {
 
             //Visualizzazione acquisti effettuati da un utente
             AcquistaDAO acquistaDAO = sessionDAOFactory.getAcquistaDAO();
-            List<Acquista> acquisti = acquistaDAO.findLoggedAcquisti(loggedUtente);
+            List<Acquista> acquisti = acquistaDAO.findLoggedAcquisti();
             //AcquistaDAO acquistaDAO = daoFactory.getAcquistaDAO();
             //List<Acquista> acquisti = acquistaDAO.findAcqByUsername(loggedUtente);
 
@@ -625,7 +625,7 @@ public class ModificaAcquisti {
                 loggedAcquistaDAO.updateCookie(acquistaDAO.findAcqByUsername(loggedUtente),loggedUtente);
 
                 //Visualizza acquisti modificati
-                loggedAcquisti = loggedAcquistaDAO.findLoggedAcquisti(loggedUtente);
+                loggedAcquisti = loggedAcquistaDAO.findLoggedAcquisti();
 
                 //Blocco il nuovo posto
                 composizioneDAO.update(selectedposto, proiezione.getCod_pro());

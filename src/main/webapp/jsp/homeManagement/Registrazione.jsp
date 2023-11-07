@@ -12,6 +12,56 @@
 <head>
     <title>Registrazione</title>
     <%@include file="/include/htmlHead.inc"%>
+    <style>
+        .input-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-container .field {
+            margin-bottom: 10px; /* Aggiunge spazio tra i campi */
+        }
+
+        .input-container label {
+            width: 120px; /* Imposta una larghezza fissa per le etichette */
+            display: inline-block;
+        }
+
+        .input-container input[type="text"],
+        .input-container input[type="password"],
+        .input-container input[type="date"] {
+            width: 30%; /* Imposta la larghezza al 100% per adattarsi al contenitore */
+            padding: 5px; /* Aggiunge spazio interno ai campi di input */
+            border: 1px solid #ccc;
+        }
+
+        /* Parte per nascondere form di login */
+        #login label[for="username"], #login label[for="pw"] {
+            display: none;
+        }
+
+        #login form input[type="text"], #login form input[type="password"] {
+            display: none;
+        }
+
+        #login form input[type="text"]:focus, #login form input[type="password"]:focus {
+            outline: none;
+        }
+
+        #login form input[type="submit"] {
+            display: none;
+        }
+
+        #login form input[type="submit"] {
+            display: none;
+        }
+
+        #login form input[type="submit"]:hover {
+            display: none;
+        }
+
+    </style>
+
     <script language="javascript">
 
         function submitReg() {
@@ -25,13 +75,23 @@
         }
 
         function validateForm() {
+            var pw = document.getElementById("pw").value;
+            //var pw_c = document.getElementById("pw_c").value;
             var email = document.getElementById("email").value;
             var email_c = document.getElementById("email_c").value;
 
-            if (email !== email_c) {
-                alert("L'indirizzo email di conferma non corrisponde all'indirizzo email principale.");
+
+            console.log(email);
+            console.log(email_c);
+            console.log(pw);
+            //console.log(pw_c);
+
+            if (/*pw !== pw_c || */email !== email_c) {
+                alert("Indirizzo email e/o password di conferma non corrispondono a quelle inserite.");
                 return false; // Blocca l'invio del modulo se l'email di conferma non corrisponde
             }
+
+
 
             // Altrimenti, il modulo verrà inviato normalmente
             return true;
@@ -54,7 +114,7 @@
 <%@include file="/include/header.inc"%>
 <main>
     <section id="regFormSection">
-        <form name="regForm" action="Dispatcher" method="post" onsubmit="return validateForm()">
+        <form name="regForm" action="Dispatcher" method="post" onsubmit="return validateForm()" class="input-container">
 
             <div class="field clearfix">
                 <label for="username">Username</label>
@@ -68,6 +128,12 @@
                        value=""
                        required size="20" maxlength="50"/>
             </div><br>
+            <!--<div class="field clearfix">
+                <label for="pw_c">Password di conferma</label>
+                <input type="text" id="pw_c" name="pw_c"
+                       value=""
+                       required size="20" maxlength="50"/>
+            </div><br>-->
             <div class="field clearfix">
                 <label for="email">Email</label>
                 <input type="text" id="email" name="email"
@@ -118,7 +184,7 @@
             </div><br>
             <div class="field clearfix">
                 <label>&#160;</label>
-                <input type="submit" class="button" value="Invia"/>
+                <input type="submit" class="button" value="Iscriviti"/>
                 <input type="button" name="backButton" class="button" value="Annulla"/>
             </div>
             <input type="hidden" name="controllerAction"/>

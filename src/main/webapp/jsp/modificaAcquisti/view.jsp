@@ -40,7 +40,7 @@
 
         <section id="viewacq" class="clearfix">
             <form name="viewacqForm" action="Dispatcher" method="post">
-        <%if (acquisti != null /*&& !acquisti.isEmpty() && acquisti.equals("")*/ && proiezioni != null && films != null) {%>
+        <%if (acquisti != null && proiezioni != null && films != null) {%>
         <%= "Hai effettuato " + acquisti.size() + " acquisti"%><br><br><br>
             <%for (int i = 0; i < acquisti.size(); i++) {%>
                 <%if (acquisti.get(i).getUtente().getUsername().equals(loggedUtente.getUsername())) {%>

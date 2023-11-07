@@ -1,3 +1,4 @@
+
 <script>
   function headerOnLoadHandler() {
     var usernameTextField = document.querySelector("#username");
@@ -62,7 +63,7 @@
         <label for="pw">Password</label>
         <input type="password" id="pw" name="pw" maxlength="40" required>
         <input type="hidden" name="controllerAction" value="HomeManagement.logon"/>
-        <input type="submit" value="Ok">
+        <input type="submit" value="Accedi">
       </form>
     </section>
   <%}%>

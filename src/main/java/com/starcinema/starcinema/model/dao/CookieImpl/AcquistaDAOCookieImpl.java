@@ -14,21 +14,21 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
     HttpServletRequest request;
     HttpServletResponse response;
 
-    private List<Acquista> acquisti;
+    private List<Acquista> acquisti; // Variabile di istanza per mantenere le transazioni
 
-    Utente utente = new Utente();
+
 
     public AcquistaDAOCookieImpl(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;
-        acquisti = findLoggedAcquisti(utente); // Recupera gli acquisti esistenti per l'utente
+        acquisti = findLoggedAcquisti(); // Recupera gli acquisti esistenti per l'utente
     }
 
     @Override
     public Acquista create(Utente utente, Film film, Posto posto, Proiezione proiezione, String data_acq, String metodo_p, String num_carta) {
 
 
-        System.out.println("size1"+findLoggedAcquisti(utente).size());
+        //System.out.println("size1"+findLoggedAcquisti(utente).size());
         Acquista loggedAcquista = new Acquista();
         loggedAcquista.setUtente(utente);
         loggedAcquista.setFilm(film);
@@ -56,7 +56,7 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
     @Override
     public void updateCookie(List<Acquista> acquistiToUpdate, Utente utente) {
         // Recupera l'elenco completo degli acquisti dal cookie
-        List<Acquista> acquisti = findLoggedAcquisti(utente);
+        List<Acquista> acquisti = findLoggedAcquisti();
 
         int i = 0;
         // Esegui la logica di aggiornamento
@@ -87,33 +87,12 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
 
     @Override
     public void delete(List<Acquista> acquistiDaEliminare) {
-
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
-
-    /*@Override
-    public void update(Acquista loggedAcquista) {
-        Cookie cookie;
-        cookie = new Cookie("loggedAcquista", encode(loggedAcquista));
-        cookie.setPath("/");
-        response.addCookie(cookie);
-    }*/
-
-    /*@Override
-    public void delete(Acquista acquista) {
-        List<Acquista> acquisti = findLoggedAcquisti();
-        acquisti.remove(acquista);
-        saveAcquistiToCookie(acquisti);
-    }*/
-
-    /*public void delete(List<Acquista> acquistiDaEliminare) {
-        List<Acquista> acquisti = findLoggedAcquisti();
-        acquisti.removeAll(acquistiDaEliminare);
-        saveAcquistiToCookie(acquisti);
-    }*/
-
+    //Visualizzazione acquisti salvati nel cookie
     @Override
-    public List<Acquista> findLoggedAcquisti(Utente utente) {
+    public List<Acquista> findLoggedAcquisti() {
         List<Acquista> loggedAcquisti = new ArrayList<>();
         Cookie[] cookies = request.getCookies();
 
@@ -124,9 +103,9 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
 
                     // Filtra gli acquisti per l'utente corrente
                     for (Acquista acquisto : loggedAcquistiFromCookie) {
-                        //if (acquisto.getUtente().getUsername().equals(utente.getUsername())) {
+
                             loggedAcquisti.add(acquisto);
-                        //}
+
                     }
                 }
             }

@@ -34,10 +34,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 57vh; /* Imposta l'altezza desiderata per il riquadro */
-      max-width: 500px; /* Imposta la larghezza massima desiderata per il riquadro */
-      margin: 0 auto; /* Centra il riquadro orizzontalmente sulla pagina */
-      align: center;
+      height: 350px; /* Imposta un'altezza fissa in pixel per il riquadro */
+      max-width: 500px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
     }
 
     /* Stile per i checkbox */
@@ -47,12 +48,12 @@
 
     /* Stile per l'immagine SCHERMO */
     #schermo {
-      position: absolute;
-      top: 77%; /* Posiziona l'immagine al centro verticalmente */
-      left: 50%; /* Posiziona l'immagine al centro orizzontalmente */
-      transform: translate(-50%, -50%); /* Centra l'immagine in base alle dimensioni */
-      max-width: 32%; /* Imposta la larghezza massima dell'immagine */
-      max-height: 38%; /* Imposta l'altezza massima dell'immagine */
+      align: center;
+      top: 100%; /* Posiziona l'immagine al centro verticalmente */
+      left: 80%; /* Posiziona l'immagine al centro orizzontalmente */
+      transform: translate(-0%, -50%); /* Centra l'immagine in base alle dimensioni */
+      max-width: 80%; /* Imposta la larghezza massima dell'immagine */
+      max-height: 50%; /* Imposta l'altezza massima dell'immagine */
     }
 
   </style>
