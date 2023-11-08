@@ -26,6 +26,70 @@
 <head>
     <title>Title</title>
     <%@include file="/include/htmlHead.inc"%>
+    <style>
+
+        /* Menù a tendina */
+        select {
+            width: 125px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 16px;
+        }
+
+
+        select option {
+            background-color: #fff;
+            color: #333;
+            padding: 5px;
+        }
+
+        /* CSS per il textarea dei commenti */
+        textarea#commento {
+            width: 50%; /* Imposta la larghezza al 100% del contenitore padre */
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            resize: none; /* Impedisce il ridimensionamento */
+        }
+
+        /* Stile per l'etichetta del commento */
+        label[for="commento"] {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Recensioni */
+
+        /* Stili per la tabella */
+        table {
+            width: 40%; /* Imposta la larghezza della tabella al 100% del contenitore padre */
+            border-collapse: collapse; /* Unisci i bordi delle celle */
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* Stili per gli elementi delle righe della tabella */
+        tr {
+            border: 1px solid #ccc; /* Aggiunge un bordo a tutte le righe */
+        }
+
+        /* Stili per gli elementi delle celle dei dati (colonna di sinistra) */
+        td:first-child {
+            width: 50px; /* Larghezza fissa per la prima colonna (colonna di sinistra) */
+        }
+
+        /* Altri stili per le celle delle intestazioni e dei dati */
+        th, td {
+            border: none;
+            padding: 10px;
+        }
+
+
+    </style>
     <script language="javascript">
 
         function submitRec() {
@@ -91,7 +155,7 @@
             <form name="datiacqForm" action="Dispatcher" method="post">
                 <!-- Menu a tendina per data_pro -->
                 <label for="dataProMenu">Seleziona Data di Proiezione:</label>
-                <select id="dataProMenu" name="formattedDate" onchange="menuData(<%=film.getCod_film()%>)">
+                <select id="dataProMenu" name="formattedDate" class="dropdown-menu" onchange="menuData(<%=film.getCod_film()%>)">
                     <%if (formattedDate != null){%>
                     <option value="<%=formattedDate%>"><%=formattedDate%></option><%} else {%>
                     <option value="nul"></option>
@@ -123,7 +187,7 @@
 
                 <!-- Menu a tendina per ora_pro -->
                 <label for="oraProMenu">Seleziona Ora di Proiezione:</label>
-                <select id="oraProMenu">
+                <select id="oraProMenu" class="dropdown-menu">
                     <% if (film.getProiezioni() != null) { %>
                     <% for (int c = 0; c < film.getProiezioni().length; c++) {
                         Proiezione proiezione = film.getProiezioni(c);
@@ -143,47 +207,54 @@
         <%}%>
 
 
-
+        <br><br>
         <%if (loggedOn) {%>
         <!-- Possibilità di inserire recensioni -->
         <section id="insrecFormSection">
             <form name="insrecForm" action="Dispatcher" method="post">
-                <h3>Lascia una recensione</h3>
+                <h3>Lascia una recensione</h3><br>
                 <input type="hidden" name="selectedcodfilm" value="<%= film.getCod_film() %>">
                 <input type="hidden" name="controllerAction" value="HomeManagement.insrec"/>
                 <label for="voto">Voto: </label>
                 <input type="number" id="voto" name="voto" min="1" max="5" required>
-                <br>
-                <label for="commento">Recensione: </label>
-                <textarea id="commento" name="commento" rows="4" required></textarea>
-                <br>
+                <br><br>
+                <textarea id="commento" name="commento" rows="4" required placeholder="Scrivi un commento...."></textarea>
+                <br><br>
                 <input type="submit" class="button" value="Invia recensione">
                 <input type="hidden" name="controllerAction"/>
             </form>
         </section>
         <%}%>
-
+        <br><br><br>
         <!-- Sezione dedicata ai commenti -->
         <% if (recensioni != null) { %>
         <section id="commentSection">
-            <h3>Commenti<br></h3>
+            <h3>Commenti (<%=recensioni.size()%>)<br><br><br></h3>
             <ul>
                 <% for (i = 0; i < recensioni.size(); i++) { %>
                 <li>
-
-                    <b>Codrec: </b><%= recensioni.get(i).getCod_rec() %><br>
-                    <b>Utente: </b><%= recensioni.get(i).getUtente().getUsername() %><br>
-                    <b>Voto: </b><%= recensioni.get(i).getVoto() %><br>
-                    <b>Commento: </b><%= recensioni.get(i).getCommento() %><br>
+                    <table>
+                    <tr>
+                        <td align="right"><img id="user" src="images/user.jpg" width="23" height="20"></td>
+                    <!--<b>Codrec: </b><%= recensioni.get(i).getCod_rec() %><br>-->
+                    <td align="left"><b style="color: black;"><%= recensioni.get(i).getUtente().getUsername() %></b>
+                        &nbsp;&nbsp;Voto: <%= recensioni.get(i).getVoto() %><br></td><br>
+                    </tr>
+                    <tr><td></td>
+                       <td align="left"><%= recensioni.get(i).getCommento() %><br></td>
+                    </tr>
+                    </table>
                     <%if (loggedUtente != null && loggedUtente.getTipo().equals("amministratore")) {%>
                     <!-- Possibilità di cancellare le recensioni -->
 
                         <img id="trashcan" src="images/trashcan.png"
                              onclick="deleteRec(<%=recensioni.get(i).getCod_rec()%>,<%=film.getCod_film()%>)" width="22" height="22"/>
                     <%}%>
+
                 </li>
                 <% } %>
             </ul>
+
         </section>
         <br><br>
         <% } %>

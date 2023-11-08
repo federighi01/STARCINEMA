@@ -26,6 +26,82 @@
 <head>
     <%@include file="/include/htmlHead.inc"%>
     <style>
+
+        #findfilm form {
+            background: #f7f7f7;
+            width: 550px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #findfilm label {
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table tr {
+            border-bottom: none;
+        }
+
+        table td {
+            padding: 10px;
+        }
+
+        table td:first-child {
+            text-align: left;
+            width: 40%;
+        }
+
+        table input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        table input[type="submit"] {
+            background-color: royalblue;
+            color: white;
+            padding: 10px 20px;
+            margin-left: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Style per ricerca per data pro */
+
+        #finddata form {
+            background: #f7f7f7;
+            width: 550px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #finddata label {
+            font-weight: bold;
+        }
+
+        table input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+
+
+
         #films {
             margin: 12px 0;
         }
@@ -62,7 +138,6 @@
             function mainOnLoadHandler() {
                 document.querySelector("#schedaButton").addEventListener("click", viewfilm);
                 document.querySelector("#newproButton").addEventListener("click", addpro);
-                //anche scheda3button?
             }
         </script>
 </head>
@@ -72,30 +147,41 @@
     <%if (loggedOn) {%>
     Benvenuto <%=loggedUtente.getCognome()%> <%=loggedUtente.getNome()%>!<br/>
     work in progress...
-    <%} else {%>
-    Benvenuto.
-    Fai il logon per accedere all'area riservata.
     <%}%>
     <br><br>
-    <section id="findfilm" class="clearfix">
+    <table>
+        <tr>
+    <td><section id="findfilm" class="clearfix">
         <form name="findfilmForm" action="Dispatcher" method="post">
-            <label for="titolo">Cerca per titolo</label>
-            <input type="text" id="titolo"  name="titolo" maxlength="80" required>
-
-            <input type="submit" value="Cerca">
-            <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
+            <table>
+                <tr>
+                    <td><label for="titolo">Cerca per titolo</label><br></td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="titolo"  name="titolo" maxlength="80" required placeholder="Inserisci titolo da cercare"></td>
+                    <td align="left"><input type="submit" value="Cerca"></td>
+                <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
+                </tr>
+            </table>
         </form>
-    </section>
+    </section></td>
     <br>
-    <section id="finddata" class="clearfix">
+    <td><section id="finddata" class="clearfix">
         <form name="finddataForm" action="Dispatcher" method="post">
-            <label for="data_pro">Cerca per data di calendario</label>
-            <input type="date" id="data_pro" name="data_pro">
-
-            <input type="submit" value="Cerca">
-            <input type="hidden" name="controllerAction" value="HomeManagement.view">
+            <table>
+                <tr>
+                    <td colspan="2"><label for="data_pro">Cerca per data di calendario</label><br></td>
+                </tr>
+                <tr>
+                    <td><input type="date" id="data_pro" name="data_pro"></td>
+                    <td><input type="submit" value="Cerca"></td>
+                </tr>
+                <input type="hidden" name="controllerAction" value="HomeManagement.view">
+            </table>
         </form>
-    </section>
+    </section></td>
+        </tr>
+    </table>
     <br><br><br>
     STARCINEMA CONSIGLIA
     <br><br>
