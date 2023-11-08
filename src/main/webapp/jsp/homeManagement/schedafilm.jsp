@@ -84,8 +84,25 @@
 
         /* Altri stili per le celle delle intestazioni e dei dati */
         th, td {
-            border: none;
+            border: 1px solid #ccc;
             padding: 10px;
+        }
+
+        /* Style scheda film */
+
+        .film {
+            width: 80%;
+            border: 1px solid #ccc; /* Add border style */
+            border-radius: 5px; /* Add border radius */
+            padding: 10px; /* Add padding */
+            margin: 10px; /* Add margin */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
+        }
+
+        .film img {
+            width: 200px; /* Imposta la larghezza desiderata */
+            height: 300px; /* Imposta l'altezza desiderata */
+            object-fit: cover; /* Opzionale: scala e taglia l'immagine per adattarla alle dimensioni specificate */
         }
 
 
@@ -136,17 +153,39 @@
 </head>
 <body>
     <main>
-        <h1>Scheda Film</h1>
-        <br><br>
-        <a><b>Titolo: </b><%=film.getTitolo()%></a></h1> <br>
-        <a><b>Regista: </b><%=film.getRegista()%></a> <br>
-        <a><b>Cast: </b><%=film.getCast()%></a> <br>
-        <a><b>Genere: </b><%=film.getGenere()%></a> <br>
-        <a><b>Durata: </b><%=film.getDurata()%>'</a> <br>
-        <a><b>Nazione: </b><%=film.getNazione()%></a> <br>
-        <a><b>Anno: </b><%=film.getAnno()%></a> <br>
-        <a><b>Descrizione: </b><%=film.getDescrizione()%></a> <br>
-        <a href=<%=film.getTrailer()%>>Clicca qui per il trailer</a>
+
+        <table class="film">
+            <tr>
+                <td>
+                    <%if (film.getImmagine()!=null) {%>
+                    <img src="<%=film.getImmagine()%>">
+                    <%} else {%>
+                    <img src="images/imgnotfound.jpg">
+                    <%}%>
+                </td>
+                <td>
+                    <h1><a><b><%=film.getTitolo()%></b></a></h1> <br><br><br>
+                    <a><b>Regista: </b><%=film.getRegista()%></a> <br>
+                    <a><b>Cast: </b><%=film.getCast()%></a> <br>
+                    <a><b>Genere: </b><%=film.getGenere()%></a> <br>
+                    <a><b>Durata: </b><%=film.getDurata()%>'</a> <br>
+                    <a><b>Nazione: </b><%=film.getNazione()%></a> <br>
+                    <a><b>Anno: </b><%=film.getAnno()%></a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href=<%=film.getTrailer()%>>Clicca qui per il trailer</a>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <a><b>Descrizione: </b><%=film.getDescrizione()%></a>
+                </td>
+            </tr>
+        </table>
+
         <br><br>
         <!-- Sezione dedicata agli utenti registrati e amministratore!-->
 
@@ -230,30 +269,27 @@
         <% if (recensioni != null) { %>
         <section id="commentSection">
             <h3>Commenti (<%=recensioni.size()%>)<br><br><br></h3>
-            <ul>
+
                 <% for (i = 0; i < recensioni.size(); i++) { %>
-                <li>
+
                     <table>
                     <tr>
                         <td align="right"><img id="user" src="images/user.jpg" width="23" height="20"></td>
                     <!--<b>Codrec: </b><%= recensioni.get(i).getCod_rec() %><br>-->
                     <td align="left"><b style="color: black;"><%= recensioni.get(i).getUtente().getUsername() %></b>
-                        &nbsp;&nbsp;Voto: <%= recensioni.get(i).getVoto() %><br></td><br>
+                        &nbsp;&nbsp;Voto: <%= recensioni.get(i).getVoto() %><br></td>
+                        <td align="right"><%if (loggedUtente != null && loggedUtente.getTipo().equals("amministratore")) {%>
+                            <!-- Possibilità di cancellare le recensioni -->
+
+                            <right title="CANCELLA"><img id="trashcan" src="images/trashcan.png"
+                                 onclick="deleteRec(<%=recensioni.get(i).getCod_rec()%>,<%=film.getCod_film()%>)" width="22" height="22"/></right>
+                            <%}%></td>
                     </tr>
                     <tr><td></td>
-                       <td align="left"><%= recensioni.get(i).getCommento() %><br></td>
+                       <td align="left" colspan="3"><%= recensioni.get(i).getCommento() %><br></td>
                     </tr>
-                    </table>
-                    <%if (loggedUtente != null && loggedUtente.getTipo().equals("amministratore")) {%>
-                    <!-- Possibilità di cancellare le recensioni -->
-
-                        <img id="trashcan" src="images/trashcan.png"
-                             onclick="deleteRec(<%=recensioni.get(i).getCod_rec()%>,<%=film.getCod_film()%>)" width="22" height="22"/>
-                    <%}%>
-
-                </li>
-                <% } %>
-            </ul>
+                    </table><br><br>
+            <% } %>
 
         </section>
         <br><br>

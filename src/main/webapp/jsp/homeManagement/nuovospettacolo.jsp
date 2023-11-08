@@ -111,6 +111,12 @@
                value=""
                required size="20" maxlength="50"/>
       </div><br>
+      <div class="field clearfix">
+        <label for="immagine">Locandina</label>
+        <input type="text" id="immagine" name="immagine"
+               value=""
+               required size="20" maxlength="50"/>
+      </div><br>
 
       <div class="field clearfix">
         <label>&#160;</label>

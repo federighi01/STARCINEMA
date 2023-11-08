@@ -17,7 +17,8 @@ public interface FilmDAO {
             String nazione,
             Integer anno,
             String descrizione,
-            String trailer
+            String trailer,
+            String immagine
     );
 
     public void update(Film film);

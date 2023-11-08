@@ -776,7 +776,8 @@ public class HomeManagement {
                     request.getParameter("nazione"),
                     Integer.parseInt(request.getParameter("anno")),
                     request.getParameter("descrizione"),
-                    request.getParameter("trailer"));
+                    request.getParameter("trailer"),
+                    request.getParameter("immagine"));
 
             commonView(daoFactory, sessionDAOFactory, request);
 

@@ -1,7 +1,7 @@
 <meta charset="utf-8"/>
 
 <!-- Linking styles -->
-<link rel="stylesheet" href="css/addressbook60.css" type="text/css" media="screen">
+<link rel="stylesheet" href="css/addressbook61.css" type="text/css" media="screen">
 <title>Starcinema: <%=menuActiveLink%></title>
 <script>
   var applicationMessage;

@@ -18,7 +18,7 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
         this.conn = conn;
     }
     @Override
-    public Film create(String titolo, String regista, String cast, String genere, Integer durata, String nazione, Integer anno, String descrizione, String trailer) {
+    public Film create(String titolo, String regista, String cast, String genere, Integer durata, String nazione, Integer anno, String descrizione, String trailer, String immagine) {
         PreparedStatement ps;
         Film film = new Film();
         film.setTitolo(titolo);
@@ -43,9 +43,10 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
                     + "     anno,"
                     + "     descrizione,"
                     + "     trailer,"
+                    + "     immagine,"
                     + "     deleted "
                     + "   ) "
-                    + " VALUES (?,?,?,?,?,?,?,?,?,'N')";
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?,'N')";
 
             ps = conn.prepareStatement(sql);
             int i = 1;
@@ -58,6 +59,7 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
             ps.setInt(i++, film.getAnno());
             ps.setString(i++, film.getDescrizione());
             ps.setString(i++, film.getTrailer());
+            ps.setString(i++, film.getImmagine());
 
             ps.executeUpdate();
 
@@ -165,7 +167,7 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
         try {
 
             String sql
-                    = " SELECT DISTINCT film.cod_film, film.titolo, film.regista, film.cast, film.genere, film.durata, film.nazione, film.anno, film.descrizione, film.trailer "
+                    = " SELECT DISTINCT film.cod_film, film.titolo, film.regista, film.cast, film.genere, film.durata, film.nazione, film.anno, film.descrizione, film.trailer, film.immagine "
                     + " FROM film JOIN proiezione ON film.cod_film = proiezione.codice_film "
                     + " WHERE "
                     + "   data_pro = ? "
@@ -267,6 +269,10 @@ public class FilmDAOMySQLJDBCImpl implements FilmDAO {
         }
         try {
             film.setTrailer(rs.getString("trailer"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            film.setImmagine(rs.getString("immagine"));
         } catch (SQLException sqle) {
         }
         try {

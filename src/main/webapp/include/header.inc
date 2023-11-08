@@ -1,3 +1,6 @@
+<style>
+
+</style>
 
 <script>
   function headerOnLoadHandler() {
@@ -22,7 +25,7 @@
 <header class="clearfix"><!-- Defining the header section of the page -->
 
   <h1 class="logo"><!-- Defining the logo element -->
-    Starcinema
+  Starcinema
   </h1>
 
   <form name="logoutForm" action="Dispatcher" method="post">

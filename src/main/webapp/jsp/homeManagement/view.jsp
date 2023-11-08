@@ -27,6 +27,11 @@
     <%@include file="/include/htmlHead.inc"%>
     <style>
 
+        h2 {
+            margin-left: 20px; /* Modifica il valore a seconda di quanto vuoi spostare il testo verso destra */
+            color: black;
+        }
+
         #findfilm form {
             background: #f7f7f7;
             width: 550px;
@@ -76,6 +81,8 @@
             cursor: pointer;
         }
 
+
+
         /* Style per ricerca per data pro */
 
         #finddata form {
@@ -100,7 +107,7 @@
         }
 
 
-
+        /* Da eliminare */
 
         #films {
             margin: 12px 0;
@@ -122,6 +129,46 @@
         #films article h1 a {
             color: #a3271f;
         }
+
+
+        .film {
+            width: 80%;
+            border: 1px solid #ccc; /* Add border style */
+            border-radius: 5px; /* Add border radius */
+            padding: 10px; /* Add padding */
+            margin: 10px; /* Add margin */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
+        }
+
+        .film tr {
+            border: 1px solid #ccc; /* Add border for tr */
+        }
+
+        .film td {
+            border: 1px solid #ccc; /* Add border for td */
+            padding: 10px; /* Customize cell padding */
+            text-align: left;
+            width: 40%;
+        }
+
+        .film td:first-child {
+            width: 150px; /* Larghezza fissa per la prima colonna (colonna di sinistra) */
+        }
+
+        .film img {
+            width: 200px; /* Imposta la larghezza desiderata */
+            height: 300px; /* Imposta l'altezza desiderata */
+            object-fit: cover; /* Opzionale: scala e taglia l'immagine per adattarla alle dimensioni specificate */
+        }
+
+        .data-cell {
+            width: 40%; /* Imposta una larghezza relativa del 40% */
+        }
+
+        .ora-cell {
+            width: 10%; /* Imposta una larghezza relativa del 30% */
+        }
+
     </style>
         <script language="javascript">
 
@@ -146,7 +193,7 @@
 <main>
     <%if (loggedOn) {%>
     Benvenuto <%=loggedUtente.getCognome()%> <%=loggedUtente.getNome()%>!<br/>
-    work in progress...
+    Effettua ricerche e utilizza gli strumenti per amministratori
     <%}%>
     <br><br>
     <table>
@@ -183,7 +230,7 @@
         </tr>
     </table>
     <br><br><br>
-    STARCINEMA CONSIGLIA
+    <h2>STARCINEMA CONSIGLIA</h2>
     <br><br>
 
 
@@ -192,42 +239,53 @@
     <%if (titolo==null && filmsdp==null) {%>
     <section id="films" class="clearfix">
         <%for (i = 0; i < films.size(); i++) {%>
-        <article>
-            <h1><a><%=films.get(i).getTitolo()%></a></h1> <br>
-            <a><b>Regista: </b><%=films.get(i).getRegista()%></a> <br>
+        <table class="film">
+            <tr>
+                <td rowspan="3" style="text-align: center;">
+                    <%if (films.get(i).getImmagine()!=null) {%>
+                    <img src="<%=films.get(i).getImmagine()%>">
+                    <%} else {%>
+                    <img src="images/imgnotfound.jpg">
+                    <%}%>
+                </td>
+                <td><h1><a><%=films.get(i).getTitolo()%></a></h1><br></td>
+                <!-- Ciclo per stampare le date e le ore di proiezione del film corrente -->
+                <td rowspan="2"><h3>Orari di Proiezione:</h3>
+                    <table class="date">
+                    <%
+                        Date lastDataPro = null; // Memorizza l'ultima data_pro stampata
+                    %>
+                    <% for (c = 0; c < films.get(i).getProiezioni().length; c++) {
+                        Proiezione proiezione = films.get(i).getProiezioni(c);
+                        Date dataPro = proiezione.getData_pro();
+
+                        // Controlla se la data_pro è diversa dall'ultima data_pro stampata
+                        if (lastDataPro == null || !lastDataPro.equals(dataPro)) {
+                            // Memorizza la nuova data_pro
+                            lastDataPro = dataPro;
+                    %>
+                    <%
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                        String formattedDate = dateFormat.format(dataPro);
+                    %>
+                        <tr><td class="data-cell"><h3><%= formattedDate %></h3></td>
+                            <td class="ora-cell">
+                    <%}%>
+                    <%
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                        String formattedTime = timeFormat.format(proiezione.getOra_pro());
+                    %>
+                    <a><%= formattedTime %></a><br>
+                    <%}%>
+                            </td>
+                        </tr>
+                    </table>
+            <tr>
+            <td><a><b>Regista: </b><%=films.get(i).getRegista()%></a> <br>
             <a><b>Cast: </b><%=films.get(i).getCast()%></a> <br>
             <a><b>Genere: </b><%=films.get(i).getGenere()%></a> <br>
-            <a><b>Durata: </b><%=films.get(i).getDurata()%>'</a> <br>
-
-
-            <!-- Ciclo per stampare le date e le ore di proiezione del film corrente -->
-            <h2>Orari di Proiezione:</h2>
-            <%
-                Date lastDataPro = null; // Memorizza l'ultima data_pro stampata
-            %>
-            <% for (c = 0; c < films.get(i).getProiezioni().length; c++) {
-                Proiezione proiezione = films.get(i).getProiezioni(c);
-                Date dataPro = proiezione.getData_pro();
-
-                // Controlla se la data_pro è diversa dall'ultima data_pro stampata
-                if (lastDataPro == null || !lastDataPro.equals(dataPro)) {
-                    // Memorizza la nuova data_pro
-                    lastDataPro = dataPro;
-            %>
-            <%
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                String formattedDate = dateFormat.format(dataPro);
-            %>
-            <h3>Data di Proiezione: <%= formattedDate %></h3>
-            <%}%>
-            <%
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-                String formattedTime = timeFormat.format(proiezione.getOra_pro());
-            %>
-            <a>Ora di Proiezione: <%= formattedTime %></a><br>
-            <%}%>
-
-            <%--<%if (loggedOn && loggedUtente.getTipo().equals("utente")) {%>--%>
+            <a><b>Durata: </b><%=films.get(i).getDurata()%>'</a> <br></td>
+            </tr>
 
 
             <input type="hidden" name="filmTitolo" value="<%=films.get(i).getTitolo()%>">
@@ -239,19 +297,19 @@
             <input type="hidden" name="filmAnno" value="<%=films.get(i).getAnno()%>">
             <input type="hidden" name="filmDescrizione" value="<%=films.get(i).getDescrizione()%>">
             <input type="hidden" name="filmTrailer" value="<%=films.get(i).getTrailer()%>">
-
-            <section id="schedaButtonSection">
+            <tr>
+            <td><section id="schedaButtonSection">
                 <a> <input type="button" id="schedaButton" name="schedaButton"
                            class="button" value="Visualizza scheda film" onclick="viewfilm(<%=films.get(i).getCod_film()%>)"/></a>
-            </section><br>
+            </section></td>
             <%if (loggedOn && loggedUtente.getTipo().equals("amministratore")) {%>
-            <section id="newproButtonSection">
+            <td><section id="newproButtonSection">
                 <a> <input type="button" id="newproButton" name="newproButton"
                            class="button" value="Aggiungi proiezioni" onclick="addpro(<%=films.get(i).getCod_film()%>)"/></a>
-            </section>
+            </section></td>
             <%}%>
-            <%--<%}%>--%>
-        </article>
+            </tr>
+        </table>
         <br><br><br>
         <%}%>
     </section>
@@ -261,14 +319,19 @@
     <%--ricerca film per titolo--%>
     <%}%><% if(titolo != null && film != null){%>
     <section id="films" class="clearfix">
-    <article>
-        <h1><a><%=film.getTitolo()%></a></h1> <br>
-        <a><b>Regista: </b><%=film.getRegista()%></a> <br>
-        <a><b>Cast: </b><%=film.getCast()%></a> <br>
-        <a><b>Genere: </b><%=film.getGenere()%></a> <br>
-        <a><b>Durata: </b><%=film.getDurata()%>'</a> <br>
+        <table class="film">
+            <tr>
+                <td rowspan="3" style="text-align: center;">
+                    <%if (film.getImmagine()!=null) {%>
+                    <img src="<%=film.getImmagine()%>">
+                    <%} else {%>
+                    <img src="images/imgnotfound.jpg">
+                    <%}%>
+                </td>
+                <td><h1><a><%=film.getTitolo()%></a></h1></td>
+                <td rowspan="2"><h3>Orari di Proiezione:</h3>
+                    <table class="date">
 
-        <h2>Orari di Proiezione:</h2>
         <%
             Date lastDataPro = null; // Memorizza l'ultima data_pro stampata
         %>
@@ -285,25 +348,35 @@
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
             String formattedDate = dateFormat.format(dataPro);
         %>
-        <h3>Data di Proiezione: <%= formattedDate %></h3>
+                        <tr><td class="data-cell"><h3><%= formattedDate %></h3></td>
+                            <td class="ora-cell">
         <%}%>
         <%
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
             String formattedTime = timeFormat.format(proiezione.getOra_pro());
         %>
-        <a>Ora di Proiezione: <%= formattedTime %></a><br>
+        <a><%= formattedTime %></a><br>
         <%}%>
+                            </td>
+                        </tr>
+                    </table>
 
+            <tr>
+                <td><a><b>Regista: </b><%=film.getRegista()%></a> <br>
+                    <a><b>Cast: </b><%=film.getCast()%></a> <br>
+                    <a><b>Genere: </b><%=film.getGenere()%></a> <br>
+                    <a><b>Durata: </b><%=film.getDurata()%>'</a> <br></td>
+            </tr>
 
         <input type="hidden" name="filmId" value="<%=film.getCod_film()%>">
         <input type="hidden" name="filmTitolo" value="<%=film.getTitolo()%>">
-
-        <section id="scheda2ButtonSection">
+        <tr>
+        <td><section id="scheda2ButtonSection">
             <a> <input type="button" id="scheda2Button" name="scheda2Button"
                        class="button" value="Visualizza scheda film" onclick="viewfilm(<%=film.getCod_film()%>)"/></a>
-        </section>
-        <%--<%}%>--%>
-    </article>
+        </section></td>
+        </tr>
+        </table>
     </section>
 
 
@@ -312,13 +385,18 @@
     <%}%><% if(filmsdp != null && titolo==null){%>
     <section id="films" class="clearfix">
         <%for (i = 0; i < filmsdp.size(); i++) {%>
-        <article>
-            <h1><a><%=filmsdp.get(i).getTitolo()%></a></h1> <br>
-            <a><b>Regista: </b><%=filmsdp.get(i).getRegista()%></a> <br>
-            <a><b>Cast: </b><%=filmsdp.get(i).getCast()%></a> <br>
-            <a><b>Genere: </b><%=filmsdp.get(i).getGenere()%></a> <br>
-            <a><b>Durata: </b><%=filmsdp.get(i).getDurata()%>'</a> <br>
-
+        <table class="film">
+            <tr>
+                <td rowspan="3" style="text-align: center;">
+                    <%if (filmsdp.get(i).getImmagine()!=null) {%>
+                    <img src="<%=filmsdp.get(i).getImmagine()%>">
+                    <%} else {%>
+                    <img src="images/imgnotfound.jpg">
+                    <%}%>
+                </td>
+                <td><h1><a><%=filmsdp.get(i).getTitolo()%></a></h1></td> <br>
+                <td rowspan="2"><h3>Orari di Proiezione:</h3>
+                    <table class="date">
             <%
                 Date dataProiezione = null; // Inizializza la data di proiezione
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -330,27 +408,37 @@
                             dataProiezione = pro.get(c).getData_pro();
                             String data_pro = dateFormat.format(dataProiezione);
             %>
-            <a><b>Data proiezione: </b><%= data_pro %></a><br>
+                        <tr><td class="data-cell"><h3><%= data_pro %></h3></td>
+                            <td class="ora-cell">
             <%
                 }
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
                 String ora_pro = timeFormat.format(pro.get(c).getOra_pro());
             %>
-            <a><b>Ora proiezione: </b><%= ora_pro %></a><br>
+            <a><%= ora_pro %></a><br>
             <%
                     }
                 }
             %>
+                            </td>
+                        </tr>
+                    </table>
+            <tr>
+                <td><a><b>Regista: </b><%=filmsdp.get(i).getRegista()%></a> <br>
+                    <a><b>Cast: </b><%=filmsdp.get(i).getCast()%></a> <br>
+                    <a><b>Genere: </b><%=filmsdp.get(i).getGenere()%></a> <br>
+                    <a><b>Durata: </b><%=filmsdp.get(i).getDurata()%>'</a> <br></td>
+            </tr>
 
             <input type="hidden" name="filmId" value="<%=i%>">
             <input type="hidden" name="filmTitolo" value="<%=filmsdp.get(i).getTitolo()%>">
-
-            <section id="scheda3ButtonSection">
+            <tr>
+            <td><section id="scheda3ButtonSection">
                 <a> <input type="button" id="scheda3Button" name="scheda3Button"
                            class="button" value="Visualizza scheda film" onclick="viewfilm(<%=filmsdp.get(i).getCod_film()%>)"/></a>
-            </section>
-            <%--<%}%>--%>
-        </article>
+            </section></td>
+            </tr>
+        </table>
         <br><br><br>
         <%}%>
     </section>
