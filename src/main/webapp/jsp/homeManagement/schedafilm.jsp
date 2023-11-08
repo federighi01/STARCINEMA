@@ -105,6 +105,40 @@
             object-fit: cover; /* Opzionale: scala e taglia l'immagine per adattarla alle dimensioni specificate */
         }
 
+        /* Bottone per il trailer */
+
+        .button {
+            background-color: midnightblue;
+        }
+
+        /* Bottone per acquista */
+
+        .buttonacq {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        .buttonacq:hover {
+            background-color: white;
+            color: black;
+            border: 2px solid #008CBA;
+        }
+
+        .buttonacq {
+            background-color: #008CBA;
+            color: white;
+            border: 2px solid white;
+        }
+
 
     </style>
     <script language="javascript">
@@ -174,8 +208,8 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                    <a href=<%=film.getTrailer()%>>Clicca qui per il trailer</a>
+                <td style="text-align: center;">
+                    <button onclick="window.location.href='<%=film.getTrailer()%>'" class="button">Guarda il trailer</button>
                 </td>
                 <td></td>
             </tr>
@@ -239,7 +273,7 @@
                 </select>
 
         <input type="button" id="acqButton" name="acqButton"
-               class="button" value="Acquista"
+               class="buttonacq" value="Acquista"
                onclick="submitAcq(<%=film.getCod_film()%>)">
             </form>
         </section>

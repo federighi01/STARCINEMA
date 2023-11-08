@@ -16,6 +16,31 @@
 <head>
   <title>Nuovo spettacolo</title>
   <%@include file="/include/htmlHead.inc"%>
+  <style>
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .input-container .field {
+      margin-bottom: 10px; /* Aggiunge spazio tra i campi */
+    }
+
+    .input-container label {
+      width: 120px; /* Imposta una larghezza fissa per le etichette */
+      display: inline-block;
+    }
+
+    .input-container input[type="text"],
+    .input-container input[type="password"],
+    .input-container input[type="date"] {
+      width: 30%; /* Imposta la larghezza al 100% per adattarsi al contenitore */
+      padding: 5px; /* Aggiunge spazio interno ai campi di input */
+      border: 1px solid #ccc;
+    }
+
+  </style>
   <script language="javascript">
 
     function submitIns() {
@@ -54,7 +79,7 @@
   <!-- Se viene cliccato nella barra di navigazione "Nuovo spettacolo" -->
   <%if (selectedcodfilm == null) {%>
   <section id="insFormSection">
-    <form name="insForm" action="Dispatcher" method="post">
+    <form name="insForm" action="Dispatcher" method="post" class="input-container">
 
       <div class="field clearfix">
         <label for="titolo">Titolo</label>
@@ -132,7 +157,7 @@
   <!-- Quando viene premuto il bottone "aggiungi proiezioni" nella home -->
   <%if (selectedcodfilm != null) {%>
   <section id="insproFormSection">
-    <form name="insproForm" action="Dispatcher" method="post">
+    <form name="insproForm" action="Dispatcher" method="post" class="input-container">
 
 
       <div class="field clearfix">

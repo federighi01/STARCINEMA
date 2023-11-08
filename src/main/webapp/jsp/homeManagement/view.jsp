@@ -375,6 +375,12 @@
             <a> <input type="button" id="scheda2Button" name="scheda2Button"
                        class="button" value="Visualizza scheda film" onclick="viewfilm(<%=film.getCod_film()%>)"/></a>
         </section></td>
+            <%if (loggedOn && loggedUtente.getTipo().equals("amministratore")) {%>
+            <td><section id="newpro2ButtonSection">
+                <a> <input type="button" id="newpro2Button" name="newproButton"
+                           class="button" value="Aggiungi proiezioni" onclick="addpro(<%=film.getCod_film()%>)"/></a>
+            </section></td>
+            <%}%>
         </tr>
         </table>
     </section>
@@ -437,6 +443,12 @@
                 <a> <input type="button" id="scheda3Button" name="scheda3Button"
                            class="button" value="Visualizza scheda film" onclick="viewfilm(<%=filmsdp.get(i).getCod_film()%>)"/></a>
             </section></td>
+                <%if (loggedOn && loggedUtente.getTipo().equals("amministratore")) {%>
+                <td><section id="newpro3ButtonSection">
+                    <a> <input type="button" id="newpro3Button" name="newproButton"
+                               class="button" value="Aggiungi proiezioni" onclick="addpro(<%=filmsdp.get(i).getCod_film()%>)"/></a>
+                </section></td>
+                <%}%>
             </tr>
         </table>
         <br><br><br>
