@@ -1,7 +1,7 @@
 <header class="clearfix"><!-- Defining the header section of the page -->
 
     <h1 class="logo"><!-- Defining the logo element -->
-        Starcinema
+        St<span style="color: yellow;">&starf;</span>rcinem<span style="color: yellow;">&starf;</span>
     </h1>
 
     <nav><!-- Defining the navigation menu -->

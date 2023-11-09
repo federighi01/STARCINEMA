@@ -82,7 +82,6 @@
         }
 
 
-
         /* Style per ricerca per data pro */
 
         #finddata form {
@@ -192,8 +191,17 @@
 <%@include file="/include/header.inc"%>
 <main>
     <%if (loggedOn) {%>
-    Benvenuto <%=loggedUtente.getCognome()%> <%=loggedUtente.getNome()%>!<br/>
-    Effettua ricerche e utilizza gli strumenti per amministratori
+    <table class="film" style="width: 30%">
+        <tr>
+            <td style="width: 0.1%"><img src="images/user.jpg" style="width: 30px; height: 30px"></td>
+            <td>Benvenuto <%=loggedUtente.getCognome()%> <%=loggedUtente.getNome()%>!</td>
+        </tr>
+        <% if (loggedUtente.getTipo().equals("amministratore")) {%>
+        <tr>
+            <td colspan="2">Utilizza gli strumenti per amministratore</td>
+        </tr>
+        <%}%>
+    </table>
     <%}%>
     <br><br>
     <table>

@@ -66,10 +66,6 @@
         alert("Puoi selezionare al massimo 5 posti.");
         return false;
       }
-      if (selectedCheckboxes.length < 1) {
-        alert("Seleziona almeno un posto.");
-        return false;
-      }
       return true;
     }
 
@@ -121,7 +117,7 @@
         <center title="SCHERMO">SCHERMO</center>
     </div>
 
-        <a> <input type="submit" class="button" value="Conferma selezione"/></a>
+        <a><center><input type="submit" class="button" value="Conferma selezione"/></center></a>
         <input type="hidden" name="num_sala" value="<%=sala.getNum_sala()%>">
         <input type="hidden" name="selectedcodfilm" value="<%=film.getCod_film()%>">
         <input type="hidden" name="cod_pro" value="<%=proiezione.getCod_pro()%>">

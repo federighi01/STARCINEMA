@@ -308,11 +308,11 @@
 
                     <table>
                     <tr>
-                        <td align="right"><img id="user" src="images/user.jpg" width="23" height="20"></td>
+                        <td align="right" style="width: 7%"><img id="user" src="images/user.jpg" width="23" height="20"></td>
                     <!--<b>Codrec: </b><%= recensioni.get(i).getCod_rec() %><br>-->
                     <td align="left"><b style="color: black;"><%= recensioni.get(i).getUtente().getUsername() %></b>
                         &nbsp;&nbsp;Voto: <%= recensioni.get(i).getVoto() %><br></td>
-                        <td align="right"><%if (loggedUtente != null && loggedUtente.getTipo().equals("amministratore")) {%>
+                        <td align="right" style="width: 7%"><%if (loggedUtente != null && loggedUtente.getTipo().equals("amministratore")) {%>
                             <!-- Possibilità di cancellare le recensioni -->
 
                             <right title="CANCELLA"><img id="trashcan" src="images/trashcan.png"
