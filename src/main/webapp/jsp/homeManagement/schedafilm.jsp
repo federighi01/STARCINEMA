@@ -139,6 +139,24 @@
             border: 2px solid white;
         }
 
+        /* Stile per il bottone "Torna alla HOME" */
+        input[type="submit"].button[name="home"] {
+            float: right;
+            margin-top: -450px;
+            margin-right: 20px;
+        }
+
+        input[type="submit"].button[name="home"]:hover {
+            background-color: white;
+            color: black;
+            border: 2px solid darkslategrey;
+        }
+
+        input[type="submit"].button[name="home"] {
+            background-color: darkslategrey;
+            color: white;
+            border: 2px solid white;
+        }
 
     </style>
     <script language="javascript">
@@ -219,6 +237,10 @@
                 </td>
             </tr>
         </table>
+        <a href="Dispatcher?controllerAction=HomeManagement.view">
+            <input <%=menuActiveLink.equals("Home")?"class=\"active\"":""%>
+                    type="submit" name="home" class="button" value="Torna alla HOME"/>
+        </a>
 
         <br><br>
         <!-- Sezione dedicata agli utenti registrati e amministratore!-->

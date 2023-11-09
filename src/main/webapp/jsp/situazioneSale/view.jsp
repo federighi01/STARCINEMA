@@ -26,6 +26,49 @@
 <head>
     <title>Area Utente</title>
     <%@include file="/include/htmlHead.inc"%>
+    <style>
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        main {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            text-align: center;
+        }
+
+        /* Menù a tendina */
+        select {
+            width: 180px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 16px;
+            text-align: center;
+            display: inline-block;
+            margin-top: 100px;
+            margin-right: 30px;
+        }
+
+        select option {
+            background-color: #fff;
+            color: #333;
+            padding: 5px;
+        }
+
+
+
+
+
+
+    </style>
     <script language="javascript">
 
         function menuSala(){
@@ -58,9 +101,8 @@
         <form name="finddataForm" action="Dispatcher" method="post">
 
             <%if (sale != null) {%>
-            <label for="Num_salaMenu">Inserisci numero sala</label>
+            <label for="Num_salaMenu">SALA </label>
             <select id="Num_salaMenu" name="num_sala" onchange="menuSala()">
-
                 <option value="nul">Seleziona una sala</option>
                 <%for (c = 0; c < sale.size(); c++) {%>
                     <option value="<%=sale.get(c).getNum_sala()%>"><%=sale.get(c).getNum_sala()%></option>
@@ -72,15 +114,15 @@
             <%if (proiezioni != null) {%>
             <!-- Viene visualizzato il numero della sala selezionato -->
             <%if (num_sala != null){%>
-            <label for="Num_salaMenu">Numero sala </label>
+            <label for="Num_salaMenu">SALA </label>
             <select id="Num_salaMenu" name="num_sala">
                 <option value="<%=num_sala%>"><%=num_sala%></option>
             </select>
             <%}%>
-            <br>
+
 
             <!-- Menù a tendina per le date di proiezione -->
-            <label for="DataProMenu">Cerca per data di calendario</label>
+            <label for="DataProMenu">Data proiezione </label>
             <select id="DataProMenu" name="data_pro" onchange="menuData(<%=proiezioni.get(c).getData_pro()%>,<%=num_sala%>)">
                 <option value="nul">Seleziona una data</option>
                 <%for (c = 0; c < proiezioni.size(); c++) {
@@ -99,16 +141,16 @@
             <%if (proiezioni_ora != null) {%>
             <!-- Viene visualizzato il numero della sala selezionato -->
             <%if (num_sala != null){%>
-            <label for="Num_salaMenu">Numero sala </label>
+            <label for="Num_salaMenu">SALA </label>
             <select id="Num_salaMenu" name="num_sala">
                 <option value="<%=num_sala%>"><%=num_sala%></option>
             </select>
             <%}%>
-            <br>
+
 
             <!-- Viene visualizzata la data di proiezione selezionata -->
             <%if (data_pro != null){%>
-            <label for="DataProMenu">Data di proiezione </label>
+            <label for="DataProMenu">Data proiezione </label>
             <select id="DataProMenu" name="data_pro">
             <%
                 //Creo una data per poi convertirla in una stringa nel formato desiderato
@@ -121,9 +163,9 @@
                 <option value="<%=data_pro%>"><%=datapro%></option>
             </select>
             <%}%>
-            <br>
 
-            <label for="OraProMenu">Cerca per ora di calendario</label>
+
+            <label for="OraProMenu">Ora proiezione</label>
             <select id="OraProMenu" name="ora_pro">
                 <option value="nul">Seleziona un'ora</option>
                 <%for (c = 0; c < proiezioni_ora.size(); c++) {

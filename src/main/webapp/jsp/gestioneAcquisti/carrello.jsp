@@ -108,6 +108,7 @@
             border-radius: 5px;
             background-color: #fff;
             font-size: 16px;
+            text-align: center;
         }
 
 
