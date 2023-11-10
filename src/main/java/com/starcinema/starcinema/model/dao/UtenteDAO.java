@@ -5,6 +5,7 @@ import com.starcinema.starcinema.model.mo.Utente;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 public interface UtenteDAO {
 
@@ -28,5 +29,7 @@ public interface UtenteDAO {
     public Utente findLoggedUtente();
 
     public Utente findByUsername(String username);
+
+    public List<String> findAllUsername();
 
 }

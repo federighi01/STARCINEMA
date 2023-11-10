@@ -1,11 +1,14 @@
 package com.starcinema.starcinema.model.dao.mySQLJDBCImpl;
 
 import com.starcinema.starcinema.model.dao.UtenteDAO;
+import com.starcinema.starcinema.model.mo.Film;
 import com.starcinema.starcinema.model.mo.Utente;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
 
@@ -31,7 +34,8 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
         utente.setTel(tel);
 
         try{
-            String sql
+
+             String sql
                     = " INSERT INTO utente "
                     + "   ( username,"
                     + "     pw,"
@@ -170,6 +174,38 @@ public class UtenteDAOMySQLJDBCImpl implements UtenteDAO {
         }
 
         return utente;
+    }
+
+    @Override
+    public List<String> findAllUsername() {
+        PreparedStatement ps;
+        String username;
+        ArrayList<String> usernames = new ArrayList<String>();
+
+        try {
+
+            String sql
+                    = " SELECT username "
+                    + "   FROM utente "
+                    + " WHERE"
+                    + "   deleted = 'N'";
+
+            ps = conn.prepareStatement(sql);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                username= resultSet.getString("username");
+                usernames.add(username);
+            }
+            resultSet.close();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return usernames;
     }
 
     Utente read(ResultSet rs) {

@@ -177,25 +177,32 @@
 
                <!-- Controllo se utente ha un abbonamento -->
               <%if (acquista_abb != null && abbonamento != null) {%>
-              <br><br>
-              <%= "TOTALE: 0 €" %><br>
-              <%= "Utilizzo abbonamento, ingressi disponibili: " + acquista_abb.getNum_ingressi()%>
-                    <!-- Bottone per acquistare tramite abbonamento -->
-                    <a> <input type="submit" class="button" value="Conferma acquisto con abbonamento"/></a>
-                        <input type="hidden" name="selectedcodfilm" value="<%=film.getCod_film()%>">
-                        <input type="hidden" name="cod_pro" value="<%=proiezione.getCod_pro()%>">
-                        <input type="hidden" name="cod_b" value="<%=biglietto.getCod_b()%>">
-                        <input type="hidden" name="cod_abb" value="<%=abbonamento.getCod_abb()%>">
-                        <input type="hidden" name="cod_acq_abb" value="<%=acquista_abb.getCod_acq_abb()%>">
-                        <input type="hidden" name="num_ingressi" value="<%=acquista_abb.getNum_ingressi()%>">
-                        <input type="hidden" name="controllerAction" value="GestioneAcquisti.carrello_ut_abb"/>
+              <table class="pay" style="background-color: azure">
+                  <tr>
+                      <td colspan="2" style="vertical-align: top; height: 50px; color: black"><h3><%= "TOTALE: 0 €" %></h3></td><br>
+                      <td rowspan="2" style="text-align: right">
+                          <!-- Bottone per acquistare tramite abbonamento -->
+                          <a> <input type="submit" class="button" value="Conferma acquisto con abbonamento"/></a>
+                          <input type="hidden" name="selectedcodfilm" value="<%=film.getCod_film()%>">
+                          <input type="hidden" name="cod_pro" value="<%=proiezione.getCod_pro()%>">
+                          <input type="hidden" name="cod_b" value="<%=biglietto.getCod_b()%>">
+                          <input type="hidden" name="cod_abb" value="<%=abbonamento.getCod_abb()%>">
+                          <input type="hidden" name="cod_acq_abb" value="<%=acquista_abb.getCod_acq_abb()%>">
+                          <input type="hidden" name="num_ingressi" value="<%=acquista_abb.getNum_ingressi()%>">
+                          <input type="hidden" name="controllerAction" value="GestioneAcquisti.carrello_ut_abb"/>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td style="color: black"><%= "Utilizzo abbonamento, ingressi disponibili: " + acquista_abb.getNum_ingressi()%></td>
+                  </tr>
+              </table>
                 <%} else {%>
               <br><br>
 
 
               <table class="pay" style="background-color: azure">
                   <tr>
-                      <td colspan="2" style="vertical-align: top; height: 50px; color: black"><%= "TOTALE: " + tot + "0 €" %></td><br>
+                      <td colspan="2" style="vertical-align: top; height: 50px; color: black"><h3><%= "TOTALE: " + tot + "0 €" %></h3></td><br>
                       <td rowspan="3" style="text-align: right">
                           <!-- Bottone per acquistare biglietto senza abbonamento -->
                           <a> <input type="submit" class="button" value="Conferma acquisto"/></a>
@@ -208,7 +215,7 @@
                   <tr>
                       <td>
                           <!-- Menù a tendina per metodo di pagamento -->
-                          <label for="metodopMenu">Metodo di pagamento:</label>
+                          <label for="metodopMenu" style="color: black">Metodo di pagamento:</label>
                           <select id="metodopayMenu" name="metodo_p">
                               <option value="Paypal">Paypal</option>
                               <option value="PostePay">PostePay</option>
@@ -220,10 +227,10 @@
                   <tr>
                       <td style="margin-top: 20px">
                           <div class="field clearfix">
-                              <label for="num_carta">Numero carta</label>
+                              <label for="num_carta" style="color: black">Numero carta</label>
                               <input type="text" id="num_carta" name="num_carta"
                                      value=""
-                                     required size="20" maxlength="50"/>
+                                     required size="20" maxlength="50" autocomplete="off"/>
                           </div>
                       </td>
                   </tr>
@@ -236,14 +243,23 @@
 
       <section id="payabbFormSection">
           <form name="payabbForm" action="Dispatcher" method="post">
-      <% } else if (composizioni != null){ %>
-              <% if (abbonamento != null && composizioni.size() == 0) {%>
-              Abbonamento valido per 10 ingressi<br>
-              <%= "Prezzo: " + abbonamento.getPrezzo() + "0 €" %><br><br>
+      <% } else if (abbonamento != null && composizioni == null){ %>
+              <table>
+                  <tr>
+                      <td>
+                          <div style="background-color: dodgerblue; color: white; padding: 5px; display: inline-block;">
+                              Abbonamento
+                          </div>
+                           VALIDITA' PER 10 INGRESSI
+                      </td>
+                      <td><%= "Prezzo: "%><span style="color: royalblue;"><%=abbonamento.getPrezzo() + "0 €"%></span></td>
+                  </tr>
+              </table>
+
 
             <table class="pay" style="background-color: azure">
                 <tr>
-                    <td colspan="2" style="vertical-align: top; height: 50px; color: black"><%= "TOTALE: " + abbonamento.getPrezzo() + "0 €" %></td><br>
+                    <td colspan="2" style="vertical-align: top; height: 50px; color: black"><h3><%= "TOTALE: " + abbonamento.getPrezzo() + "0 €" %></h3></td><br>
                     <td rowspan="3" style="text-align: right">
                         <a> <input type="submit" class="button" value="Conferma acquisto"/></a>
                         <input type="hidden" name="cod_abb" value="<%=abbonamento.getCod_abb()%>">
@@ -253,7 +269,7 @@
                 <tr>
                     <td>
                         <!-- Menù a tendina per metodo di pagamento -->
-                        <label for="metodopMenu">Seleziona metodo di pagamento:</label>
+                        <label for="metodopMenu" style="color: black">Metodo di pagamento:</label>
                         <select id="metodopMenu" name="metodo_p">
                             <option value="Paypal">Paypal</option>
                             <option value="PostePay">PostePay</option>
@@ -265,7 +281,7 @@
                 <tr>
                     <td>
                         <div class="field clearfix">
-                            <label for="numero_carta">Numero carta</label>
+                            <label for="numero_carta" style="color: black">Numero carta</label>
                             <input type="text" id="numero_carta" name="numero_carta"
                                    value=""
                                    required size="20" maxlength="50"/>
@@ -274,7 +290,6 @@
                 </tr>
             </table>
 
-        <%}%>
       <%} else {%>
               <table class="empty" style="margin-top: 50px; margin-left: 380px">
                   <tr>

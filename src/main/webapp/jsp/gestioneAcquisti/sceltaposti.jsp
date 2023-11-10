@@ -29,13 +29,24 @@
     <%@include file="/include/htmlHead.inc"%>
 
   <style>
+
+    /* Stile per la tabella */
+    table {
+      width: 40%;
+      border-collapse: separate;
+      border-spacing: 5px; /* Aggiunge uno spazio tra le celle */
+      background-color: white;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Effetto ombra */
+      border-radius: 10px; /* Angoli arrotondati */
+    }
+
     #checkboxContainer {
       background-color: black;
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 350px; /* Imposta un'altezza fissa in pixel per il riquadro */
-      max-width: 500px;
+      height: 350px;
+      max-width: 670px;
       margin: 0 auto;
       text-align: center;
       position: relative;
@@ -43,17 +54,18 @@
 
     /* Stile per i checkbox */
     .checkbox-label input[type="checkbox"] {
-      margin-top: 10px; /* Modifica il valore 10px a seconda dell'aspetto desiderato */
+      margin-top: 10px;
+      margin-left: 5px;
     }
 
     /* Stile per l'immagine SCHERMO */
     #schermo {
       align: center;
-      top: 100%; /* Posiziona l'immagine al centro verticalmente */
-      left: 80%; /* Posiziona l'immagine al centro orizzontalmente */
-      transform: translate(-0%, -50%); /* Centra l'immagine in base alle dimensioni */
-      max-width: 80%; /* Imposta la larghezza massima dell'immagine */
-      max-height: 50%; /* Imposta l'altezza massima dell'immagine */
+      top: 100%;
+      left: 80%;
+      transform: translate(-0%, -50%);
+      max-width: 80%;
+      max-height: 50%;
     }
 
   </style>
@@ -87,9 +99,16 @@
 
 
     <%if (sala != null) { %>
-    Sala n. <%=sala.getNum_sala()%>
-    <%}%>
-    Seleziona i posti (Massimo 5 selezioni)
+    <table>
+      <tr>
+        <td>
+          SALA <%=sala.getNum_sala()%>:&nbsp;
+          <%}%>
+          Seleziona i posti (Massimo 5 selezioni)
+        </td>
+      </tr>
+    </table>
+
     <br><br>
 
   <section id="postiFormSection">

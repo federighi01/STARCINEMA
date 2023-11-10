@@ -66,7 +66,46 @@
 
 
 
+        /* Style per le composizioni */
 
+        table {
+            width: 5%;
+            border-collapse: separate;
+            border-spacing: 5px; /* Aggiunge uno spazio tra le celle */
+            background-color: white;
+            color: black;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Effetto ombra */
+            border-radius: 10px; /* Angoli arrotondati */
+            margin: 10px auto 0;
+        }
+
+        #checkboxContainer {
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 350px;
+            max-width: 670px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Stile per i checkbox */
+        .checkbox-label input[type="checkbox"] {
+            margin-top: 10px;
+            margin-left: 5px;
+        }
+
+        /* Stile per l'immagine SCHERMO */
+        #schermo {
+            align: center;
+            top: 100%;
+            left: 80%;
+            transform: translate(-0%, -50%);
+            max-width: 80%;
+            max-height: 50%;
+        }
 
     </style>
     <script language="javascript">
@@ -192,17 +231,34 @@
     <%if (composizioni != null) { %>
 
     <%if (num_sala != null) { %>
-    Sala n. <%=num_sala%>
+    <table>
+        <tr>
+            <td><b>SALA <%=num_sala%></b></td>
+        </tr>
+    </table>
     <%}%>
-
-    <br><br>
+    <br>
+    <div id="checkboxContainer">
+    <% int d = 0; %>
     <%for (int i = 0; i < composizioni.size(); i++) {%>
+    <% d++; %>
         <label class="checkbox-label" title="<%= composizioni.get(i).getPosto().getNum_posto() %>">
             <input type="checkbox" name="selectedposti" value="<%= composizioni.get(i).getPosto().getNum_posto() %>"
                     <% if (composizioni.get(i).isOccupato()) { %>
                        disabled="disabled"
                     <% } %>
-    <% } %>
+            <!-- Vai a capo dopo ogni 20 checkbox -->
+                <% if ((i + 1) % 20 == 0) { %><br/><% } %>
+            <!-- Aggiungi uno spazio tra il quarto e il quinto checkbox -->
+                <% if (d==4) { %>&nbsp;&nbsp;<% } %>
+                <% if (d==20) { d=0; } %>
+            <!-- Aggiungi uno spazio tra il sedicesimo e il diciasettesimo checkbox -->
+                <% if (d==16) { %>&nbsp;&nbsp;<% } %>
+                <% } %>
+            <br><br>
+            <center title="SCHERMO"><img id="schermo" src="images/schermo_cinema.png"></center>
+            <center title="SCHERMO">SCHERMO</center>
+            </div>
     <% } %>
 
 

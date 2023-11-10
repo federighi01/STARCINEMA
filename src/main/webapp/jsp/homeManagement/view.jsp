@@ -140,11 +140,11 @@
         }
 
         .film tr {
-            border: 1px solid #ccc; /* Add border for tr */
+            border: none; /* Add border for tr */
         }
 
         .film td {
-            border: 1px solid #ccc; /* Add border for td */
+            border: none; /* Add border for td */
             padding: 10px; /* Customize cell padding */
             text-align: left;
             width: 40%;
@@ -166,6 +166,19 @@
 
         .ora-cell {
             width: 10%; /* Imposta una larghezza relativa del 30% */
+        }
+
+        /* Stile tabella se titolo o data non trovato */
+
+        .notfound {
+            width: 40%;
+            border-collapse: separate;
+            border-spacing: 5px; /* Aggiunge uno spazio tra le celle */
+            background-color: white;
+            color: black;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Effetto ombra */
+            border-radius: 10px; /* Angoli arrotondati */
+            margin: 10px auto 0;
         }
 
     </style>
@@ -213,7 +226,7 @@
                     <td><label for="titolo">Cerca per titolo</label><br></td>
                 </tr>
                 <tr>
-                    <td><input type="text" id="titolo"  name="titolo" maxlength="80" required placeholder="Inserisci titolo da cercare"></td>
+                    <td><input type="text" id="titolo"  name="titolo" maxlength="80" required autocomplete="off" placeholder="Inserisci titolo da cercare"></td>
                     <td align="left"><input type="submit" value="Cerca"></td>
                 <input type="hidden" name="controllerAction" value="HomeManagement.view"/>
                 </tr>
@@ -325,7 +338,8 @@
 
 
     <%--ricerca film per titolo--%>
-    <%}%><% if(titolo != null && film != null){%>
+    <%}%>
+    <% if(titolo != null && film != null){%>
     <section id="films" class="clearfix">
         <table class="film">
             <tr>
@@ -396,7 +410,15 @@
 
 
     <%--ricerca film per data proiezione--%>
-    <%}%><% if(filmsdp != null && titolo==null){%>
+    <%}else if(titolo != null && film == null) {%>
+    <table class="notfound">
+        <tr>
+            <td><b>Nessun film corrisponde al titolo inserito</b></td>
+        </tr>
+    </table>
+    <%}%>
+    <% if(filmsdp != null && titolo==null){%>
+    <%if (filmsdp.size() > 0){%>
     <section id="films" class="clearfix">
         <%for (i = 0; i < filmsdp.size(); i++) {%>
         <table class="film">
@@ -462,9 +484,14 @@
         <br><br><br>
         <%}%>
     </section>
-
+    <%} else {%>
+    <table class="notfound">
+        <tr>
+            <td><b>Nessuna proiezione per la data inserita</b></td>
+        </tr>
+    </table>
     <%}%>
-
+    <%}%>
 
     <form name="schedafilmForm" method="post" action="Dispatcher">
         <input type="hidden" name="selectedcodfilm"/>

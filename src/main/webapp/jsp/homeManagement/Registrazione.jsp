@@ -1,5 +1,8 @@
 <%@page session="false"%>
 <%@page import="com.starcinema.starcinema.model.mo.Utente"%>
+<%@ page import="java.util.List" %>
+
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%
     boolean loggedOn = false;
     Utente loggedUtente = (Utente) request.getAttribute("loggedUtente");
@@ -7,12 +10,27 @@
     String applicationMessage = (String) request.getAttribute("applicationMessage");
 
     Utente utente = (Utente) request.getAttribute("utente");
+    List<String> usernames = (List<String>) request.getAttribute("usernames");
 %>
 <html>
 <head>
     <title>Registrazione</title>
     <%@include file="/include/htmlHead.inc"%>
     <style>
+
+        .mex {
+            width: 40%;
+            text-align: center;
+            border-collapse: separate;
+            border-spacing: 5px; /* Aggiunge uno spazio tra le celle */
+            background-color: white;
+            color: black;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Effetto ombra */
+            border-radius: 10px; /* Angoli arrotondati */
+            margin: 10px auto 0;
+            margin-bottom: -20px;
+        }
+
         .input-container {
             display: flex;
             flex-direction: column;
@@ -52,10 +70,6 @@
             display: none;
         }
 
-        #login form input[type="submit"] {
-            display: none;
-        }
-
         #login form input[type="submit"]:hover {
             display: none;
         }
@@ -63,6 +77,28 @@
     </style>
 
     <script language="javascript">
+
+        //Controllo se username inserito esiste già
+
+        function checkUsername(username) {
+            var submitButton = document.getElementById("reg");
+            var errUsername = document.getElementById('errUsername');
+            var usernamesList = [
+                <% for (String name : usernames) { %>'<%= name %>',<% } %>
+            ];
+
+            console.log(username);
+            console.log(usernamesList);
+
+            // Check se l'username è presente nella lista
+            if (usernamesList.indexOf(username) !== -1) {
+                errUsername.style.display='block';
+                submitButton.disabled = true;
+            } else {
+                errUsername.style.display='none';
+                submitButton.disabled = false;
+            }
+        }
 
         function submitReg() {
             var f;
@@ -75,23 +111,13 @@
         }
 
         function validateForm() {
-            var pw = document.getElementById("pw").value;
-            //var pw_c = document.getElementById("pw_c").value;
             var email = document.getElementById("email").value;
             var email_c = document.getElementById("email_c").value;
 
-
-            console.log(email);
-            console.log(email_c);
-            console.log(pw);
-            //console.log(pw_c);
-
-            if (/*pw !== pw_c || */email !== email_c) {
-                alert("Indirizzo email e/o password di conferma non corrispondono a quelle inserite.");
+            if (email !== email_c) {
+                alert("Indirizzo email di conferma non corrisponde a quella inserita.");
                 return false; // Blocca l'invio del modulo se l'email di conferma non corrisponde
             }
-
-
 
             // Altrimenti, il modulo verrà inviato normalmente
             return true;
@@ -116,78 +142,127 @@
     <section id="regFormSection">
         <form name="regForm" action="Dispatcher" method="post" onsubmit="return validateForm()" class="input-container">
 
-            <div class="field clearfix">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username"
-                       value=""
-                       required size="20" maxlength="50"/>
-            </div><br>
-            <div class="field clearfix">
-                <label for="pw">Password</label>
-                <input type="text" id="pw" name="pw"
-                       value=""
-                       required size="20" maxlength="50"/>
-            </div><br>
-            <!--<div class="field clearfix">
-                <label for="pw_c">Password di conferma</label>
-                <input type="text" id="pw_c" name="pw_c"
-                       value=""
-                       required size="20" maxlength="50"/>
-            </div><br>-->
-            <div class="field clearfix">
-                <label for="email">Email</label>
-                <input type="text" id="email" name="email"
-                       value=""
-                       required size="20" maxlength="50"/>
-            </div><br>
-            <div class="field clearfix">
-                <label for="email_c">Email di conferma</label>
-                <input type="text" id="email_c" name="email_c"
-                       value=""
-                       required size="20" maxlength="50"/>
-            </div><br>
-            <div class="field clearfix">
-                <label for="cognome">Cognome</label>
-                <input type="text" id="cognome" name="cognome"
-                       value=""
-                       required size="20" maxlength="50"/>
-            </div><br>
-            <div class="field clearfix">
-                <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome"
-                       value=""
-                       required size="20" maxlength="50"/>
-            </div><br>
-            <div class="field clearfix">
-                <label for="data_n">Data di nascita</label>
-                <input type="date" id="data_n" name="data_n"
-                       value=""
-                       required size="20" maxlength="50"/>
-            </div><br>
-            <div class="field clearfix">
-                <label for="luogo_n">Luogo di nascita</label>
-                <input type="text" id="luogo_n" name="luogo_n"
-                       value=""
-                       required size="20" maxlength="50"/>
-            </div><br>
-            <div class="field clearfix">
-                <label for="indirizzo">Indirizzo</label>
-                <input type="text" id="indirizzo" name="indirizzo"
-                       value=""
-                       required size="20" maxlength="50"/>
-            </div><br>
-            <div class="field clearfix">
-                <label for="tel">Telefono</label>
-                <input type="text" id="tel" name="tel"
-                       value=""
-                       required size="20" maxlength="50"/>
-            </div><br>
-            <div class="field clearfix">
-                <label>&#160;</label>
-                <input type="submit" class="button" value="Iscriviti"/>
-                <input type="button" name="backButton" class="button" value="Annulla"/>
-            </div>
-            <input type="hidden" name="controllerAction"/>
+            <table class="mex">
+                <tr>
+                    <td>
+                        Completa la tua registrazione fornendo i tuoi dati personali
+                    </td>
+                </tr>
+            </table>
+
+            <table style="margin-left: 420px; margin-top: 50px;">
+            <tr>
+                <td>
+                    <div class="field clearfix">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username"
+                               oninput="checkUsername(this.value)"
+                               required size="20" maxlength="50" autocomplete="off"/>
+                    </div>
+                    <div id="errUsername" style="color: red; display: none;">
+                        Username gia' assegnato o non valido
+                    </div>
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="field clearfix">
+                        <label for="pw">Password</label>
+                        <input type="text" id="pw" name="pw"
+                               value=""
+                               required size="20" maxlength="50" autocomplete="off"/>
+                    </div><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="field clearfix">
+                        <label for="email">Email</label>
+                        <input type="text" id="email" name="email"
+                               value=""
+                               required size="20" maxlength="50" autocomplete="off"/>
+                    </div><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="field clearfix">
+                        <label for="email_c">Email di conferma</label>
+                        <input type="text" id="email_c" name="email_c"
+                               value=""
+                               required size="20" maxlength="50" autocomplete="off"/>
+                    </div><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="field clearfix">
+                        <label for="cognome">Cognome</label>
+                        <input type="text" id="cognome" name="cognome"
+                               value=""
+                               required size="20" maxlength="50" autocomplete="off"/>
+                    </div><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="field clearfix">
+                        <label for="nome">Nome</label>
+                        <input type="text" id="nome" name="nome"
+                               value=""
+                               required size="20" maxlength="50" autocomplete="off"/>
+                    </div><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="field clearfix">
+                        <label for="data_n">Data di nascita</label>
+                        <input type="date" id="data_n" name="data_n"
+                               value=""
+                               required size="20" maxlength="50" autocomplete="off"/>
+                    </div><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="field clearfix">
+                        <label for="luogo_n">Luogo di nascita</label>
+                        <input type="text" id="luogo_n" name="luogo_n"
+                               value=""
+                               required size="20" maxlength="50" autocomplete="off"/>
+                    </div><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="field clearfix">
+                        <label for="indirizzo">Indirizzo</label>
+                        <input type="text" id="indirizzo" name="indirizzo"
+                               value=""
+                               size="20" maxlength="50" autocomplete="off"/>
+                    </div><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="field clearfix">
+                        <label for="tel">Telefono</label>
+                        <input type="text" id="tel" name="tel"
+                               value=""
+                               size="20" maxlength="50" autocomplete="off"/>
+                    </div><br>
+                </td>
+            </tr>
+        </table>
+                    <div class="field clearfix" style="text-align: center; margin-right: 130px">
+                        <label>&#160;</label>
+                        <input type="submit" class="button" id="reg" name="reg" value="Iscriviti"/>
+                        <input type="button" name="backButton" class="button" value="Annulla"/>
+                    </div>
+                    <input type="hidden" name="controllerAction"/>
+
         </form>
 
     </section>

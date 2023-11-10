@@ -99,6 +99,10 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
         }
 
+        .film tr {
+            border: none;
+        }
+
         .film img {
             width: 200px; /* Imposta la larghezza desiderata */
             height: 300px; /* Imposta l'altezza desiderata */
@@ -157,6 +161,65 @@
             color: white;
             border: 2px solid white;
         }
+
+
+        /* Stile per la prima colonna del modulo di recensione */
+        #insrecFormSection table td:first-child {
+            width: 10px; /* Imposta la larghezza desiderata per la prima colonna */
+        }
+
+        /* Stile per la seconda colonna del modulo di recensione (colonna delle stelle) */
+        #insrecFormSection table td:nth-child(2) {
+            width: 10px; /* Imposta la larghezza desiderata per la colonna delle stelle */
+        }
+
+        /* Stile per la terza colonna del modulo di recensione (colonna del commento) */
+        #insrecFormSection table td:nth-child(3) {
+            width: 10px; /* Imposta la larghezza desiderata per la colonna del commento */
+        }
+
+
+        .rec {
+            width: 100%;
+        }
+
+        .rec tr, td{
+            border: none;
+        }
+
+
+
+        /* Style for the star rating */
+
+        .rating {
+            display: flex;
+            flex-direction: row-reverse; /* Inverti l'orientamento delle stelle */
+            justify-content: flex-end; /* Allinea le stelle a destra */
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            cursor: pointer;
+            font-size: 30px;
+            color: #ddd;
+        }
+
+        .rating label:before {
+            content: "\2605";
+        }
+
+        .rating input:checked ~ label {
+            color: gold;
+            flex-direction: row-reverse;
+        }
+
+
+
+
+
 
     </style>
     <script language="javascript">
@@ -307,16 +370,46 @@
         <!-- Possibilità di inserire recensioni -->
         <section id="insrecFormSection">
             <form name="insrecForm" action="Dispatcher" method="post">
-                <h3>Lascia una recensione</h3><br>
-                <input type="hidden" name="selectedcodfilm" value="<%= film.getCod_film() %>">
-                <input type="hidden" name="controllerAction" value="HomeManagement.insrec"/>
-                <label for="voto">Voto: </label>
-                <input type="number" id="voto" name="voto" min="1" max="5" required>
-                <br><br>
-                <textarea id="commento" name="commento" rows="4" required placeholder="Scrivi un commento...."></textarea>
-                <br><br>
-                <input type="submit" class="button" value="Invia recensione">
-                <input type="hidden" name="controllerAction"/>
+                <table class="rec" style="background-color: cornflowerblue">
+                    <tr>
+                        <td>
+                            <h3><b style="color: black">Lascia una recensione</b></h3><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="vote" style="width: 20%; background-color: cornflowerblue">
+                                <tr>
+                                    <td><h3><b style="color: black">Valutazione:</b></h3></td>
+                                    <td>
+                                        <input type="hidden" name="selectedcodfilm" value="<%= film.getCod_film() %>">
+                                        <input type="hidden" name="controllerAction" value="HomeManagement.insrec"/>
+                                        <div class="rating">
+                                            <input type="radio" id="star5" name="voto" value="5"><label for="star5" title="5 stelle"></label>
+                                            <input type="radio" id="star4" name="voto" value="4"><label for="star4" title="4 stelle"></label>
+                                            <input type="radio" id="star3" name="voto" value="3"><label for="star3" title="3 stelle"></label>
+                                            <input type="radio" id="star2" name="voto" value="2"><label for="star2" title="2 stelle"></label>
+                                            <input type="radio" id="star1" name="voto" value="1"><label for="star1" title="1 stelle"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea id="commento" name="commento" rows="4" required placeholder="Scrivi un commento...." autocomplete="off"></textarea>
+                            <br><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="submit" class="button" value="Invia recensione">
+                            <input type="hidden" name="controllerAction"/>
+                        </td>
+                    </tr>
+                </table>
             </form>
         </section>
         <%}%>
@@ -331,9 +424,8 @@
                     <table>
                     <tr>
                         <td align="right" style="width: 7%"><img id="user" src="images/user.jpg" width="23" height="20"></td>
-                    <!--<b>Codrec: </b><%= recensioni.get(i).getCod_rec() %><br>-->
                     <td align="left"><b style="color: black;"><%= recensioni.get(i).getUtente().getUsername() %></b>
-                        &nbsp;&nbsp;Voto: <%= recensioni.get(i).getVoto() %><br></td>
+                        &nbsp;&nbsp;Voto: <%= recensioni.get(i).getVoto() %>&starf;<br></td>
                         <td align="right" style="width: 7%"><%if (loggedUtente != null && loggedUtente.getTipo().equals("amministratore")) {%>
                             <!-- Possibilità di cancellare le recensioni -->
 

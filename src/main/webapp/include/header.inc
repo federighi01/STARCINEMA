@@ -62,7 +62,7 @@
     <section id="login" class="clearfix">
       <form name="logonForm" action="Dispatcher" method="post">
         <label for="username">Utente</label>
-        <input type="text" id="username"  name="username" maxlength="40" required>
+        <input type="text" id="username"  name="username" maxlength="40" required autocomplete="off">
         <label for="pw">Password</label>
         <input type="password" id="pw" name="pw" maxlength="40" required>
         <input type="hidden" name="controllerAction" value="HomeManagement.logon"/>

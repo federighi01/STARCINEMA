@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 public class UtenteDAOCookieImpl implements UtenteDAO {
 
@@ -80,6 +81,11 @@ public class UtenteDAOCookieImpl implements UtenteDAO {
 
     @Override
     public Utente findByUsername(String username) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<String> findAllUsername() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

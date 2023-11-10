@@ -79,14 +79,16 @@ public class HomeManagement {
 
                 ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
 
-                //Estrazione dati di proiezione per il film
-                proiezioni=proiezioneDAO.findData_proByCod_film(film);
-                //Conversione lista in array
-                Proiezione [] proiezioniArray = new Proiezione[proiezioni.size()];
-                for(int j=0;j<proiezioni.size();j++){
-                    proiezioniArray[j] = proiezioni.get(j);
+                if(film != null) {
+                    //Estrazione dati di proiezione per il film
+                    proiezioni = proiezioneDAO.findData_proByCod_film(film);
+                    //Conversione lista in array
+                    Proiezione[] proiezioniArray = new Proiezione[proiezioni.size()];
+                    for (int j = 0; j < proiezioni.size(); j++) {
+                        proiezioniArray[j] = proiezioni.get(j);
+                    }
+                    film.setProiezioni(proiezioniArray);
                 }
-                film.setProiezioni(proiezioniArray);
             }
 
             //Se viene effettuata ricerca per data di proiezione...
@@ -355,6 +357,22 @@ public class HomeManagement {
                     request.getParameter("commento"));
 
 
+            //Parte per passare data_pro e ora_pro a schedafilm.jsp
+            // (quando inserisco una recensione)
+            List<Proiezione> proiezioni;
+
+            ProiezioneDAO proiezioneDAO = daoFactory.getProiezioneDAO();
+
+            //Estrarre dati di proiezione per il film
+            proiezioni=proiezioneDAO.findData_proByCod_film(film);
+            //Conversione lista in array
+            Proiezione [] proiezioniArray = new Proiezione[proiezioni.size()];
+            for(int j=0;j<proiezioni.size();j++){
+                proiezioniArray[j] = proiezioni.get(j);
+            }
+            film.setProiezioni(proiezioniArray);
+
+
             List<Recensione> recensioni;
             //Estrazione informazioni recensioni per codice del film
             recensioni = recensioneDAO.findRecensioni(film.getCod_film());
@@ -580,6 +598,7 @@ public class HomeManagement {
     //Metodo di supporto per la registrazione e per registrazione nuovo utente
     public static void regView(HttpServletRequest request, HttpServletResponse response) {
 
+        DAOFactory daoFactory = null;
         DAOFactory sessionDAOFactory = null;
         Utente loggedUtente;
 
@@ -596,15 +615,28 @@ public class HomeManagement {
             UtenteDAO sessionUtenteDAO = sessionDAOFactory.getUtenteDAO();
             loggedUtente = sessionUtenteDAO.findLoggedUtente();
 
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL, null);
+            daoFactory.beginTransaction();
+
+            UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
+            List<String> usernames = utenteDAO.findAllUsername();
+
+            for(int i=0; i< usernames.size(); i++){
+                System.out.println(usernames.get(i));
+            }
+
+
             sessionDAOFactory.commitTransaction();
 
             request.setAttribute("loggedOn", false);
             request.setAttribute("loggedUtente", loggedUtente);
+            request.setAttribute("usernames", usernames);
             request.setAttribute("viewUrl", "homeManagement/Registrazione");
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
             try {
+                if (daoFactory != null) daoFactory.rollbackTransaction();
                 if (sessionDAOFactory != null) sessionDAOFactory.rollbackTransaction();
             } catch (Throwable t) {
             }
@@ -612,10 +644,10 @@ public class HomeManagement {
 
         } finally {
             try {
+                if (daoFactory != null) daoFactory.closeTransaction();
                 if (sessionDAOFactory != null) sessionDAOFactory.closeTransaction();
             } catch (Throwable t) {
             }
-
         }
 
     }

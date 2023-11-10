@@ -85,62 +85,62 @@
         <label for="titolo">Titolo</label>
         <input type="text" id="titolo" name="titolo"
                value=""
-               required size="20" maxlength="50"/>
+               required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
         <label for="regista">Regista</label>
         <input type="text" id="regista" name="regista"
                value=""
-               required size="20" maxlength="50"/>
+               required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
         <label for="cast">Cast</label>
         <input type="text" id="cast" name="cast"
                value=""
-               required size="20" maxlength="50"/>
+               required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
         <label for="genere">Genere</label>
         <input type="text" id="genere" name="genere"
                value=""
-               required size="20" maxlength="50"/>
+               required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
 
       <div class="field clearfix">
         <label for="durata">Durata</label>
         <input type="text" id="durata" name="durata"
                value=""
-               required size="20" maxlength="50"/>
+               required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
         <label for="nazione">Nazione</label>
         <input type="text" id="nazione" name="nazione"
                value=""
-               required size="20" maxlength="50"/>
+               required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
         <label for="anno">Anno</label>
         <input type="text" id="anno" name="anno"
                value=""
-               required size="20" maxlength="50"/>
+               required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
         <label for="descrizione">Descrizione</label>
         <input type="text" id="descrizione" name="descrizione"
                value=""
-               required size="20" maxlength="50"/>
+               required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
         <label for="trailer">Trailer</label>
         <input type="text" id="trailer" name="trailer"
                value=""
-               required size="20" maxlength="50"/>
+               required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
         <label for="immagine">Locandina</label>
         <input type="text" id="immagine" name="immagine"
                value=""
-               required size="20" maxlength="50"/>
+               required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
 
       <div class="field clearfix">
