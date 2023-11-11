@@ -47,6 +47,7 @@
 
 
         table {
+            background-color: white;
             width: 40%;
             border: 1px solid #ccc; /* Add border style */
             border-radius: 5px; /* Add border radius */
@@ -293,7 +294,7 @@
       <%} else {%>
               <table class="empty" style="margin-top: 50px; margin-left: 380px">
                   <tr>
-                      <td style="text-align: center; padding-right: 30px"><h1>Carrello vuoto</h1></td>
+                      <td style="text-align: center; padding-right: 30px"><h1><b style="color: white">Carrello vuoto</b></h1></td>
                   </tr>
                   <tr>
                       <td style="text-align: center; padding-right: 30px"><img src="images/emptycart.png"></td>

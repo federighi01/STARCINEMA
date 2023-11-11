@@ -46,7 +46,7 @@
             <table class="acqcomp" style="margin-top: 140px; margin-left: 380px">
                 <tr>
                     <td><img src="images/tick.png"></td>
-                    <td><h2>Acquisto effettuato con successo!</h2></td>
+                    <td><h2><b style="color: white">Acquisto effettuato con successo!</b></h2></td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">

@@ -154,7 +154,7 @@
             <tr>
                 <td>
                     <div class="field clearfix">
-                        <label for="username">Username</label>
+                        <label for="username"><b style="color: white">Username</b></label>
                         <input type="text" id="username" name="username"
                                oninput="checkUsername(this.value)"
                                required size="20" maxlength="50" autocomplete="off"/>
@@ -168,7 +168,7 @@
             <tr>
                 <td>
                     <div class="field clearfix">
-                        <label for="pw">Password</label>
+                        <label for="pw"><b style="color: white">Password</b></label>
                         <input type="text" id="pw" name="pw"
                                value=""
                                required size="20" maxlength="50" autocomplete="off"/>
@@ -178,7 +178,7 @@
             <tr>
                 <td>
                     <div class="field clearfix">
-                        <label for="email">Email</label>
+                        <label for="email"><b style="color: white">Email</b></label>
                         <input type="text" id="email" name="email"
                                value=""
                                required size="20" maxlength="50" autocomplete="off"/>
@@ -188,7 +188,7 @@
             <tr>
                 <td>
                     <div class="field clearfix">
-                        <label for="email_c">Email di conferma</label>
+                        <label for="email_c"><b style="color: white">Email di conferma</b></label>
                         <input type="text" id="email_c" name="email_c"
                                value=""
                                required size="20" maxlength="50" autocomplete="off"/>
@@ -198,7 +198,7 @@
             <tr>
                 <td>
                     <div class="field clearfix">
-                        <label for="cognome">Cognome</label>
+                        <label for="cognome"><b style="color: white">Cognome</b></label>
                         <input type="text" id="cognome" name="cognome"
                                value=""
                                required size="20" maxlength="50" autocomplete="off"/>
@@ -208,7 +208,7 @@
             <tr>
                 <td>
                     <div class="field clearfix">
-                        <label for="nome">Nome</label>
+                        <label for="nome"><b style="color: white">Nome</b></label>
                         <input type="text" id="nome" name="nome"
                                value=""
                                required size="20" maxlength="50" autocomplete="off"/>
@@ -218,7 +218,7 @@
             <tr>
                 <td>
                     <div class="field clearfix">
-                        <label for="data_n">Data di nascita</label>
+                        <label for="data_n"><b style="color: white">Data di nascita</b></label>
                         <input type="date" id="data_n" name="data_n"
                                value=""
                                required size="20" maxlength="50" autocomplete="off"/>
@@ -228,7 +228,7 @@
             <tr>
                 <td>
                     <div class="field clearfix">
-                        <label for="luogo_n">Luogo di nascita</label>
+                        <label for="luogo_n"><b style="color: white">Luogo di nascita</b></label>
                         <input type="text" id="luogo_n" name="luogo_n"
                                value=""
                                required size="20" maxlength="50" autocomplete="off"/>
@@ -238,7 +238,7 @@
             <tr>
                 <td>
                     <div class="field clearfix">
-                        <label for="indirizzo">Indirizzo</label>
+                        <label for="indirizzo"><b style="color: white">Indirizzo</b></label>
                         <input type="text" id="indirizzo" name="indirizzo"
                                value=""
                                size="20" maxlength="50" autocomplete="off"/>
@@ -248,7 +248,7 @@
             <tr>
                 <td>
                     <div class="field clearfix">
-                        <label for="tel">Telefono</label>
+                        <label for="tel"><b style="color: white">Telefono</b></label>
                         <input type="text" id="tel" name="tel"
                                value=""
                                size="20" maxlength="50" autocomplete="off"/>

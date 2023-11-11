@@ -42,6 +42,7 @@
         /* Style scheda film */
 
         .film {
+            background-color: white;
             width: 80%;
             border: 1px solid #ccc; /* Add border style */
             border-radius: 5px; /* Add border radius */

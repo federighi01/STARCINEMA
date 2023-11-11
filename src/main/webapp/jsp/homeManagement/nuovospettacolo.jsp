@@ -82,62 +82,62 @@
     <form name="insForm" action="Dispatcher" method="post" class="input-container">
 
       <div class="field clearfix">
-        <label for="titolo">Titolo</label>
+        <label for="titolo"><b style="color: white">Titolo</b></label>
         <input type="text" id="titolo" name="titolo"
                value=""
                required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
-        <label for="regista">Regista</label>
+        <label for="regista"><b style="color: white">Regista</b></label>
         <input type="text" id="regista" name="regista"
                value=""
                required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
-        <label for="cast">Cast</label>
+        <label for="cast"><b style="color: white">Cast</b></label>
         <input type="text" id="cast" name="cast"
                value=""
                required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
-        <label for="genere">Genere</label>
+        <label for="genere"><b style="color: white">Genere</b></label>
         <input type="text" id="genere" name="genere"
                value=""
                required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
 
       <div class="field clearfix">
-        <label for="durata">Durata</label>
+        <label for="durata"><b style="color: white">Durata</b></label>
         <input type="text" id="durata" name="durata"
                value=""
                required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
-        <label for="nazione">Nazione</label>
+        <label for="nazione"><b style="color: white">Nazione</b></label>
         <input type="text" id="nazione" name="nazione"
                value=""
                required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
-        <label for="anno">Anno</label>
+        <label for="anno"><b style="color: white">Anno</b></label>
         <input type="text" id="anno" name="anno"
                value=""
                required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
-        <label for="descrizione">Descrizione</label>
+        <label for="descrizione"><b style="color: white">Descrizione</b></label>
         <input type="text" id="descrizione" name="descrizione"
                value=""
                required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
-        <label for="trailer">Trailer</label>
+        <label for="trailer"><b style="color: white">Trailer</b></label>
         <input type="text" id="trailer" name="trailer"
                value=""
                required size="20" maxlength="50" autocomplete="off"/>
       </div><br>
       <div class="field clearfix">
-        <label for="immagine">Locandina</label>
+        <label for="immagine"><b style="color: white">Locandina</b></label>
         <input type="text" id="immagine" name="immagine"
                value=""
                required size="20" maxlength="50" autocomplete="off"/>

@@ -140,7 +140,7 @@
         <form name="finddataForm" action="Dispatcher" method="post">
 
             <%if (sale != null) {%>
-            <label for="Num_salaMenu">SALA </label>
+            <label for="Num_salaMenu"><b style="color: white">SALA </b></label>
             <select id="Num_salaMenu" name="num_sala" onchange="menuSala()">
                 <option value="nul">Seleziona una sala</option>
                 <%for (c = 0; c < sale.size(); c++) {%>
@@ -153,7 +153,7 @@
             <%if (proiezioni != null) {%>
             <!-- Viene visualizzato il numero della sala selezionato -->
             <%if (num_sala != null){%>
-            <label for="Num_salaMenu">SALA </label>
+            <label for="Num_salaMenu"><b style="color: white">SALA </b></label>
             <select id="Num_salaMenu" name="num_sala">
                 <option value="<%=num_sala%>"><%=num_sala%></option>
             </select>
@@ -161,7 +161,7 @@
 
 
             <!-- Menù a tendina per le date di proiezione -->
-            <label for="DataProMenu">Data proiezione </label>
+            <label for="DataProMenu"><b style="color: white">Data proiezione </b></label>
             <select id="DataProMenu" name="data_pro" onchange="menuData(<%=proiezioni.get(c).getData_pro()%>,<%=num_sala%>)">
                 <option value="nul">Seleziona una data</option>
                 <%for (c = 0; c < proiezioni.size(); c++) {
@@ -180,7 +180,7 @@
             <%if (proiezioni_ora != null) {%>
             <!-- Viene visualizzato il numero della sala selezionato -->
             <%if (num_sala != null){%>
-            <label for="Num_salaMenu">SALA </label>
+            <label for="Num_salaMenu"><b style="color: white">SALA </b></label>
             <select id="Num_salaMenu" name="num_sala">
                 <option value="<%=num_sala%>"><%=num_sala%></option>
             </select>
@@ -189,7 +189,7 @@
 
             <!-- Viene visualizzata la data di proiezione selezionata -->
             <%if (data_pro != null){%>
-            <label for="DataProMenu">Data proiezione </label>
+            <label for="DataProMenu"><b style="color: white">Data proiezione </b></label>
             <select id="DataProMenu" name="data_pro">
             <%
                 //Creo una data per poi convertirla in una stringa nel formato desiderato
@@ -204,7 +204,7 @@
             <%}%>
 
 
-            <label for="OraProMenu">Ora proiezione</label>
+            <label for="OraProMenu"><b style="color: white">Ora proiezione</b></label>
             <select id="OraProMenu" name="ora_pro">
                 <option value="nul">Seleziona un'ora</option>
                 <%for (c = 0; c < proiezioni_ora.size(); c++) {

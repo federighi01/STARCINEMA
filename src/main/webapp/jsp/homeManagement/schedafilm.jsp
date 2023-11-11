@@ -66,6 +66,7 @@
 
         /* Stili per la tabella */
         table {
+            background-color: white;
             width: 40%; /* Imposta la larghezza della tabella al 100% del contenitore padre */
             border-collapse: collapse; /* Unisci i bordi delle celle */
             border-radius: 10px;
@@ -312,7 +313,7 @@
         <section id="datiacqFormSection">
             <form name="datiacqForm" action="Dispatcher" method="post">
                 <!-- Menu a tendina per data_pro -->
-                <label for="dataProMenu">Seleziona Data di Proiezione:</label>
+                <label for="dataProMenu"><b style="color: white">Seleziona Data di Proiezione: </b></label>
                 <select id="dataProMenu" name="formattedDate" class="dropdown-menu" onchange="menuData(<%=film.getCod_film()%>)">
                     <%if (formattedDate != null){%>
                     <option value="<%=formattedDate%>"><%=formattedDate%></option><%} else {%>
@@ -344,7 +345,7 @@
                 </select>
 
                 <!-- Menu a tendina per ora_pro -->
-                <label for="oraProMenu">Seleziona Ora di Proiezione:</label>
+                <label for="oraProMenu"><b style="color: white">Seleziona Ora di Proiezione: </b></label>
                 <select id="oraProMenu" class="dropdown-menu">
                     <% if (film.getProiezioni() != null) { %>
                     <% for (int c = 0; c < film.getProiezioni().length; c++) {
@@ -417,7 +418,7 @@
         <!-- Sezione dedicata ai commenti -->
         <% if (recensioni != null) { %>
         <section id="commentSection">
-            <h3>Commenti (<%=recensioni.size()%>)<br><br><br></h3>
+            <h3><b style="color: white">Commenti (<%=recensioni.size()%>)</b><br><br><br></h3>
 
                 <% for (i = 0; i < recensioni.size(); i++) { %>
 

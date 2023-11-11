@@ -47,6 +47,7 @@
         }
 
         table {
+
             width: 100%;
             border-collapse: collapse;
         }
@@ -131,6 +132,7 @@
 
 
         .film {
+            background-color: white;
             width: 80%;
             border: 1px solid #ccc; /* Add border style */
             border-radius: 5px; /* Add border radius */
@@ -251,7 +253,7 @@
         </tr>
     </table>
     <br><br><br>
-    <h2>STARCINEMA CONSIGLIA</h2>
+    <h2><b style="color: white">STARCINEMA CONSIGLIA</b></h2>
     <br><br>
 
 
@@ -507,5 +509,5 @@
 
 </main>
 </body>
-<%--<%@include file="/include/footer.inc"%>--%>
+<%@include file="/include/footer.inc"%>
 </html>

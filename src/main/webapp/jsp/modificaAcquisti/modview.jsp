@@ -41,6 +41,79 @@
 <head>
     <title>Modifica Acquisto</title>
     <%@include file="/include/htmlHead.inc"%>
+    <style>
+
+        body, html {
+            background-image: linear-gradient(101deg, rgba(254, 254, 254, 0.05) 0%, rgba(254, 254, 254, 0.05) 69%,rgba(160, 160, 160, 0.05) 69%, rgba(160, 160, 160, 0.05) 100%),linear-gradient(239deg, rgba(102, 102, 102, 0.02) 0%, rgba(102, 102, 102, 0.02) 60%,rgba(67, 67, 67, 0.02) 60%, rgba(67, 67, 67, 0.02) 100%),linear-gradient(121deg, rgba(169, 169, 169, 0.06) 0%, rgba(169, 169, 169, 0.06) 89%,rgba(189, 189, 189, 0.06) 89%, rgba(189, 189, 189, 0.06) 100%),linear-gradient(371deg, rgba(213, 213, 213, 0.04) 0%, rgba(213, 213, 213, 0.04) 45%,rgba(66, 66, 66, 0.04) 45%, rgba(66, 66, 66, 0.04) 100%),linear-gradient(228deg, rgba(223, 223, 223, 0.01) 0%, rgba(223, 223, 223, 0.01) 82%,rgba(28, 28, 28, 0.01) 82%, rgba(28, 28, 28, 0.01) 100%),linear-gradient(48deg, rgba(20, 20, 20, 0.06) 0%, rgba(20, 20, 20, 0.06) 62%,rgba(136, 136, 136, 0.06) 62%, rgba(136, 136, 136, 0.06) 100%),linear-gradient(245deg, rgba(206, 206, 206, 0.09) 0%, rgba(206, 206, 206, 0.09) 58%,rgba(6, 6, 6, 0.09) 58%, rgba(6, 6, 6, 0.09) 100%),linear-gradient(349deg, rgba(162, 162, 162, 0.07) 0%, rgba(162, 162, 162, 0.07) 27%,rgba(24, 24, 24, 0.07) 27%, rgba(24, 24, 24, 0.07) 100%),linear-gradient(231deg, rgba(166, 166, 166, 0.04) 0%, rgba(166, 166, 166, 0.04) 5%,rgba(210, 210, 210, 0.04) 5%, rgba(210, 210, 210, 0.04) 100%),linear-gradient(135deg, rgba(79,213,255, 0.9),rgba(60,135,255, 0.96),rgb(58,183,244));
+        }
+
+        main {
+            background-image: linear-gradient(101deg, rgba(254, 254, 254, 0.05) 0%, rgba(254, 254, 254, 0.05) 69%,rgba(160, 160, 160, 0.05) 69%, rgba(160, 160, 160, 0.05) 100%),linear-gradient(239deg, rgba(102, 102, 102, 0.02) 0%, rgba(102, 102, 102, 0.02) 60%,rgba(67, 67, 67, 0.02) 60%, rgba(67, 67, 67, 0.02) 100%),linear-gradient(121deg, rgba(169, 169, 169, 0.06) 0%, rgba(169, 169, 169, 0.06) 89%,rgba(189, 189, 189, 0.06) 89%, rgba(189, 189, 189, 0.06) 100%),linear-gradient(371deg, rgba(213, 213, 213, 0.04) 0%, rgba(213, 213, 213, 0.04) 45%,rgba(66, 66, 66, 0.04) 45%, rgba(66, 66, 66, 0.04) 100%),linear-gradient(228deg, rgba(223, 223, 223, 0.01) 0%, rgba(223, 223, 223, 0.01) 82%,rgba(28, 28, 28, 0.01) 82%, rgba(28, 28, 28, 0.01) 100%),linear-gradient(48deg, rgba(20, 20, 20, 0.06) 0%, rgba(20, 20, 20, 0.06) 62%,rgba(136, 136, 136, 0.06) 62%, rgba(136, 136, 136, 0.06) 100%),linear-gradient(245deg, rgba(206, 206, 206, 0.09) 0%, rgba(206, 206, 206, 0.09) 58%,rgba(6, 6, 6, 0.09) 58%, rgba(6, 6, 6, 0.09) 100%),linear-gradient(349deg, rgba(162, 162, 162, 0.07) 0%, rgba(162, 162, 162, 0.07) 27%,rgba(24, 24, 24, 0.07) 27%, rgba(24, 24, 24, 0.07) 100%),linear-gradient(231deg, rgba(166, 166, 166, 0.04) 0%, rgba(166, 166, 166, 0.04) 5%,rgba(210, 210, 210, 0.04) 5%, rgba(210, 210, 210, 0.04) 100%),linear-gradient(135deg, rgba(79,213,255, 0.9),rgba(60,135,255, 0.96),rgb(58,183,244));
+        }
+
+        /* Menù a tendina */
+        select {
+            width: 160px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 16px;
+            text-align: center;
+            display: inline-block;
+            margin-top: 100px;
+            margin-right: 10px;
+        }
+
+        select option {
+            background-color: #fff;
+            color: #333;
+            padding: 5px;
+        }
+
+
+        /* Style per le composizioni */
+
+        table {
+            width: 5%;
+            border-collapse: separate;
+            border-spacing: 5px; /* Aggiunge uno spazio tra le celle */
+            background-color: white;
+            color: black;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Effetto ombra */
+            border-radius: 10px; /* Angoli arrotondati */
+            margin: 10px auto 0;
+        }
+
+        #checkboxContainer {
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 350px;
+            max-width: 670px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Stile per i checkbox */
+        .checkbox-label input[type="checkbox"] {
+            margin-top: 10px;
+            margin-left: 5px;
+        }
+
+        /* Stile per l'immagine SCHERMO */
+        #schermo {
+            align: center;
+            top: 100%;
+            left: 80%;
+            transform: translate(-0%, -50%);
+            max-width: 80%;
+            max-height: 50%;
+        }
+
+    </style>
     <script language="javascript">
 
         function menuFilm(){
@@ -107,7 +180,7 @@
 
                     <!-- Visualizzazione film -->
                     <%if (films != null) {%>
-                    <label for="TitolofilmsMenu">Inserisci titolo film </label>
+                    <label for="TitolofilmsMenu"><b style="color: white">FILM </b></label>
                     <select id="TitolofilmsMenu" name="titolo" onchange="menuFilm()">
 
                         <option value="nul">Seleziona un film</option>
@@ -124,15 +197,15 @@
                     <%if (proiezioni != null) {%>
                     <!-- Viene visualizzato il titolo del film selezionato -->
                     <%if (titolo != null){%>
-                    <label for="TitolofilmsMenu">Inserisci titolo film </label>
+                    <label for="TitolofilmsMenu"><b style="color: white">FILM </b></label>
                     <select id="TitolofilmsMenu" name="titolo">
                         <option value="<%=titolo%>"><%=titolo%></option>
                     </select>
                     <%}%>
-                    <br>
+
 
                     <!-- Menù a tendina per il numero della sala -->
-                    <label for="Num_salaMenu">Seleziona numero sala </label>
+                    <label for="Num_salaMenu"><b style="color: white">SALA </b></label>
                     <select id="Num_salaMenu" name="num_sala" onchange="menuSala('<%=titolo%>')">
                         <option value="nul"></option>
                         <%for (c = 0; c < proiezioni.size(); c++) {%>
@@ -147,23 +220,23 @@
                     <%if (proiezioni_data != null) {%>
                     <!-- Viene visualizzato il titolo del film selezionato -->
                     <%if (titolo != null){%>
-                    <label for="TitolofilmsMenu">Inserisci titolo film </label>
+                    <label for="TitolofilmsMenu"><b style="color: white">FILM </b></label>
                     <select id="TitolofilmsMenu" name="titolo">
                         <option value="<%=titolo%>"><%=titolo%></option>
                     </select>
                     <%}%>
-                    <br>
+
 
                     <!-- Viene visualizzato il numero della sala selezionato -->
                     <%if (num_sala != null){%>
-                    <label for="Num_salaMenu">Numero sala </label>
+                    <label for="Num_salaMenu"><b style="color: white">SALA </b></label>
                     <select id="Num_salaMenu" name="num_sala">
                         <option value="<%=num_sala%>"><%=num_sala%></option>
                     </select>
                     <%}%>
-                    <br>
 
-                    <label for="DataProMenu">Cerca per data di calendario </label>
+
+                    <label for="DataProMenu"><b style="color: white">Data proiezione </b></label>
                     <select id="DataProMenu" name="data_pro" onchange="menuData('<%=titolo%>','<%=num_sala%>')">
                         <option value="nul"></option>
                         <%for (c = 0; c < proiezioni_data.size(); c++) {%>
@@ -179,32 +252,32 @@
                     <%if (proiezioni_ora != null) {%>
                     <!-- Viene visualizzato il titolo del film selezionato -->
                     <%if (titolo != null){%>
-                    <label for="TitolofilmsMenu">Inserisci titolo film </label>
+                    <label for="TitolofilmsMenu"><b style="color: white">FILM </b></label>
                     <select id="TitolofilmsMenu" name="titolo">
                         <option value="<%=titolo%>"><%=titolo%></option>
                     </select>
                     <%}%>
-                    <br>
+
 
                     <!-- Viene visualizzato il numero della sala selezionato -->
                     <%if (num_sala != null){%>
-                    <label for="Num_salaMenu">Numero sala </label>
+                    <label for="Num_salaMenu"><b style="color: white">SALA </b></label>
                     <select id="Num_salaMenu" name="num_sala">
                         <option value="<%=num_sala%>"><%=num_sala%></option>
                     </select>
                     <%}%>
-                    <br>
+
 
                     <!-- Viene visualizzato la data di proiezione selezionata -->
                     <%if (data_pro != null){%>
-                    <label for="DataProMenu">Data proiezione </label>
+                    <label for="DataProMenu"><b style="color: white">Data proiezione </b></label>
                     <select id="DataProMenu" name="data_pro">
                         <option value="<%=data_pro%>"><%=data_pro%></option>
                     </select>
                     <%}%>
-                    <br>
 
-                    <label for="OraProMenu">Cerca per ora di calendario </label>
+
+                    <label for="OraProMenu"><b style="color: white">Ora proiezione </b></label>
                     <select id="OraProMenu" name="ora_pro" onchange="menuOra('<%=titolo%>','<%=num_sala%>','<%=data_pro%>')">
                         <option value="nul"></option>
                         <%for (c = 0; c < proiezioni_ora.size(); c++) {%>
@@ -220,47 +293,54 @@
                     <%if (composizioni != null) {%>
                     <!-- Viene visualizzato il titolo del film selezionato -->
                     <%if (titolo != null){%>
-                    <label for="TitolofilmsMenu">Inserisci titolo film </label>
+                    <label for="TitolofilmsMenu"><b style="color: white">FILM </b></label>
                     <select id="TitolofilmsMenu" name="titolo">
                         <option value="<%=titolo%>"><%=titolo%></option>
                     </select>
                     <%}%>
-                    <br>
+
 
                     <!-- Viene visualizzato il numero della sala selezionato -->
                     <%if (num_sala != null){%>
-                    <label for="Num_salaMenu">Numero sala </label>
+                    <label for="Num_salaMenu"><b style="color: white">SALA </b></label>
                     <select id="Num_salaMenu" name="num_sala">
                         <option value="<%=num_sala%>"><%=num_sala%></option>
                     </select>
                     <%}%>
-                    <br>
+
 
                     <!-- Viene visualizzato la data di proiezione selezionata -->
                     <%if (data_pro != null){%>
-                    <label for="DataProMenu">Data proiezione </label>
+                    <label for="DataProMenu"><b style="color: white">Data proiezione </b></label>
                     <select id="DataProMenu" name="data_pro">
                         <option value="<%=data_pro%>"><%=data_pro%></option>
                     </select>
                     <%}%>
-                    <br>
+
 
                     <!-- Viene visualizzato il numero della sala selezionato -->
                     <%if (ora_pro != null){%>
-                    <label for="OraProMenu">Ora proiezione </label>
+                    <label for="OraProMenu"><b style="color: white">Ora proiezione </b></label>
                     <select id="OraProMenu" name="ora_pro">
                         <option value="<%=ora_pro%>"><%=ora_pro%></option>
                     </select>
                     <%}%>
-                    <br><br><br><br>
+                    <br>
 
-                    Sala n. <%=num_sala%>
+                    <table>
+                        <tr>
+                            <td><b>SALA <%=num_sala%></b></td>
+                        </tr>
+                    </table>
 
-                    <br><br>
+                    <br>
 
                     <section id="postiFormSection">
                         <form name="postiForm" action="Dispatcher" method="post">
+                            <div id="checkboxContainer">
+                            <% int d = 0; %>
                     <%for (int i = 0; i < composizioni.size(); i++) {%>
+                            <% d++; %>
                             <label class="checkbox-label" title="<%= composizioni.get(i).getPosto().getNum_posto() %>">
                         <input type="checkbox" name="selectedposto" value="<%= composizioni.get(i).getPosto().getNum_posto() %>"
                                 <% if (composizioni.get(i).isOccupato()) { %>
@@ -268,9 +348,20 @@
                     <% } %>
                                 <!-- Vai a capo dopo ogni 20 checkbox -->
                                     <% if ((i + 1) % 20 == 0) { %><br/><% } %>
+                                <!-- Aggiungi uno spazio tra il quarto e il quinto checkbox -->
+                                    <% if (d==4) { %>&nbsp;&nbsp;<% } %>
+                                    <% if (d==20) { d=0; } %>
+                                <!-- Aggiungi uno spazio tra il sedicesimo e il diciasettesimo checkbox -->
+                                    <% if (d==16) { %>&nbsp;&nbsp;<% } %>
                     <% } %>
+                                <br><br>
+                                <center title="SCHERMO"><img id="schermo" src="images/schermo_cinema.png"></center>
+                                <center title="SCHERMO">SCHERMO</center>
+                            </div>
+
+
                             <!-- Passaggio dati da modificare e nuovi dati -->
-                            <a><input type="submit" class="button" value="Conferma modifiche"></a>
+                            <a><center><input type="submit" class="button" value="Conferma modifiche"></center></a>
                                 <input type="hidden" name="titolo">
                                 <input type="hidden" name="num_sala">
                                 <input type="hidden" name="data_pro">
