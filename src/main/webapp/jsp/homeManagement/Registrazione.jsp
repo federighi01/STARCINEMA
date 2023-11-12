@@ -157,7 +157,7 @@
                         <label for="username"><b style="color: white">Username</b></label>
                         <input type="text" id="username" name="username"
                                oninput="checkUsername(this.value)"
-                               required size="20" maxlength="50" autocomplete="off"/>
+                               required size="20" maxlength="15" autocomplete="off"/>
                     </div>
                     <div id="errUsername" style="color: red; display: none;">
                         Username gia' assegnato o non valido
@@ -171,7 +171,7 @@
                         <label for="pw"><b style="color: white">Password</b></label>
                         <input type="text" id="pw" name="pw"
                                value=""
-                               required size="20" maxlength="50" autocomplete="off"/>
+                               required size="20" maxlength="10" autocomplete="off"/>
                     </div><br>
                 </td>
             </tr>
@@ -181,7 +181,7 @@
                         <label for="email"><b style="color: white">Email</b></label>
                         <input type="text" id="email" name="email"
                                value=""
-                               required size="20" maxlength="50" autocomplete="off"/>
+                               required size="20" maxlength="45" autocomplete="off"/>
                     </div><br>
                 </td>
             </tr>
@@ -191,7 +191,7 @@
                         <label for="email_c"><b style="color: white">Email di conferma</b></label>
                         <input type="text" id="email_c" name="email_c"
                                value=""
-                               required size="20" maxlength="50" autocomplete="off"/>
+                               required size="20" maxlength="45" autocomplete="off"/>
                     </div><br>
                 </td>
             </tr>
@@ -201,7 +201,7 @@
                         <label for="cognome"><b style="color: white">Cognome</b></label>
                         <input type="text" id="cognome" name="cognome"
                                value=""
-                               required size="20" maxlength="50" autocomplete="off"/>
+                               required size="20" maxlength="45" autocomplete="off"/>
                     </div><br>
                 </td>
             </tr>
@@ -211,7 +211,7 @@
                         <label for="nome"><b style="color: white">Nome</b></label>
                         <input type="text" id="nome" name="nome"
                                value=""
-                               required size="20" maxlength="50" autocomplete="off"/>
+                               required size="20" maxlength="45" autocomplete="off"/>
                     </div><br>
                 </td>
             </tr>
@@ -231,7 +231,7 @@
                         <label for="luogo_n"><b style="color: white">Luogo di nascita</b></label>
                         <input type="text" id="luogo_n" name="luogo_n"
                                value=""
-                               required size="20" maxlength="50" autocomplete="off"/>
+                               required size="20" maxlength="45" autocomplete="off"/>
                     </div><br>
                 </td>
             </tr>
@@ -241,7 +241,7 @@
                         <label for="indirizzo"><b style="color: white">Indirizzo</b></label>
                         <input type="text" id="indirizzo" name="indirizzo"
                                value=""
-                               size="20" maxlength="50" autocomplete="off"/>
+                               size="20" maxlength="45" autocomplete="off"/>
                     </div><br>
                 </td>
             </tr>
@@ -251,15 +251,15 @@
                         <label for="tel"><b style="color: white">Telefono</b></label>
                         <input type="text" id="tel" name="tel"
                                value=""
-                               size="20" maxlength="50" autocomplete="off"/>
+                               size="20" maxlength="12" autocomplete="off"/>
                     </div><br>
                 </td>
             </tr>
         </table>
                     <div class="field clearfix" style="text-align: center; margin-right: 130px">
                         <label>&#160;</label>
-                        <input type="submit" class="button" id="reg" name="reg" value="Iscriviti"/>
-                        <input type="button" name="backButton" class="button" value="Annulla"/>
+                        <input style="margin-bottom: 100px" type="submit" class="button" id="reg" name="reg" value="Iscriviti"/>
+                        <input style="margin-bottom: 100px" type="button" name="backButton" class="button" value="Annulla"/>
                     </div>
                     <input type="hidden" name="controllerAction"/>
 
@@ -273,4 +273,5 @@
 </main>
 
 </body>
+<%@include file="/include/footer.inc"%>
 </html>

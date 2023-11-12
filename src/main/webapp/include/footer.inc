@@ -1,10 +1,7 @@
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-body{
-  line-height: 1.5;
-  font-family: 'Poppins', sans-serif;
-}
+
 *{
   margin:0;
   padding:0;
@@ -114,35 +111,34 @@ ul{
      <div class="container">
       <div class="row">
         <div class="footer-col">
-          <h4>company</h4>
+          <h4>MENU</h4>
           <ul>
-            <li><a href="#">about us</a></li>
-            <li><a href="#">our services</a></li>
-            <li><a href="#">privacy policy</a></li>
-            <li><a href="#">affiliate program</a></li>
+            <li><a href="#">Scegli il film</a></li>
+            <li><a href="#">Abbonamenti</a></li>
+            <li><a href="#">Convenzioni</a></li>
+            <li><a href="#">Extra</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>get help</h4>
+          <h4>STARCINEMA</h4>
           <ul>
+            <li><a href="#">Chi siamo</a></li>
+            <li><a href="#">Business</a></li>
             <li><a href="#">FAQ</a></li>
-            <li><a href="#">shipping</a></li>
-            <li><a href="#">returns</a></li>
-            <li><a href="#">order status</a></li>
-            <li><a href="#">payment options</a></li>
+            <li><a href="#">Lavora con noi</a></li>
+            <li><a href="#">Contattaci</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>online shop</h4>
+          <h4>NOTE LEGALI</h4>
           <ul>
-            <li><a href="#">watch</a></li>
-            <li><a href="#">bag</a></li>
-            <li><a href="#">shoes</a></li>
-            <li><a href="#">dress</a></li>
+            <li><a href="#">Privacy policy</a></li>
+            <li><a href="#">Cookie policy</a></li>
+            <li><a href="#">Condizioni di utilizzo</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>follow us</h4>
+          <h4>SOCIAL</h4>
           <div class="social-links">
             <a href="#"><i class="fab fa-facebook-f"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>

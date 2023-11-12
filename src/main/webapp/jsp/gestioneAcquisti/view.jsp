@@ -25,24 +25,12 @@
     <%@include file="/include/htmlHead.inc"%>
     <style>
 
-        body, html {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
 
-        main {
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-        }
 
         /* Style scheda film */
 
         .film {
-            background-color: white;
+            background-color: whitesmoke;
             width: 80%;
             border: 1px solid #ccc; /* Add border style */
             border-radius: 5px; /* Add border radius */
@@ -141,7 +129,7 @@
             <tr>
                 <td>
                     <section id="bigliettoButtonSection">
-                        <a> <input type="button" id="bigliettoButton" name="bigliettoButton"
+                        <a> <input style="margin-bottom: 100px" type="button" id="bigliettoButton" name="bigliettoButton"
                                    class="button" value="Acquisto biglietto"
                                    onclick="acqbiglietto(<%=film.getCod_film()%>,<%=proiezione.getSala().getNum_sala()%>,<%=proiezione.getCod_pro()%>)"/></a>
                     </section>
@@ -151,7 +139,7 @@
                 <td>
                 <section id="acqabbFormSection">
                     <form name="acqabbForm" action="Dispatcher" method="post">
-                        <a> <input type="submit" class="button" value="Acquisto abbonamento"/></a>
+                        <a> <input style="margin-bottom: 100px" type="submit" class="button" value="Acquisto abbonamento"/></a>
                         <input type="hidden" name="controllerAction" value="GestioneAcquisti.acqabb"/>
                     </form>
                 </section>
@@ -161,7 +149,7 @@
                 <%if (acquista_abb != null && !acquista_abb.isDeleted()) {%>
                 <td>
                 <section id="useabbFormSection">
-                    <a> <input type="button" id="useabbButton" name="useabbButton"
+                    <a> <input style="margin-bottom: 100px" type="button" id="useabbButton" name="useabbButton"
                                class="button" value="Acquisto biglietto tramite abbonamento"
                                onclick="acqbigliettoabb(<%=film.getCod_film()%>,<%=proiezione.getSala().getNum_sala()%>,<%=proiezione.getCod_pro()%>)"/></a>
                 </section>
@@ -195,4 +183,5 @@
 
     </main>
 </body>
+<%@include file="/include/footer.inc"%>
 </html>

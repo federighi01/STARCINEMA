@@ -136,7 +136,7 @@
         <center title="SCHERMO">SCHERMO</center>
     </div>
 
-        <a><center><input type="submit" class="button" value="Conferma selezione"/></center></a>
+        <a><center><input style="margin-bottom: 100px" type="submit" class="button" value="Conferma selezione"/></center></a>
         <input type="hidden" name="num_sala" value="<%=sala.getNum_sala()%>">
         <input type="hidden" name="selectedcodfilm" value="<%=film.getCod_film()%>">
         <input type="hidden" name="cod_pro" value="<%=proiezione.getCod_pro()%>">
@@ -149,4 +149,5 @@
 
   </main>
 </body>
+<%@include file="/include/footer.inc"%>
 </html>

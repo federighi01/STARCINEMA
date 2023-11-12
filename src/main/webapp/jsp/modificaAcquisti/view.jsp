@@ -151,7 +151,7 @@
                 <% if (c == 0) {%>
                 <table class="empty" style="margin-top: 50px; margin-left: 470px">
                     <tr>
-                        <td style="text-align: center; padding-right: 30px"><h1><b style="color: white">Nessun acquisto effettuato</b></h1></td>
+                        <td style="text-align: center; margin-bottom: 100px; padding-right: 30px"><h1><b style="color: white">Nessun acquisto effettuato</b></h1></td>
                     </tr>
                     <tr>
                         <td style="text-align: center; padding-right: 30px"><img src="images/emptycart.png"></td>
@@ -168,4 +168,5 @@
 
     </main>
 </body>
+<%@include file="/include/footer.inc"%>
 </html>

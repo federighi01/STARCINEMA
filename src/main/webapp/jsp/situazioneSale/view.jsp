@@ -28,21 +28,6 @@
     <%@include file="/include/htmlHead.inc"%>
     <style>
 
-        body, html {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        main {
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            text-align: center;
-        }
-
         /* Menù a tendina */
         select {
             width: 180px;
@@ -55,6 +40,7 @@
             display: inline-block;
             margin-top: 100px;
             margin-right: 30px;
+            margin-bottom: 400px;
         }
 
         select option {
@@ -231,14 +217,14 @@
     <%if (composizioni != null) { %>
 
     <%if (num_sala != null) { %>
-    <table>
+    <table style="margin-top: 75px">
         <tr>
             <td><b>SALA <%=num_sala%></b></td>
         </tr>
     </table>
     <%}%>
     <br>
-    <div id="checkboxContainer">
+    <div id="checkboxContainer" style="margin-bottom: 200px">
     <% int d = 0; %>
     <%for (int i = 0; i < composizioni.size(); i++) {%>
     <% d++; %>
@@ -282,4 +268,5 @@
 
 </main>
 </body>
+<%@include file="/include/footer.inc"%>
 </html>

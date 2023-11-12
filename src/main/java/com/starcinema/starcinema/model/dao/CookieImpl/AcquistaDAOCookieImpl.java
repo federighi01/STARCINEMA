@@ -114,36 +114,18 @@ public class AcquistaDAOCookieImpl implements AcquistaDAO {
         return loggedAcquisti;
     }
 
-
-    /*@Override
-    public List<Acquista> findLoggedAcquisti(String username) {
-        List<Acquista> loggedAcquisti = new ArrayList<>();
-        Cookie[] cookies = request.getCookies();
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("loggedAcquista")) {
-                    List<Acquista> loggedAcquistiFromCookie = decode(cookie.getValue());
-                    for (Acquista acquisto : loggedAcquistiFromCookie) {
-                        if (acquisto.getUtente().getUsername().equals(username)) {
-                            loggedAcquisti.add(acquisto);
-                        }
-                    }
-                }
-            }
-        }
-
-        return loggedAcquisti;
-    }*/
-
     @Override
     public List<Acquista> findAcqByUsername(Utente utente) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     private void saveAcquistiToCookie(List<Acquista> acquisti) {
+
+        int maxAgeInSeconds = 365 * 24 * 60 * 60; // un anno in secondi
+
         Cookie cookie = new Cookie("loggedAcquista", encode(acquisti));
         cookie.setPath("/");
+        cookie.setMaxAge(maxAgeInSeconds); // Imposta la durata del cookie
         response.addCookie(cookie);
     }
 

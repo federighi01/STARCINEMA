@@ -63,6 +63,7 @@
             display: inline-block;
             margin-top: 100px;
             margin-right: 10px;
+            margin-bottom: 400px;
         }
 
         select option {
@@ -327,7 +328,7 @@
                     <%}%>
                     <br>
 
-                    <table>
+                    <table style="margin-top: -300px">
                         <tr>
                             <td><b>SALA <%=num_sala%></b></td>
                         </tr>
@@ -361,7 +362,7 @@
 
 
                             <!-- Passaggio dati da modificare e nuovi dati -->
-                            <a><center><input type="submit" class="button" value="Conferma modifiche"></center></a>
+                            <a><center><input style="margin-bottom: 125px" type="submit" class="button" value="Conferma modifiche"></center></a>
                                 <input type="hidden" name="titolo">
                                 <input type="hidden" name="num_sala">
                                 <input type="hidden" name="data_pro">
@@ -431,4 +432,5 @@
 
     </main>
 </body>
+<%@include file="/include/footer.inc"%>
 </html>

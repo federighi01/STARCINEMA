@@ -66,11 +66,11 @@
 
         /* Stili per la tabella */
         table {
-            background-color: white;
+            background-color: whitesmoke;
             width: 40%; /* Imposta la larghezza della tabella al 100% del contenitore padre */
-            border-collapse: collapse; /* Unisci i bordi delle celle */
             border-radius: 10px;
             overflow: hidden;
+            border: none;
         }
 
         /* Stili per gli elementi delle righe della tabella */
@@ -374,14 +374,14 @@
                 <table class="rec" style="background-color: cornflowerblue">
                     <tr>
                         <td>
-                            <h3><b style="color: black">Lascia una recensione</b></h3><br>
+                            <h3><b style="color: white">Lascia una recensione</b></h3><br>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <table class="vote" style="width: 20%; background-color: cornflowerblue">
                                 <tr>
-                                    <td><h3><b style="color: black">Valutazione:</b></h3></td>
+                                    <td><h3><b style="color: midnightblue">Valutazione:</b></h3></td>
                                     <td>
                                         <input type="hidden" name="selectedcodfilm" value="<%= film.getCod_film() %>">
                                         <input type="hidden" name="controllerAction" value="HomeManagement.insrec"/>
@@ -466,4 +466,5 @@
 
     </main>
 </body>
+<%@include file="/include/footer.inc"%>
 </html>

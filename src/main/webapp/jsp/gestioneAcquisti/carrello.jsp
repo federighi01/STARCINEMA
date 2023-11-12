@@ -31,20 +31,6 @@
     <%@include file="/include/htmlHead.inc"%>
     <style>
 
-        body, html {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        main {
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-        }
-
 
         table {
             background-color: white;
@@ -75,7 +61,8 @@
 
         .pay {
             width: 95%;
-            margin-top: 20px;
+            margin-top: 30px;
+            margin-bottom: 200px;
         }
 
 
@@ -201,7 +188,7 @@
               <br><br>
 
 
-              <table class="pay" style="background-color: azure">
+              <table class="pay" style="background-color: whitesmoke">
                   <tr>
                       <td colspan="2" style="vertical-align: top; height: 50px; color: black"><h3><%= "TOTALE: " + tot + "0 €" %></h3></td><br>
                       <td rowspan="3" style="text-align: right">
@@ -231,7 +218,7 @@
                               <label for="num_carta" style="color: black">Numero carta</label>
                               <input type="text" id="num_carta" name="num_carta"
                                      value=""
-                                     required size="20" maxlength="50" autocomplete="off"/>
+                                     required size="20" maxlength="16" autocomplete="off"/>
                           </div>
                       </td>
                   </tr>
@@ -285,14 +272,14 @@
                             <label for="numero_carta" style="color: black">Numero carta</label>
                             <input type="text" id="numero_carta" name="numero_carta"
                                    value=""
-                                   required size="20" maxlength="50"/>
+                                   required size="20" maxlength="16"/>
                         </div>
                     </td>
                 </tr>
             </table>
 
       <%} else {%>
-              <table class="empty" style="margin-top: 50px; margin-left: 380px">
+              <table class="empty" style="margin-top: 50px; margin-left: 380px; margin-bottom: 200px; background-color: transparent">
                   <tr>
                       <td style="text-align: center; padding-right: 30px"><h1><b style="color: white">Carrello vuoto</b></h1></td>
                   </tr>
@@ -306,4 +293,5 @@
 
   </main>
 </body>
+<%@include file="/include/footer.inc"%>
 </html>

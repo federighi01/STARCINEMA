@@ -49,7 +49,8 @@
         table {
 
             width: 100%;
-            border-collapse: collapse;
+            border-radius: 10px;
+            border: none;
         }
 
         table tr {
@@ -132,7 +133,7 @@
 
 
         .film {
-            background-color: white;
+            background-color: whitesmoke;
             width: 80%;
             border: 1px solid #ccc; /* Add border style */
             border-radius: 5px; /* Add border radius */
@@ -413,7 +414,7 @@
 
     <%--ricerca film per data proiezione--%>
     <%}else if(titolo != null && film == null) {%>
-    <table class="notfound">
+    <table class="notfound" style="margin-bottom: 200px">
         <tr>
             <td><b>Nessun film corrisponde al titolo inserito</b></td>
         </tr>
@@ -487,7 +488,7 @@
         <%}%>
     </section>
     <%} else {%>
-    <table class="notfound">
+    <table class="notfound" style="margin-bottom: 200px">
         <tr>
             <td><b>Nessuna proiezione per la data inserita</b></td>
         </tr>
