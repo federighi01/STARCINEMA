@@ -19,7 +19,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Modifica acquisti</title>
+    <title>Acquisti</title>
     <%@include file="/include/htmlHead.inc"%>
     <style>
 

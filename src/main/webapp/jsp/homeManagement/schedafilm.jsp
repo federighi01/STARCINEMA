@@ -24,7 +24,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Title</title>
+    <title>Scheda film</title>
     <%@include file="/include/htmlHead.inc"%>
     <style>
 

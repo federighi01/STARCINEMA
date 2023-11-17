@@ -24,7 +24,7 @@
 
 <html>
 <head>
-    <title>Area Utente</title>
+    <title>Situazione sale</title>
     <%@include file="/include/htmlHead.inc"%>
     <style>
 
